@@ -215,6 +215,16 @@ html, body
   background: white;
 }
 
+/* CSS Fix for rendering issues with safari */
+@media screen and (min-color-index:0) 
+and(-webkit-min-device-pixel-ratio:0) { @media {
+    .aalb-admin-item-search-items-item-title {
+      position: initial;
+      margin-left: 2em;
+      margin-right: 0em;
+    }
+}}
+
 .aalb-admin-item-search-items-item-price {
   font-size: 1em;
   color: #b12704;

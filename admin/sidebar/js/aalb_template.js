@@ -63,6 +63,9 @@ function aalb_template_select_template_onchange(element) {
     if(wp_opt.aalb_default_templates.split(",").indexOf(element.value)>=0) {
       codeMirrorHtml.setOption("readOnly", true);
       codeMirrorCss.setOption("readOnly", true);
+    } else {
+      codeMirrorHtml.setOption("readOnly", false);
+      codeMirrorCss.setOption("readOnly", false);
     }
   }
 }
@@ -79,6 +82,8 @@ function clone_existing_template() {
     jQuery('#clone_template').attr('disabled','disabled');
     //Add CSS Prefix for Amazon Default Templates to prevent style overlapping for clones
     if(wp_opt.aalb_default_templates.split(",").indexOf(templateNameToClone)>=0) {
+      codeMirrorHtml.setOption("readOnly", false);
+      codeMirrorCss.setOption("readOnly", false);
       var randomNumForPrefix = Math.floor((Math.random() * 1000) + 1);
       var prefixRegExObject = new RegExp('aalb-', "g");
       var prefixReplaceValue = 'aalb-' + randomNumForPrefix + '-';
