@@ -53,7 +53,6 @@ class Aalb_Deactivator {
    * @since    1.0.0
    */
   public function remove_cache() {
-    update_option(AALB_AWS_ACCESS_KEY, '');
     $this->helper->clear_cache_for_substring('');
   }
 }

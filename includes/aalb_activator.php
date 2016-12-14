@@ -50,12 +50,12 @@ class Aalb_Activator {
    * @since    1.0.0
    */
   public function load_db_keys() {
-    //if(!get_option(AALB_AWS_ACCESS_KEY)) {
+    if(!get_option(AALB_AWS_ACCESS_KEY)) {
       update_option(AALB_AWS_ACCESS_KEY, '');
-    //}
-    //if(!get_option(AALB_AWS_SECRET_KEY)) {
+    }
+    if(!get_option(AALB_AWS_SECRET_KEY)) {
       update_option(AALB_AWS_SECRET_KEY, '');
-    //}
+    }
   }
 
   /**
