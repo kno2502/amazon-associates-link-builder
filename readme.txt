@@ -35,7 +35,7 @@ Sign up for the Amazon Product Advertising API by following the instructions lis
 = Installing =
 To install the Amazon Associates Link Builder plugin: <br />
 1. Log in to your WordPress dashboard, navigate to the Plugins menu and click Add New. <br />
-2. In the search field type â€œAmazon Associates Link Builderâ€ and click Search Plugins. You can install it by simply clicking â€œInstall Nowâ€.
+2. In the search field type **Amazon Associates Link Builder** and click Search Plugins. You can install it by simply clicking **Install Now**.
 
 = Updating =
 Automatic updates should work like a charm. That said, it's always good practice to back up your templates just in case.
@@ -87,15 +87,6 @@ You can review the **About** section under the Associates Link Builder menu ba
 You can search products using keywords in any supported country, but you have to join the Associates Program in those countries separately to be able to do this. For example - If you are a blogger in UK interested in linking to Amazon.com (US) site, then you will first need to join the Amazon Associates Program in US to be able to search for products on Amazon.com site.
 
 == Changelog ==
-
-= 1.1.3 - December 14, 2016 =
-* Testing Template Save Issue 2 - Please DO NOT UPDATE
-
-= 1.1.2 - December 14, 2016 =
-* Testing Template Save Issue 1 - Please DO NOT UPDATE
-
-= 1.1.1 - December 14, 2016 =
-* Testing Template Save Issue - Please DO NOT UPDATE
 
 = 1.1 - December 13, 2016 =
 * Fix: Rendering of search results in Apple Safari browser.
