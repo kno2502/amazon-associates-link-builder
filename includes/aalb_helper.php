@@ -149,7 +149,7 @@ class Aalb_Helper{
    * @return string Version number of the plugin
    */
   function get_plugin_version() {
-    return AALB_PLUGIN_VERSION;
+    return AALB_PLUGIN_CURRENT_VERSION;
   }
 
   /**
