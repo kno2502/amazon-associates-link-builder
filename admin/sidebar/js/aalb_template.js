@@ -45,6 +45,7 @@ function aalb_template_select_template_onchange(element) {
   if (element.value == 'new') {
     codeMirrorCss.setValue('');
     codeMirrorHtml.setValue('');
+    set_template_read_only(false);
     jQuery('#aalb_template_name').removeAttr("readonly");
     jQuery('#aalb_template_name').val('');
     jQuery('#clone_template').attr('disabled','disabled');
@@ -61,11 +62,9 @@ function aalb_template_select_template_onchange(element) {
     });
     //Make the Amazon Default templates as Read-Only
     if(wp_opt.aalb_default_templates.split(",").indexOf(element.value)>=0) {
-      codeMirrorHtml.setOption("readOnly", true);
-      codeMirrorCss.setOption("readOnly", true);
+      set_template_read_only(true);
     } else {
-      codeMirrorHtml.setOption("readOnly", false);
-      codeMirrorCss.setOption("readOnly", false);
+      set_template_read_only(false);
     }
   }
 }
@@ -82,12 +81,20 @@ function clone_existing_template() {
     jQuery('#clone_template').attr('disabled','disabled');
     //Add CSS Prefix for Amazon Default Templates to prevent style overlapping for clones
     if(wp_opt.aalb_default_templates.split(",").indexOf(templateNameToClone)>=0) {
-      codeMirrorHtml.setOption("readOnly", false);
-      codeMirrorCss.setOption("readOnly", false);
+      set_template_read_only(false);
       var randomNumForPrefix = Math.floor((Math.random() * 1000) + 1);
       var prefixRegExObject = new RegExp('aalb-', "g");
       var prefixReplaceValue = 'aalb-' + randomNumForPrefix + '-';
       codeMirrorHtml.setValue(codeMirrorHtml.getValue().replace(prefixRegExObject, prefixReplaceValue));
       codeMirrorCss.setValue(codeMirrorCss.getValue().replace(prefixRegExObject, prefixReplaceValue));
     }
+}
+
+/**
+ * Sets the HTML and CSS boxes to read only if TRUE is passed.
+ *
+ */
+function set_template_read_only(isReadOnly) {
+    codeMirrorHtml.setOption("readOnly", isReadOnly);
+    codeMirrorCss.setOption("readOnly", isReadOnly);
 }

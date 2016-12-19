@@ -13,7 +13,7 @@ and limitations under the License.
 */
 
 //version
-define('AALB_PLUGIN_VERSION','1.1.2');
+define('AALB_PLUGIN_CURRENT_VERSION','1.2');
 
 //paths
 define('AALB_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
@@ -141,6 +141,7 @@ define('AALB_AWS_ACCESS_KEY', 'aalb_aws_access_key');
 define('AALB_AWS_SECRET_KEY', 'aalb_aws_secret_key');
 define('AALB_CRED_CONFIG_GROUP', 'aalb_cred_config_group');
 define('AALB_STORE_ID_NAMES', 'aalb_store_id_names');
+define('AALB_SHOW_HTTP_WARNING_ONCE', 'aalb_show_http_warning_once');
 
 //Masking constant
 define('AALB_AWS_SECRET_KEY_MASK', '••••••••••••••••••••••••••••••••••••••••');

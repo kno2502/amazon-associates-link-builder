@@ -68,7 +68,8 @@ class Aalb_Tracking_Api_Helper {
     $request_body = wp_json_encode($link_info);
     $base_url = $this->get_base_url('link-id');
     $response  = $this->remote_loader->post($base_url, $request_body);
-    return json_decode($response, true)["link-id"];
+    $response_body = json_decode($response, true);
+    return $response_body["link-id"];
   }
   
   /**

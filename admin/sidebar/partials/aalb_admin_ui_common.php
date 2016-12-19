@@ -21,7 +21,11 @@ if (!is_admin())
 
 if (!is_ssl()) {
   //action when page is NOT using SSL
-  aalb_warning_notice('Adminstration of plugin should be done over a secure network. Please switch to HTTPS.');
+  if(!get_option(AALB_SHOW_HTTP_WARNING_ONCE)) {
+    // This info message is showed only once.
+    aalb_info_notice('We <b>recommend</b> using HTTPs connection for improved security.');
+    update_option(AALB_SHOW_HTTP_WARNING_ONCE, true);
+  }
 }
 
 ?>

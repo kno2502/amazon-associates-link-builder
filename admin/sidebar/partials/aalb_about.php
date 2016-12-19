@@ -136,6 +136,6 @@ include 'aalb_admin_ui_common.php'; ?>
            Review <a target="_blank" href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-UserGuide.pdf">Link Builder User Guide</a> for more information on getting started and key features of the plugin.
        </p>
       <h2>Support</h2>
-      <p>If you get stuck, or have any questions, you can ask for help in the [Amazon Associates Link Builder plugin forum](https://wordpress.org/support/plugin/amazon-link-builder). </p>
+      <p>If you get stuck, or have any questions, you can ask for help in the <a href="https://wordpress.org/support/plugin/amazon-associates-link-builder" target="_blank">Amazon Associates Link Builder plugin forum</a>.</p>
    </div>
 </div>

@@ -60,7 +60,7 @@ class Aalb_Config_Loader {
       throw new Exception('Invalid Json returned by server' . json_last_error());
     }
     $marketplaces_info = $body['Local']['Marketplace'];
-    $updated_marketplace = [];
+    $updated_marketplace = array();
     foreach ($marketplaces_info as $key => $value) {
       $updated_marketplace[substr($value['Endpoint'],0,strpos($value['Endpoint'],'/'))] = $key;
     }

@@ -2,8 +2,8 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.4
-Stable tag: 1.1
+Tested up to: 4.7.0
+Stable tag: 1.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,12 @@ You can search products using keywords in any supported country, but you have to
 
 == Changelog ==
 
+= 1.2 - December 19, 2016 =
+* If you are using custom templates, be sure to take a backup of your templates before updating the plugin by following [these instructions](https://s3.amazonaws.com/aalb-public-resources/documents/Guidance-BackupCustomTemplate.pdf). If you are not using custom templates, you can simply update the plugin using the update now link.
+* Fix: Array dereference issue with PHP version 5.3. You will no longer get PHP syntax issues while activating the plugin.
+* Administration of the plugin over a secured network (HTTPS) is recommended and not required.
+* Updated [plugin user guide](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-UserGuide.pdf).
+
 = 1.1 - December 13, 2016 =
 * Fix: Rendering of search results in Apple Safari browser.
 
@@ -96,5 +102,5 @@ You can search products using keywords in any supported country, but you have to
 
 == Upgrade Notice ==
 
-= 1.1 =
-Install the Amazon Associates Link Builder plugin for WordPress!
+= 1.2 =
+You will no longer get PHP syntax issues while activating the plugin. Take a backup of your custom templates before updating the plugin.

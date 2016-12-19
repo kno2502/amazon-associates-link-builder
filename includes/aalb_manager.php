@@ -48,7 +48,6 @@ class Aalb_Manager {
     $this->hook_loader->add_action( 'wp_ajax_get_item_search_result', $aalb_admin, 'get_item_search_result');
     $this->hook_loader->add_action( 'wp_ajax_get_link_code', $aalb_admin, 'get_link_code');
     $this->hook_loader->add_action( 'media_buttons', $aalb_admin, 'admin_display_callback');
-    $this->hook_loader->add_action( 'plugins_loaded', $aalb_admin, 'check_update');
 
     $aalb_sidebar = new Aalb_Sidebar();
     $this->hook_loader->add_action( 'admin_init', $aalb_sidebar, 'register_cred_config_group');

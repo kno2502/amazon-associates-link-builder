@@ -78,14 +78,6 @@ class Aalb_Admin {
     wp_localize_script('aalb_admin_js', 'api_pref', $this->get_paapi_pref());
   }
 
-  public function check_update() {
-    if(AALB_PLUGIN_VERSION !== get_option('plugin_version')) {
-      update_option(AALB_AWS_ACCESS_KEY, '');
-      update_option(AALB_AWS_SECRET_KEY, '');
-      update_option('plugin_version', AALB_PLUGIN_VERSION);
-    }
-  }
-  
   /**
    * Returns data to be localized in the script.
    * Makes the variable values in PHP to be used in Javascript.
