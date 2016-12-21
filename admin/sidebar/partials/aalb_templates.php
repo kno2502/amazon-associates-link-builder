@@ -13,6 +13,8 @@ and limitations under the License.
 */
 
 include 'aalb_admin_ui_common.php';
+$helper = new Aalb_Helper();
+$helper->aalb_initialize_wp_filesystem_api();
 
 /**
  * Verifies whether file exists and is writable
@@ -37,7 +39,8 @@ function aalb_verify_file_is_writable($file) {
  * @return    bool                  TRUE if write was successful, throws exception otherwise
  */
 function aalb_write_to_file($file,$content) {
-  if(file_put_contents($file, $content)===FALSE)
+  global $wp_filesystem;
+  if($wp_filesystem->put_contents($file,$content) === FALSE)
     throw new Exception("Save Failed. Error writing contents to file: " . $file);
 
   return true;
@@ -70,15 +73,43 @@ function aalb_save_template($file, $content_html, $content_css) {
   }
 }
 
+/**
+ * Finds any change in the current list of templates.
+ * Flags a note if either a template is added or removed.
+ *
+ * @since   1.3
+ * @param   array    $aalb_current_template_names    Current list of templates
+ * @param   array    $aalb_template_names            Refreshed list of templates
+ */
+function aalb_find_template_change($aalb_current_template_names, $aalb_template_names) {
+  $templates_added = array_diff($aalb_template_names, $aalb_current_template_names);
+  $templates_deleted = array_diff($aalb_current_template_names, $aalb_template_names);
+  if(sizeof($templates_added) > 0) {
+    aalb_info_notice(sizeof($templates_added) . " template(s) added.");
+  }
+  if(sizeof($templates_deleted) > 0) {
+    aalb_info_notice(sizeof($templates_deleted) . " template(s) deleted.");
+  }
+}
+
 //Flag to check if the save is failed.
 $saveFailed = false;
+$aalb_default_templates = explode(",", AALB_AMAZON_TEMPLATE_NAMES);
+
+$aalb_current_template_names = get_option(AALB_TEMPLATE_NAMES);
+
+//Refresh templates
+$helper->refresh_template_list();
+
 $aalb_template_names = get_option(AALB_TEMPLATE_NAMES);
+aalb_find_template_change($aalb_current_template_names, $aalb_template_names);
 
 if (!empty($_POST["submit"])) {
   $aalb_template_name = stripslashes($_POST["aalb_template_name"]);
   $aalb_template_template_html_box = stripslashes($_POST["aalb_template_template_html_box"]);
   $aalb_template_template_css_box = stripslashes($_POST["aalb_template_template_css_box"]);
   $dir = AALB_TEMPLATE_DIR;
+  $aalb_template_upload_dir = $helper->get_template_upload_directory();
   if ($_POST["submit"] == "Save") {
     if ($_POST["aalb_template_list"] == "new") {
       if (empty($aalb_template_name)) {
@@ -87,8 +118,8 @@ if (!empty($_POST["submit"])) {
         //The template name can only be alphanumeric characters plus hyphens (-) and underscores (_)
         aalb_error_notice("Save Failed. Only alphanumeric characters allowed for template name.");
       } else {
-        if (!is_dir($dir) or !is_writable($dir)) {
-          aalb_error_notice($dir . " doesn't exist or is not writable. Please set up the directory permissions correctly.");
+        if (!is_dir($aalb_template_upload_dir) or !is_writable($aalb_template_upload_dir)) {
+          aalb_error_notice($aalb_template_upload_dir . " doesn't exist or is not writable. Please set up the directory permissions correctly.");
         } else {
           //Check if template of that name already exists
           if (in_array($aalb_template_name, $aalb_template_names)) {
@@ -97,7 +128,7 @@ if (!empty($_POST["submit"])) {
             $saveFailed = true;
             } else {
               try {
-                aalb_save_template($dir . $aalb_template_name, $aalb_template_template_html_box, $aalb_template_template_css_box);
+                aalb_save_template($aalb_template_upload_dir . $aalb_template_name, $aalb_template_template_html_box, $aalb_template_template_css_box);
                 array_push($aalb_template_names, $aalb_template_name);
                 update_option('aalb_template_names', $aalb_template_names);
             } catch (Exception $e) {
@@ -108,7 +139,12 @@ if (!empty($_POST["submit"])) {
       }
     } else {
       try {
-        aalb_save_template($dir . $aalb_template_name, $aalb_template_template_html_box, $aalb_template_template_css_box);
+        if(in_array($aalb_template_name, $aalb_default_templates)) {
+          aalb_save_template($dir . $aalb_template_name, $aalb_template_template_html_box, $aalb_template_template_css_box);
+        } else {
+          aalb_save_template($aalb_template_upload_dir . $aalb_template_name, $aalb_template_template_html_box, $aalb_template_template_css_box);
+        }
+
         //clears the cached rendered templates whenever the template is modified
         $helper = new Aalb_Helper();
         $helper->clear_cache_for_template($aalb_template_name);
@@ -122,16 +158,31 @@ if (!empty($_POST["submit"])) {
     } else {
       $aalb_template_names = array_diff($aalb_template_names, array($aalb_template_name));
       update_option('aalb_template_names', $aalb_template_names);
-      if (unlink($dir . $aalb_template_name . ".mustache")) {
+      if(in_array($aalb_template_name, $aalb_default_templates)) {
+        //If Default Amazon Template is Removed
+        if (unlink($dir . $aalb_template_name . ".mustache")) {
         aalb_success_notice("Successfully removed Template HTML");
+        } else {
+          aalb_error_notice("Couldn't remove Template HTML. Please manually remove " . $dir . $aalb_template_name . ".mustache");
+        }
+        if (unlink($dir . $aalb_template_name . ".css")) {
+          aalb_success_notice("Successfully removed Template CSS");
+        } else {
+          aalb_error_notice("Couldn't remove Template CSS. Please manually remove " . $dir . $aalb_template_name . ".css");
+        }
       } else {
-        aalb_error_notice("Couldn't remove Template HTML. Please manually remove " . $dir . $aalb_template_name . ".mustache");
+        if (unlink($aalb_template_upload_dir . $aalb_template_name . ".mustache")) {
+        aalb_success_notice("Successfully removed Template HTML");
+        } else {
+          aalb_error_notice("Couldn't remove Template HTML. Please manually remove " . $dir . $aalb_template_name . ".mustache");
+        }
+        if (unlink($aalb_template_upload_dir . $aalb_template_name . ".css")) {
+          aalb_success_notice("Successfully removed Template CSS");
+        } else {
+          aalb_error_notice("Couldn't remove Template CSS. Please manually remove " . $dir . $aalb_template_name . ".css");
+        }
       }
-      if (unlink($dir . $aalb_template_name . ".css")) {
-        aalb_success_notice("Successfully removed Template CSS");
-      } else {
-        aalb_error_notice("Couldn't remove Template CSS. Please manually remove " . $dir . $aalb_template_name . ".css");
-      }
+
       $aalb_template_name = "";
       $aalb_template_template_html_box = "";
       $aalb_template_template_css_box = "";
@@ -146,7 +197,7 @@ wp_enqueue_script('codemirror_mode_css_js', CODEMIRROR_MODE_CSS_JS);
 wp_enqueue_style('codemirror_css', CODEMIRROR_CSS);
 
 wp_enqueue_script('aalb_template_js', AALB_TEMPLATE_JS, array('jquery', 'codemirror_js', 'codemirror_mode_xml_js', 'codemirror_mode_css_js'));
-wp_localize_script('aalb_template_js', 'wp_opt', array('plugin_url' => AALB_PLUGIN_URL, 'aalb_default_templates' => AALB_AMAZON_TEMPLATE_NAMES));
+wp_localize_script('aalb_template_js', 'wp_opt', array('ajax_url' => admin_url('admin-ajax.php'), 'upload_url' => $helper->get_template_upload_directory(), 'plugin_url' => AALB_PLUGIN_URL, 'aalb_default_templates' => AALB_AMAZON_TEMPLATE_NAMES));
 
 ?>
 <div class="wrap">

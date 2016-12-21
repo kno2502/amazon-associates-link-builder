@@ -53,18 +53,23 @@ function aalb_template_select_template_onchange(element) {
     jQuery('#clone_template').removeAttr('disabled');
     jQuery('#aalb_template_name').val(element.value);
     jQuery('#aalb_template_name').attr("readonly", "readonly");
-    base = wp_opt.plugin_url + "template/" + element.value;
-    jQuery.get(base+".css", function(data) {
-      codeMirrorCss.setValue(data);
-    });
-    jQuery.get(base+".mustache", function(data) {
-      codeMirrorHtml.setValue(data);
-    });
     //Make the Amazon Default templates as Read-Only
     if(wp_opt.aalb_default_templates.split(",").indexOf(element.value)>=0) {
       set_template_read_only(true);
+      base = wp_opt.plugin_url + "template/" + element.value;
+      jQuery.get(base+".css", function(data) {
+        codeMirrorCss.setValue(data);
+      });
+      jQuery.get(base+".mustache", function(data) {
+        codeMirrorHtml.setValue(data);
+      });
     } else {
       set_template_read_only(false);
+      base = wp_opt.upload_url + element.value;
+      jQuery.post( wp_opt.ajax_url, { "action" : "get_custom_template_content", "css":base+".css", "mustache":base+".mustache"}, function(json) {
+        codeMirrorCss.setValue(json.css);
+        codeMirrorHtml.setValue(json.mustache);
+      }, "json");
     }
   }
 }

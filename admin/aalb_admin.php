@@ -27,11 +27,13 @@ class Aalb_Admin {
   private $paapi_helper;
   private $remote_loader;
   private $tracking_api_helper;
+  private $helper;
 
   public function __construct() {
     $this->paapi_helper = new Aalb_Paapi_Helper();
     $this->remote_loader = new Aalb_Remote_Loader();
     $this->tracking_api_helper = new Aalb_Tracking_Api_Helper();
+    $this->helper = new Aalb_Helper();
     add_action('admin_notices', array($this, 'aalb_plugin_activation')) ;
   }
 
@@ -99,6 +101,30 @@ class Aalb_Admin {
   }
 
   /**
+   * Block which run whenever the plugin has been updated.
+   * Refreshes the templates
+   *
+   * @since    1.3
+   */
+  public function handle_plugin_update() {
+    global $wp_filesystem;
+    $this->helper->aalb_initialize_wp_filesystem_api();
+    $this->helper->refresh_template_list();
+    update_option(AALB_PLUGIN_VERSION, AALB_PLUGIN_CURRENT_VERSION);
+  }
+
+  /**
+   * Checks if the plugin has been updated and calls required method
+   *
+   * @since    1.3
+   */
+  public function check_update() {
+    if(AALB_PLUGIN_CURRENT_VERSION !== get_option(AALB_PLUGIN_VERSION)) {
+      $this->handle_plugin_update();
+    }
+  }
+
+  /**
    * Prints the aalb-admin sidebar search box.
    *
    * @since    1.0.0
@@ -160,6 +186,24 @@ class Aalb_Admin {
     $shortcode_name = $_POST['shortcode_name'];
 
     echo $this->tracking_api_helper->get_link_id($shortcode_name, $shortcode_params_json_string);
+    wp_die();
+  }
+
+  /**
+   * Supports the ajax request for getting template contents for custom templates
+   *
+   * @since    1.3
+   */
+  public function get_custom_template_content() {
+    global $wp_filesystem;
+    $this->helper->aalb_initialize_wp_filesystem_api();
+    $css_file = $_POST['css'];
+    $mustache_file = $_POST['mustache'];
+    $css_file_content = $wp_filesystem->get_contents($css_file);
+    $mustache_file_content = $wp_filesystem->get_contents($mustache_file);
+
+    $response = array("css" => $css_file_content, "mustache" => $mustache_file_content);
+    echo json_encode($response);
     wp_die();
   }
 }

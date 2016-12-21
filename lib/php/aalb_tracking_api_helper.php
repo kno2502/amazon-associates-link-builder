@@ -30,7 +30,7 @@ class Aalb_Tracking_Api_Helper {
     $this->helper = new Aalb_Helper();
 
     //Initializes the version information once.
-    $plugin_version = $this->helper->get_plugin_version();
+    $plugin_version = AALB_PLUGIN_CURRENT_VERSION;
     $wordpress_version = $this->helper->get_wordpress_version();
     $this->version_info = array(
         'wordpress' => $wordpress_version, 
@@ -114,7 +114,7 @@ class Aalb_Tracking_Api_Helper {
   public function insert_pixel($impression_params) {
     $body = json_decode($impression_params,true);
     $pixel_url = $body["pixel-url"];
-    echo '<img src="' . $pixel_url . '" style="visibility:hidden"></img>';
+    echo '<img src="' . $pixel_url . '" style="display:none"></img>';
   }
 }
 

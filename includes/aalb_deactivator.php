@@ -55,6 +55,18 @@ class Aalb_Deactivator {
   public function remove_cache() {
     $this->helper->clear_cache_for_substring('');
   }
+
+  /**
+   * Recursively remove the template uploads dir
+   *
+   * @since    1.3
+   */
+  public function remove_uploads_dir() {
+    global $wp_filesystem;
+    $this->helper->aalb_initialize_wp_filesystem_api();
+    $upload_dir = $this->helper->get_template_upload_directory();
+    $wp_filesystem->rmdir($upload_dir, true);
+  }
 }
 
 ?>

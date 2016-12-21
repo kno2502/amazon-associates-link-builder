@@ -143,16 +143,6 @@ class Aalb_Helper{
   }
 
   /**
-   * Fetches the current plugins version number
-   *
-   * @since    1.0.0
-   * @return string Version number of the plugin
-   */
-  function get_plugin_version() {
-    return AALB_PLUGIN_CURRENT_VERSION;
-  }
-
-  /**
    * Fetches the Wordpress version number
    *
    * @since    1.0.0
@@ -161,6 +151,122 @@ class Aalb_Helper{
   function get_wordpress_version() {
     global $wp_version;
     return $wp_version;
+  }
+
+  /**
+   * Fetches the Uploads Directory where custom templates are stored.
+   * If the dir doesn't exists, it is created and returned.
+   *
+   * @since    1.3
+   * @return   Full directory path of the template uploads directory
+   */
+  public function get_template_upload_directory() {
+    global $wp_filesystem;
+    $this->aalb_initialize_wp_filesystem_api();
+    $aalb_template_upload_dir = $this->get_template_upload_directory_name($wp_filesystem);
+    if ( ! $wp_filesystem->is_dir($aalb_template_upload_dir) ) {
+      if(! $this->create_template_upload_dir($aalb_template_upload_dir)) {
+        return false;
+      }
+    }
+    return $aalb_template_upload_dir;
+  }
+
+  /**
+   * Creates the Uploads Directory where custom templates are stored
+   *
+   * @since    1.3
+   * @return   TRUE on successful creation of the dir; FALSE otherwise
+   */
+  public function create_template_upload_dir($aalb_template_upload_dir) {
+    global $wp_filesystem;
+    if ( ! $wp_filesystem->mkdir( $aalb_template_upload_dir, 0777 ) ) {
+        add_settings_error( 'aalb template directory', $wp_filesystem->errors->get_error_code(), __( sprintf( '%s could not be created.', $aalb_template_upload_dir ), 'aalb' ), 'error' );
+        return false;
+      }
+    return true;
+  }
+
+  /**
+   * Gets the template uploads dir name.
+   *
+   * @since    1.3
+   * @return   full path of the template uploads directory
+   */
+  public function get_template_upload_directory_name() {
+    global $wp_filesystem;
+    $upload_dir = wp_upload_dir();
+    return $wp_filesystem->find_folder( $upload_dir['basedir'] ) . 'aalb/template/';
+  }
+
+  /**
+   * Loads necessary files and initializes WP Filesystem API
+   *
+   * @since    1.3
+   */
+  public function aalb_initialize_wp_filesystem_api() {
+    require_once( ABSPATH . 'wp-admin/includes/file.php' );
+    WP_Filesystem();
+  }
+
+  /**
+   * Gets the extension of the file
+   *
+   * @since     1.0
+   * @param     string    $file_name    Name of the file
+   * @return    string                  Extension of the file
+   */
+  public function aalb_get_file_extension($file_name) {
+    return substr(strrchr($file_name,'.'),1);
+  }
+
+  /**
+   * Gets the name of the file without the extension
+   *
+   * @since     1.0
+   * @param     string    $file_name    Name of the file
+   * @return    string                  Name of the file without the extension
+   */
+  function aalb_get_file_name($file_name) {
+    return substr($file_name, 0, strlen($file_name) - strlen(strrchr($file_name,'.')));
+  }
+
+  /**
+   * Reads both the templates/ and the uploads/ directory and updates the template list.
+   * Helper to replicate the current status of the default and custom templates
+   *
+   * @since    1.3
+   */
+  public function refresh_template_list() {
+    global $wp_filesystem;
+    $this->aalb_initialize_wp_filesystem_api();
+
+    $aalb_templates = array();
+    $upload_dir = $this->get_template_upload_directory();
+
+    //Read and update templates from the plugin's template/ directory (Default Templates)
+    if ($handle = opendir(AALB_TEMPLATE_DIR)) {
+      while (false !== ($entry = readdir($handle))) {
+        $file_name = $this->aalb_get_file_name($entry);
+        $file_extension = $this->aalb_get_file_extension($entry);
+        if ($file_extension == "css" and file_exists(AALB_TEMPLATE_DIR . $file_name . '.mustache')) {
+          $aalb_templates[] = $file_name;
+        }
+      }
+      closedir($handle);
+    }
+
+    //Read and update templates from the uploads/ directory (Custom Templates)
+    if ($handle = opendir($upload_dir)) {
+      while (false !== ($entry = readdir($handle))) {
+        $file_name = $this->aalb_get_file_name($entry);
+        $file_extension = $this->aalb_get_file_extension($entry);
+        if ($file_extension == "css" and file_exists($upload_dir . $file_name . '.mustache')) {
+          $aalb_templates[] = $file_name;
+        }
+      }
+    }
+    update_option(AALB_TEMPLATE_NAMES, $aalb_templates);
   }
 }
 ?>

@@ -23,22 +23,19 @@ and limitations under the License.
  */
 class Aalb_Activator {
 
+  protected $helper;
+
+  public function __construct() {
+    $this->helper = new Aalb_Helper();
+  }
+
   /**
    * Add the template names to the database from the filesystem.
    *
    * @since    1.0.0
    */
   public function load_templates() {
-    $aalb_templates = array();
-    if ($handle = opendir(AALB_TEMPLATE_DIR)) {
-      while (false !== ($entry = readdir($handle))) {
-        if ($this->aalb_get_file_extension($entry) == "css") {
-	        $aalb_templates[] = $this->aalb_get_file_name($entry);
-	      }
-      }
-      closedir($handle);
-    }
-    update_option(AALB_TEMPLATE_NAMES, $aalb_templates);
+    $this->helper->refresh_template_list();
   }
 
   /**
@@ -65,28 +62,6 @@ class Aalb_Activator {
    */
   public function load_store_ids() {
     update_option(AALB_STORE_IDS, '');
-  }
-
-  /**
-   * Gets the extension of the file
-   *
-   * @since     1.0.0
-   * @param     string    $file_name    Name of the file
-   * @return    string                  Extension of the file
-   */
-  function aalb_get_file_extension($file_name) {
-    return substr(strrchr($file_name,'.'),1);
-  }
-
-  /**
-   * Gets the name of the file without the extension
-   *
-   * @since     1.0.0
-   * @param     string    $file_name    Name of the file
-   * @return    string 				         Name of the file without the extension
-   */
-  function aalb_get_file_name($file_name) {
-    return substr($file_name, 0, strlen($file_name) - strlen(strrchr($file_name,'.')));
   }
 }
 
