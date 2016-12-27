@@ -85,10 +85,10 @@ function aalb_find_template_change($aalb_current_template_names, $aalb_template_
   $templates_added = array_diff($aalb_template_names, $aalb_current_template_names);
   $templates_deleted = array_diff($aalb_current_template_names, $aalb_template_names);
   if(sizeof($templates_added) > 0) {
-    aalb_info_notice(sizeof($templates_added) . " template(s) added.");
+    aalb_info_notice(sizeof($templates_added) . " template(s) added: " . implode(', ', $templates_added));
   }
   if(sizeof($templates_deleted) > 0) {
-    aalb_info_notice(sizeof($templates_deleted) . " template(s) deleted.");
+    aalb_info_notice(sizeof($templates_deleted) . " template(s) deleted: " . implode(', ', $templates_deleted));
   }
 }
 
@@ -119,7 +119,7 @@ if (!empty($_POST["submit"])) {
         aalb_error_notice("Save Failed. Only alphanumeric characters allowed for template name.");
       } else {
         if (!is_dir($aalb_template_upload_dir) or !is_writable($aalb_template_upload_dir)) {
-          aalb_error_notice($aalb_template_upload_dir . " doesn't exist or is not writable. Please set up the directory permissions correctly.");
+          aalb_error_notice($aalb_template_upload_dir . " doesn't exist or is not writable. Please set up Read-Write permissions for <ApacheHomeFolder>/wordpress/wp-content/uploads/amazon-associates-link-builder/template/");
         } else {
           //Check if template of that name already exists
           if (in_array($aalb_template_name, $aalb_template_names)) {
@@ -146,7 +146,6 @@ if (!empty($_POST["submit"])) {
         }
 
         //clears the cached rendered templates whenever the template is modified
-        $helper = new Aalb_Helper();
         $helper->clear_cache_for_template($aalb_template_name);
       } catch (Exception $e) {
         aalb_error_notice($e->getMessage());
@@ -160,16 +159,7 @@ if (!empty($_POST["submit"])) {
       update_option('aalb_template_names', $aalb_template_names);
       if(in_array($aalb_template_name, $aalb_default_templates)) {
         //If Default Amazon Template is Removed
-        if (unlink($dir . $aalb_template_name . ".mustache")) {
-        aalb_success_notice("Successfully removed Template HTML");
-        } else {
-          aalb_error_notice("Couldn't remove Template HTML. Please manually remove " . $dir . $aalb_template_name . ".mustache");
-        }
-        if (unlink($dir . $aalb_template_name . ".css")) {
-          aalb_success_notice("Successfully removed Template CSS");
-        } else {
-          aalb_error_notice("Couldn't remove Template CSS. Please manually remove " . $dir . $aalb_template_name . ".css");
-        }
+        aalb_error_notice("Couldn't remove Default Template");
       } else {
         if (unlink($aalb_template_upload_dir . $aalb_template_name . ".mustache")) {
         aalb_success_notice("Successfully removed Template HTML");
@@ -223,20 +213,23 @@ wp_localize_script('aalb_template_js', 'wp_opt', array('ajax_url' => admin_url('
     </tr>
     <tr>
       <th scope="row" style="width:15%;">Set a name for your template</th>
-      <td><input type="text" id="aalb_template_name" name="aalb_template_name" style="width:50%" value="<?=$aalb_template_name?>" /></td>
+      <td>
+        <input type="text" id="aalb_template_name" name="aalb_template_name" style="width:50%" value="<?=(isset($aalb_template_name))?$aalb_template_name:''?>" />
+        <span style="font-size:0.9em;">[<a href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-Guide-HowToCreateCustomTemplates.pdf" target="_blank">Guide for creating custom templates</a>]</span>
+      </td>
     </tr>
     <tr>
       <th scope="row" style="width:15%;">Add HTML for your template</th>
-      <td><textarea id="aalb_template_template_html_box" name="aalb_template_template_html_box"><?=$aalb_template_template_html_box?></textarea></td>
+      <td><textarea id="aalb_template_template_html_box" name="aalb_template_template_html_box"><?=(isset($aalb_template_template_html_box))?$aalb_template_template_html_box:''?></textarea></td>
     </tr>
     <tr>
       <th scope="row" style="width:15%;">Add CSS for your template</th>
-      <td><textarea id="aalb_template_template_css_box" name="aalb_template_template_css_box"><?=$aalb_template_template_css_box?></textarea></td>
+      <td><textarea id="aalb_template_template_css_box" name="aalb_template_template_css_box"><?=(isset($aalb_template_template_css_box))?$aalb_template_template_css_box:''?></textarea></td>
     </tr>
   </table>
   <p class="submit">
     <input name="submit" id="submit_save" class="button button-primary" value="Save" type="submit">
-    <input name="submit" id="submit_remove" class="button button-secondary" value="Remove" type="submit">
+    <input name="submit" id="submit_remove" class="button button-secondary" value="Remove" type="submit" disabled>
   </p>
   </form>
 </div>

@@ -48,6 +48,7 @@ function aalb_template_select_template_onchange(element) {
     set_template_read_only(false);
     jQuery('#aalb_template_name').removeAttr("readonly");
     jQuery('#aalb_template_name').val('');
+    jQuery('#submit_remove').attr('disabled','disabled');
     jQuery('#clone_template').attr('disabled','disabled');
   } else {
     jQuery('#clone_template').removeAttr('disabled');
@@ -55,6 +56,7 @@ function aalb_template_select_template_onchange(element) {
     jQuery('#aalb_template_name').attr("readonly", "readonly");
     //Make the Amazon Default templates as Read-Only
     if(wp_opt.aalb_default_templates.split(",").indexOf(element.value)>=0) {
+      jQuery('#submit_remove').attr('disabled','disabled');
       set_template_read_only(true);
       base = wp_opt.plugin_url + "template/" + element.value;
       jQuery.get(base+".css", function(data) {
@@ -64,6 +66,7 @@ function aalb_template_select_template_onchange(element) {
         codeMirrorHtml.setValue(data);
       });
     } else {
+      jQuery('#submit_remove').removeAttr('disabled');
       set_template_read_only(false);
       base = wp_opt.upload_url + element.value;
       jQuery.post( wp_opt.ajax_url, { "action" : "get_custom_template_content", "css":base+".css", "mustache":base+".mustache"}, function(json) {
@@ -84,6 +87,7 @@ function clone_existing_template() {
     jQuery('#aalb_template_name').removeAttr("readonly");
     jQuery('#aalb_template_name').val('CopyOf-' + templateNameToClone);
     jQuery('#clone_template').attr('disabled','disabled');
+    jQuery('#submit_remove').attr('disabled','disabled');
     //Add CSS Prefix for Amazon Default Templates to prevent style overlapping for clones
     if(wp_opt.aalb_default_templates.split(",").indexOf(templateNameToClone)>=0) {
       set_template_read_only(false);

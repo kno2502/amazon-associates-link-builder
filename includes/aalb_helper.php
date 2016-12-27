@@ -66,8 +66,8 @@ class Aalb_Helper{
    */
   public function clear_cache_for_substring($substring) {
     global $wpdb;
-
-    $statement = 'DELETE from wp_options
+    $table_prefix = $wpdb->prefix;
+    $statement = 'DELETE from ' . $table_prefix . 'options
         WHERE option_name like %s or option_name like %s';
     $transient_timeout_cache = '_transient_timeout_aalb%' . $substring . '%';
     $transient_cache = '_transient_aalb%' . $substring . '%';
@@ -100,12 +100,12 @@ class Aalb_Helper{
    */
   public function clear_expired_transients() {
     global $wpdb;
-
+    $table_prefix = $wpdb->prefix;
     $transients_prefix  = esc_sql( "_transient_timeout_aalb%" );
     $sql = $wpdb -> prepare (
       '
         SELECT option_name
-        FROM wp_options
+        FROM ' . $table_prefix . 'options
         WHERE option_name LIKE %s
       ',
       $transients_prefix
@@ -180,8 +180,8 @@ class Aalb_Helper{
    */
   public function create_template_upload_dir($aalb_template_upload_dir) {
     global $wp_filesystem;
-    if ( ! $wp_filesystem->mkdir( $aalb_template_upload_dir, 0777 ) ) {
-        add_settings_error( 'aalb template directory', $wp_filesystem->errors->get_error_code(), __( sprintf( '%s could not be created.', $aalb_template_upload_dir ), 'aalb' ), 'error' );
+    if(!wp_mkdir_p($aalb_template_upload_dir)) {
+        error_log("Error Creating Dir . " . $aalb_template_upload_dir . ". Please set the folder permissions correctly.");
         return false;
       }
     return true;
@@ -196,7 +196,7 @@ class Aalb_Helper{
   public function get_template_upload_directory_name() {
     global $wp_filesystem;
     $upload_dir = wp_upload_dir();
-    return $wp_filesystem->find_folder( $upload_dir['basedir'] ) . 'aalb/template/';
+    return $wp_filesystem->find_folder( $upload_dir['basedir'] ) . 'amazon-associates-link-builder/template/';
   }
 
   /**

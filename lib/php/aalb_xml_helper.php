@@ -83,7 +83,7 @@ class Aalb_Xml_Helper {
     }
 
     //add common aalb nodes
-    $aalb_common_node = $items->addChild('aalb-common');
+    $aalb_common_node = $items->addChild('AalbHeader');
     $aalb_common_node = $this->add_xml_node($aalb_common_node, $common_marketplace_node_name , 'true');
 
     return $items;
