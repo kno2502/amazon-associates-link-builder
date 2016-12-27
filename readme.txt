@@ -88,16 +88,8 @@ You can search products using keywords in any supported country, but you have to
 
 == Changelog ==
 
-= 1.3 - December 27, 2016 =
-* If you have created custom templates, be sure to take a backup of your templates before updating the plugin by following [these instructions](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-Guide-HowToBackupCustomTemplates.pdf). If you have not created any custom templates, you can simply update the plugin using the update now link.
-* Fix: Preserve custom templates with plugin updates. You will no longer need to back up your custom templates when updating the plugin in future.
-* Fix: Update tracking pixel to display:none.
-* Fix: Remove ! from PriceLink template.
-* Updated [plugin user guide](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-UserGuide.pdf).
-
-
 = 1.2 - December 19, 2016 =
-* If you have created custom templates, be sure to take a backup of your templates before updating the plugin by following [these instructions](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-Guide-HowToBackupCustomTemplates.pdf). If you have not created any custom templates, you can simply update the plugin using the update now link.
+* If you are using custom templates, be sure to take a backup of your templates before updating the plugin by following [these instructions](https://s3.amazonaws.com/aalb-public-resources/documents/Guidance-BackupCustomTemplate.pdf). If you are not using custom templates, you can simply update the plugin using the update now link.
 * Fix: Array dereference issue with PHP version 5.3. You will no longer get PHP syntax issues while activating the plugin.
 * Administration of the plugin over a secured network (HTTPS) is recommended and not required.
 * Updated [plugin user guide](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-UserGuide.pdf).
@@ -109,9 +101,6 @@ You can search products using keywords in any supported country, but you have to
 * Plugin released for beta testing
 
 == Upgrade Notice ==
-
-= 1.3 =
-This update includes a few minor fixes. In particular, you will no longer need to back up your custom templates when updating the plugin in future.
 
 = 1.2 =
 You will no longer get PHP syntax issues while activating the plugin. Take a backup of your custom templates before updating the plugin.
