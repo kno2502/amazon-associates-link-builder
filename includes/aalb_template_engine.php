@@ -25,11 +25,14 @@ class Aalb_Template_Engine {
   protected $cache_template_loader;
   protected $mustache;
   protected $xml_helper;
+  protected $helper;
 
   public function __construct() {
     $this->xml_loader = new Aalb_Cache_Loader(new Aalb_Remote_Loader());
+    $this->helper = new Aalb_Helper();
     $this->cache_template_loader = new Aalb_Cache_Template_Loader();
     $this->mustache = new Mustache_Engine(array('loader' => new Mustache_Loader_FilesystemLoader(AALB_TEMPLATE_DIR)));
+    $this->mustache_custom = new Mustache_Engine(array('loader' => new Mustache_Loader_FilesystemLoader($this->helper->get_template_upload_directory())));
     $this->xml_helper = new Aalb_Xml_Helper();
   }
 
@@ -116,8 +119,13 @@ class Aalb_Template_Engine {
    * @return    string                 HTML of the display unit.
    */
   private function render_xml($items, $template) {
+    $aalb_default_templates = explode(",", AALB_AMAZON_TEMPLATE_NAMES);
     try {
-      $template = $this->mustache->loadTemplate($template);
+      if(in_array($template, $aalb_default_templates)) {
+        $template = $this->mustache->loadTemplate($template);
+      } else {
+        $template = $this->mustache_custom->loadTemplate($template);
+      }
     } catch (Mustache_Exception_UnknownTemplateException $e) {
       $template = $this->mustache->loadTemplate(get_option(AALB_DEFAULT_TEMPLATE,AALB_DEFAULT_TEMPLATE_NAME));
     }

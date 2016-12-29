@@ -196,7 +196,18 @@ class Aalb_Helper{
   public function get_template_upload_directory_name() {
     global $wp_filesystem;
     $upload_dir = wp_upload_dir();
-    return $wp_filesystem->find_folder( $upload_dir['basedir'] ) . 'amazon-associates-link-builder/template/';
+    return $wp_filesystem->find_folder( $upload_dir['basedir'] ) . AALB_TEMPLATE_UPLOADS_FOLDER;
+  }
+
+  /**
+   * Gets the template uploads dir URL.
+   *
+   * @since    1.3
+   * @return   full URL of the template uploads directory
+   */
+  public function get_template_upload_directory_url() {
+    $upload_dir = wp_upload_dir();
+    return $upload_dir['baseurl'] . '/' . AALB_TEMPLATE_UPLOADS_FOLDER;
   }
 
   /**

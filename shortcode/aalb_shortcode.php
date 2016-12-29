@@ -55,7 +55,13 @@ class Aalb_Shortcode {
    * @since    1.0.0
    */
   public function enqueue_template_styles($template_name) {
-    wp_enqueue_style('aalb_template' . $template_name . '_css', AALB_TEMPLATE_URL . $template_name . '.css' );
+    $aalb_default_templates = explode(",", AALB_AMAZON_TEMPLATE_NAMES);
+    if(in_array($template_name, $aalb_default_templates)) {
+      wp_enqueue_style('aalb_template' . $template_name . '_css', AALB_TEMPLATE_URL . $template_name . '.css' );
+    } else {
+      $aalb_template_upload_url = $this->helper->get_template_upload_directory_url();
+      wp_enqueue_style('aalb_template' . $template_name . '_css', $aalb_template_upload_url . $template_name . '.css' );
+    }
   }
 
   /**

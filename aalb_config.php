@@ -13,7 +13,7 @@ and limitations under the License.
 */
 
 //version
-define('AALB_PLUGIN_CURRENT_VERSION','1.3');
+define('AALB_PLUGIN_CURRENT_VERSION','1.3.1');
 
 //paths
 define('AALB_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
@@ -65,6 +65,10 @@ define('AALB_CACHE_LOADER', AALB_PLUGIN_DIR . 'includes/aalb_cache_loader.php');
 define('AALB_REMOTE_LOADER', AALB_PLUGIN_DIR . 'includes/aalb_remote_loader.php');
 define('AALB_AUTOLOADER', AALB_PLUGIN_DIR . 'includes/aalb_autoloader.php');
 
+//Templates Directory
+define('AALB_TEMPLATE_URL', AALB_PLUGIN_URL . 'template/');
+define('AALB_TEMPLATE_UPLOADS_FOLDER', 'amazon-associates-link-builder/template/');
+
 //Partials
 define('AALB_META_BOX_PARTIAL', AALB_PLUGIN_DIR . 'admin/partials/aalb_meta_box.php');
 
@@ -86,7 +90,6 @@ define('WP_POST_NEW', 'post-new.php');
 
 //Local Styles
 define('AALB_ADMIN_CSS', AALB_PLUGIN_URL . 'admin/css/aalb_admin.css');
-define('AALB_TEMPLATE_URL',AALB_PLUGIN_URL . 'template/');
 define('AALB_BASICS_CSS', AALB_PLUGIN_URL . 'css/aalb_basics.css');
 
 //Local Scripts
