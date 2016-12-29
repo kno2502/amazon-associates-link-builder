@@ -3,7 +3,7 @@ Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
 Tested up to: 4.7.0
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,7 +88,7 @@ You can search products using keywords in any supported country, but you have to
 
 == Changelog ==
 
-= 1.3.1 - December 30, 2016 =
+= 1.3.2 - December 30, 2016 =
 * If you are coming from any version other than v1.3 and are using custom templates, be sure to backup your custom templates before updating the plugin by following [these instructions](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-Guide-HowToBackupCustomTemplates.pdf). If you have not created any custom template or if you are coming from v1.3, you can simply update the plugin using the update now link.
 * Fix: Problems with rendering ads when using custom templates.
 
@@ -114,8 +114,8 @@ You can search products using keywords in any supported country, but you have to
 
 == Upgrade Notice ==
 
-= 1.3.1 =
-This update fixes the issue with improper rendering of ads using custom templates. If you are coming from v1.3, you don't need to take a backup of your templates before updating to v1.3.1.
+= 1.3.2 =
+This update fixes the issue with improper rendering of ads using custom templates. If you are coming from v1.3, you don't need to take a backup of your templates before updating to v1.3.2.
 
 = 1.3 =
 This update includes a few minor fixes. In particular, you will no longer need to back up your custom templates when updating the plugin in future.

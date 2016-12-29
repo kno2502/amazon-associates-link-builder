@@ -202,7 +202,7 @@ class Aalb_Helper{
   /**
    * Gets the template uploads dir URL.
    *
-   * @since    1.3.1
+   * @since    1.3.2
    * @return   full URL of the template uploads directory
    */
   public function get_template_upload_directory_url() {
