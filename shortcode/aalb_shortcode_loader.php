@@ -24,6 +24,7 @@ and limitations under the License.
 class Aalb_Shortcode_Loader {
 
   public $shortcode = null;
+  public $shortcode_link = null;
 
   /**
    * Create only a single instance of the Aalb Shortcode.
@@ -39,6 +40,13 @@ class Aalb_Shortcode_Loader {
     return $this->shortcode;
   }
 
+  public function get_amazon_link_shortcode() {
+    if(is_null($this->shortcode_link)) {
+      return new Aalb_Shortcode_Text();
+    }
+    return $this->shortcode_link;
+  }
+
   /**
    * Register shortcode with Wordpress
    * 
@@ -46,6 +54,7 @@ class Aalb_Shortcode_Loader {
    */
   public function add_shortcode() {
     add_shortcode(AALB_SHORTCODE_AMAZON_LINK, array($this, 'shortcode_callback'));
+    add_shortcode(AALB_SHORTCODE_AMAZON_TEXT, array($this, 'amazon_text_shortcode_callback'));
   }
 
   /**
@@ -55,6 +64,7 @@ class Aalb_Shortcode_Loader {
    */
   public function remove_shortcode() {
     remove_shortcode(AALB_SHORTCODE_AMAZON_LINK);
+    remove_shortcode(AALB_SHORTCODE_AMAZON_TEXT);
   }
 
   /**
@@ -67,6 +77,10 @@ class Aalb_Shortcode_Loader {
    */
   public function shortcode_callback($atts) {
     return $this->get_shortcode()->render($atts);
+  }
+
+  public function amazon_text_shortcode_callback($atts) {
+    return $this->get_amazon_link_shortcode()->render($atts);
   }
 
 }

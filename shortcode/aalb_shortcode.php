@@ -92,7 +92,6 @@ class Aalb_Shortcode {
       $click_url = $this->tracking_api_helper->get_click_url($impression_params);
       $this->tracking_api_helper->insert_pixel($impression_params);
       $this->enqueue_template_styles($validated_template);
-
       return str_replace(array('[[CLICK_URL_PREFIX]]','[[UNIQUE_ID]]'), array($click_url, str_replace('.','-',$products_template_key)), $this->template_engine->render($products_template_key, $products_key, $validated_template, $url, $validated_marketplace));
     } catch (Exception $e) {
         error_log($this->paapi_helper->get_error_message($e->getMessage()));

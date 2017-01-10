@@ -35,6 +35,30 @@ class Aalb_Admin {
     $this->tracking_api_helper = new Aalb_Tracking_Api_Helper();
     $this->helper = new Aalb_Helper();
     add_action('admin_notices', array($this, 'aalb_plugin_activation')) ;
+    //add_filter( 'mce_buttons', array($this, 'my_tinymce_buttons'));
+  }
+
+  function button_callback($post) {
+    echo '<a href="#" id="insert-my-media" class="button">Add my media</a>';
+  }
+  public function my_tinymce_buttons( $buttons ) {
+    $buttons[] = 'superscript';
+    $buttons[] = 'subscript';
+    $buttons[] = hr;
+    return $buttons;
+  }
+
+  public function pre_code_add_button( $buttons ) {
+    $buttons[] = 'pre_code_button';
+    return $buttons;
+}
+
+  public function pre_code_add_javascript( $plugin_array ) {
+    $plugin_array['pre_code_button'] = plugins_url('/js/tinymce-plugin.js', __FILE__);
+    //error_log(plugins_url('/js/tinymce-plugin.js', __FILE__));
+    //error_log(AALB_MCE_JS);
+    //error_log(get_template_directory_uri() . '/tinymce-plugin.js');
+    return $plugin_array;
   }
 
   /**
@@ -77,6 +101,9 @@ class Aalb_Admin {
 
     wp_enqueue_script('aalb_admin_js', AALB_ADMIN_JS, array('handlebars_js', 'jquery', 'aalb_sha2_js'));
     wp_enqueue_style('thickbox');
+
+    wp_enqueue_style( 'pre_code_button', plugins_url( '/style.css', __FILE__ ) );
+
     wp_localize_script('aalb_admin_js', 'api_pref', $this->get_paapi_pref());
   }
 
@@ -96,7 +123,8 @@ class Aalb_Admin {
       'ajax_url' => admin_url('admin-ajax.php'),
       'action' => 'get_item_search_result',
       'item_search_nonce' => wp_create_nonce('aalb-item-search-nonce'),
-      'AALB_SHORTCODE_AMAZON_LINK' => AALB_SHORTCODE_AMAZON_LINK
+      'AALB_SHORTCODE_AMAZON_LINK' => AALB_SHORTCODE_AMAZON_LINK,
+      'AALB_SHORTCODE_AMAZON_TEXT' => AALB_SHORTCODE_AMAZON_TEXT
     );
   }
 
@@ -133,7 +161,7 @@ class Aalb_Admin {
   function admin_display_callback($post) {
     require_once(AALB_META_BOX_PARTIAL);
   }
-
+  
   /**
    * Asin button in text editor for putting the shortcode template
    *
