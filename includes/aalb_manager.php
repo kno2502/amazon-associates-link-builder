@@ -49,12 +49,6 @@ class Aalb_Manager {
     $this->hook_loader->add_action( 'wp_ajax_get_link_code', $aalb_admin, 'get_link_code');
     $this->hook_loader->add_action( 'wp_ajax_get_custom_template_content', $aalb_admin, 'get_custom_template_content');
     $this->hook_loader->add_action( 'media_buttons', $aalb_admin, 'admin_display_callback');
-    //$this->hook_loader->add_action( 'media_buttons', $aalb_admin, 'button_callback');
-    //add_filter( 'mce_buttons', array($aalb_admin, 'my_tinymce_buttons'));
-    
-    //add_filter('mce_buttons', array($aalb_admin, 'pre_code_add_button'));
-    //add_filter('mce_external_plugins', array($aalb_admin, 'pre_code_add_javascript'));
-    
     $this->hook_loader->add_action( 'plugins_loaded', $aalb_admin, 'check_update');
 
     $aalb_sidebar = new Aalb_Sidebar();
@@ -68,8 +62,10 @@ class Aalb_Manager {
    * @since    1.0.0
    */
   private function register_shortcode_hooks() {
-    $aalb_shortcode = $this->shortcode_loader->get_shortcode();
+    $aalb_shortcode = $this->shortcode_loader->get_amazon_link_shortcode();
+    $aalb_shortcode_text = $this->shortcode_loader->get_amazon_textlink_shortcode();
     $this->hook_loader->add_action('wp_enqueue_scripts', $aalb_shortcode, 'enqueue_styles');
+    $this->hook_loader->add_action('wp_enqueue_scripts', $aalb_shortcode_text, 'enqueue_styles');
   }
 
   /**

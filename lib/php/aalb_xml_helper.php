@@ -172,21 +172,17 @@ class Aalb_Xml_Helper {
       //If Sale Price is returned
       $aalb_node->CurrentPrice = $sale_price;
       $aalb_node->CurrentPriceValue = $sale_price_amount;
-      $aalb_node->StrikePrice = $price;
-      $aalb_node->StrikePriceValue = $price_amount;
+      if ((int)$aalb_node->SavingPercent > 1) {
+        $aalb_node->StrikePrice = $price;
+        $aalb_node->StrikePriceValue = $price_amount;
+      }
+      
     } else {
-      //If List Price is not returned or ListPrice<Price
-      if(empty($list_price_amount) or ((int)$list_price_amount < (int)$price_amount)) {
-        $aalb_node->CurrentPrice = $price;
-        $aalb_node->CurrentPriceValue = $price_amount;
-      } else {
-        $aalb_node->CurrentPrice = $price;
-        $aalb_node->CurrentPriceValue = $price_amount;
-        //Add StrikePrice node only if there is a difference with CurrentPrice amount
-        if((int)$list_price_amount > (int)$price_amount) {
-          $aalb_node->StrikePrice = $list_price;
-          $aalb_node->StrikePriceValue = $list_price_amount;
-        }
+      $aalb_node->CurrentPrice = $price;
+      $aalb_node->CurrentPriceValue = $price_amount;
+      if ((int)$aalb_node->SavingPercent > 1) {
+        $aalb_node->StrikePrice = $list_price;
+        $aalb_node->StrikePriceValue = $list_price_amount;
       }
     }
     return $aalb_node;
@@ -230,6 +226,7 @@ class Aalb_Xml_Helper {
 
   /**
    * Adds Click URL Prefix to requierd hyperlinks
+   * TODO: Not used post v1.4. Impression Tracking plugged out for re-vamping purposes.
    *
    * @since     1.0.0
    * @param     SimpleXMLElement    $items     Well formed XML String

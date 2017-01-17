@@ -23,8 +23,8 @@ and limitations under the License.
  */
 class Aalb_Shortcode_Loader {
 
-  public $shortcode = null;
   public $shortcode_link = null;
+  public $shortcode_textlink = null;
 
   /**
    * Create only a single instance of the Aalb Shortcode.
@@ -33,18 +33,25 @@ class Aalb_Shortcode_Loader {
    * @since     1.0.0
    * @return    Aalb_Shortcode    The instance of Aalb_Shortcode.
    */ 
-  public function get_shortcode() {
-    if(is_null($this->shortcode)) {
-      return new Aalb_Shortcode();
-    }
-    return $this->shortcode;
-  }
-
   public function get_amazon_link_shortcode() {
     if(is_null($this->shortcode_link)) {
-      return new Aalb_Shortcode_Text();
+      return new Aalb_Shortcode();
     }
     return $this->shortcode_link;
+  }
+
+  /**
+   * Create only a single instance of the Aalb TextLink Shortcode.
+   * No need to create an instance for rendering each shortcode.
+   *
+   * @since     1.4
+   * @return    Aalb_Shortcode_Text    The instance of Aalb_Shortcode_Text.
+   */
+  public function get_amazon_textlink_shortcode() {
+    if(is_null($this->shortcode_textlink)) {
+      return new Aalb_Shortcode_Text();
+    }
+    return $this->shortcode_textlink;
   }
 
   /**
@@ -53,8 +60,8 @@ class Aalb_Shortcode_Loader {
    * @since    1.0.0
    */
   public function add_shortcode() {
-    add_shortcode(AALB_SHORTCODE_AMAZON_LINK, array($this, 'shortcode_callback'));
-    add_shortcode(AALB_SHORTCODE_AMAZON_TEXT, array($this, 'amazon_text_shortcode_callback'));
+    add_shortcode(AALB_SHORTCODE_AMAZON_LINK, array($this, 'amazon_link_shortcode_callback'));
+    add_shortcode(AALB_SHORTCODE_AMAZON_TEXT, array($this, 'amazon_textlink_shortcode_callback'));
   }
 
   /**
@@ -68,19 +75,27 @@ class Aalb_Shortcode_Loader {
   }
 
   /**
-   * Callback function for rendering shortcode
+   * Callback function for rendering amazon_link shortcode
    *
    *
    * @since     1.0.0
    * @param     array    $atts     Shortcode attributes and values.
    * @return    HTML               HTML for displaying the templates.
    */
-  public function shortcode_callback($atts) {
-    return $this->get_shortcode()->render($atts);
+  public function amazon_link_shortcode_callback($atts) {
+    return $this->get_amazon_link_shortcode()->render($atts);
   }
 
-  public function amazon_text_shortcode_callback($atts) {
-    return $this->get_amazon_link_shortcode()->render($atts);
+  /**
+   * Callback function for rendering amazon_textlink shortcode
+   *
+   *
+   * @since     1.4
+   * @param     array    $atts     Shortcode attributes and values.
+   * @return    HTML               HTML for displaying the templates.
+   */
+  public function amazon_textlink_shortcode_callback($atts) {
+    return $this->get_amazon_textlink_shortcode()->render($atts);
   }
 
 }

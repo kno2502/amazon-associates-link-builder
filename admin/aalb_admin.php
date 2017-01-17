@@ -35,30 +35,6 @@ class Aalb_Admin {
     $this->tracking_api_helper = new Aalb_Tracking_Api_Helper();
     $this->helper = new Aalb_Helper();
     add_action('admin_notices', array($this, 'aalb_plugin_activation')) ;
-    //add_filter( 'mce_buttons', array($this, 'my_tinymce_buttons'));
-  }
-
-  function button_callback($post) {
-    echo '<a href="#" id="insert-my-media" class="button">Add my media</a>';
-  }
-  public function my_tinymce_buttons( $buttons ) {
-    $buttons[] = 'superscript';
-    $buttons[] = 'subscript';
-    $buttons[] = hr;
-    return $buttons;
-  }
-
-  public function pre_code_add_button( $buttons ) {
-    $buttons[] = 'pre_code_button';
-    return $buttons;
-}
-
-  public function pre_code_add_javascript( $plugin_array ) {
-    $plugin_array['pre_code_button'] = plugins_url('/js/tinymce-plugin.js', __FILE__);
-    //error_log(plugins_url('/js/tinymce-plugin.js', __FILE__));
-    //error_log(AALB_MCE_JS);
-    //error_log(get_template_directory_uri() . '/tinymce-plugin.js');
-    return $plugin_array;
   }
 
   /**
@@ -101,9 +77,6 @@ class Aalb_Admin {
 
     wp_enqueue_script('aalb_admin_js', AALB_ADMIN_JS, array('handlebars_js', 'jquery', 'aalb_sha2_js'));
     wp_enqueue_style('thickbox');
-
-    wp_enqueue_style( 'pre_code_button', plugins_url( '/style.css', __FILE__ ) );
-
     wp_localize_script('aalb_admin_js', 'api_pref', $this->get_paapi_pref());
   }
 
@@ -135,6 +108,10 @@ class Aalb_Admin {
    * @since    1.3
    */
   public function handle_plugin_update() {
+    //Clear all transients for price changes to reflect
+    $this->helper->clear_cache_for_substring('');
+    $this->helper->clear_expired_transients();
+
     global $wp_filesystem;
     $this->helper->aalb_initialize_wp_filesystem_api();
     $this->helper->refresh_template_list();
@@ -161,7 +138,7 @@ class Aalb_Admin {
   function admin_display_callback($post) {
     require_once(AALB_META_BOX_PARTIAL);
   }
-  
+
   /**
    * Asin button in text editor for putting the shortcode template
    *
@@ -225,13 +202,24 @@ class Aalb_Admin {
   public function get_custom_template_content() {
     global $wp_filesystem;
     $this->helper->aalb_initialize_wp_filesystem_api();
-    $css_file = $_POST['css'];
-    $mustache_file = $_POST['mustache'];
-    $css_file_content = $wp_filesystem->get_contents($css_file);
-    $mustache_file_content = $wp_filesystem->get_contents($mustache_file);
+    $base_path = $this->helper->get_template_upload_directory();
+    if(current_user_can('edit_posts')) {
+      $css_file = $_POST['css'];
+      $real_css_file = realpath($css_file);
+      $mustache_file = $_POST['mustache'];
+      $real_mustache_file = realpath($mustache_file);
+      if ($real_css_file === false || $real_mustache_file === false || strpos($real_css_file, $base_path) !== 0 || strpos($real_mustache_file, $base_path) !== 0) {
+        //Directry Traversal Attempted
+        die('Not authorised to make request template content or Directory Traversal Attempted.');
+      } else {
+        //No vulnerability. Get file contents.
+        $css_file_content = $wp_filesystem->get_contents($css_file);
+        $mustache_file_content = $wp_filesystem->get_contents($mustache_file);
 
-    $response = array("css" => $css_file_content, "mustache" => $mustache_file_content);
-    echo json_encode($response);
+        $response = array("css" => $css_file_content, "mustache" => $mustache_file_content);
+        echo json_encode($response);
+      }
+    }
     wp_die();
   }
 }

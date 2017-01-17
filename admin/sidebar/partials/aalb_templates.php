@@ -203,7 +203,7 @@ wp_localize_script('aalb_template_js', 'wp_opt', array('ajax_url' => admin_url('
           <?php
             foreach ($aalb_template_names as $aalb_template) {
               ?>
-              <option value="<?=$aalb_template?>" <?php $saveFailed===false ? selected($aalb_template, $aalb_template_name) : selected($aalb_template, "") ?>><?=$aalb_template?></option>
+              <option value="<?=$aalb_template?>" <?php $saveFailed===false ? selected($aalb_template, (isset($aalb_template_name))?$aalb_template_name:'') : selected($aalb_template, "") ?>><?=$aalb_template?></option>
               <?php
             }
           ?>

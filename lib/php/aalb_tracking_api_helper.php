@@ -74,6 +74,7 @@ class Aalb_Tracking_Api_Helper {
   
   /**
    * Returns the response of the impressions API for a given link-id
+   * TODO: Not used post v1.4. Impression tracking plugged out for re-vamping purposes.
    *
    * @since    1.0.0
    * @param    string    $link_id             Link ID for which impression parameters are required
@@ -95,6 +96,7 @@ class Aalb_Tracking_Api_Helper {
 
   /**
    * Returns the click URL by parsing the recieved getImpressions API Response
+   * TODO: Not used post v1.4. Impression Tracking plugged out for re-vamping purposes.
    * 
    * @since     1.0.0
    * @param     json string    $impression_params    JSON Response from the get impressions API for a link-id
@@ -107,6 +109,7 @@ class Aalb_Tracking_Api_Helper {
 
   /**
    * Echoes an invisible img with src=pixel-url to fire the pixels
+   * TODO: Not used post v1.4. Impression Tracking plugged out for re-vamping purposes.
    *
    * @since     1.0.0
    * @param     json string    $impression_params    JSON Response from the get impressions API for a link-id
@@ -114,7 +117,9 @@ class Aalb_Tracking_Api_Helper {
   public function insert_pixel($impression_params) {
     $body = json_decode($impression_params,true);
     $pixel_url = $body["pixel-url"];
-    echo '<img src="' . $pixel_url . '" style="display:none"></img>';
+    if(!is_amp_endpoint()) {
+      echo '<img src="' . $pixel_url . '" style="display:none"></img>';
+    }
   }
 }
 

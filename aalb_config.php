@@ -13,7 +13,7 @@ and limitations under the License.
 */
 
 //version
-define('AALB_PLUGIN_CURRENT_VERSION','1.3.2');
+define('AALB_PLUGIN_CURRENT_VERSION','1.3.4');
 
 //paths
 define('AALB_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
@@ -37,10 +37,11 @@ define('AALB_TRACKING_API_HELPER_PHP', AALB_PLUGIN_DIR .'lib/php/aalb_tracking_a
 define('AALB_SHORTCODE_PHP', AALB_PLUGIN_DIR .'shortcode/aalb_shortcode.php');
 define('AALB_SHORTCODE_TEXT_PHP', AALB_PLUGIN_DIR .'shortcode/aalb_shortcode_text.php');
 define('AALB_SHORTCODE_LOADER', AALB_PLUGIN_DIR . 'shortcode/aalb_shortcode_loader.php');
+define('AALB_SHORTCODE_HELPER', AALB_PLUGIN_DIR . 'shortcode/aalb_shortcode_helper.php');
 
 //Shortcodes supported
 define('AALB_SHORTCODE_AMAZON_LINK', 'amazon_link');
-define('AALB_SHORTCODE_AMAZON_TEXT', 'amazon_text');
+define('AALB_SHORTCODE_AMAZON_TEXT', 'amazon_textlink');
 
 //Admin
 define('AALB_SIDEBAR_PHP', AALB_PLUGIN_DIR .'admin/sidebar/aalb_sidebar.php');
@@ -97,7 +98,6 @@ define('AALB_BASICS_CSS', AALB_PLUGIN_URL . 'css/aalb_basics.css');
 //Local Scripts
 define('AALB_SHA2_JS', AALB_PLUGIN_URL . 'lib/js/jssha2/sha2.js');
 define('AALB_ADMIN_JS', AALB_PLUGIN_URL . 'admin/js/aalb_admin.js');
-define('AALB_MCE_JS', AALB_PLUGIN_URL . 'admin/js/tinymce-plugin.js');
 define('AALB_ADMIN_ITEM_SEARCH_ITEMS_URL', AALB_PLUGIN_URL . 'aalb_admin_item_search_items.hbs');
 define('AALB_TEMPLATE_JS', AALB_PLUGIN_URL . 'admin/sidebar/js/aalb_template.js');
 define('AALB_CREDENTIALS_JS', AALB_PLUGIN_URL . 'admin/sidebar/js/aalb_credentials.js');

@@ -76,7 +76,7 @@ class Aalb_Paapi_Helper {
       "ItemId" => "$asin",
       "IdType" => "ASIN",
       "ResponseGroup" => "Images,ItemAttributes,OfferFull",
-      "Condition" => "New",
+      //"Condition" => "New",
       "AssociateTag" => "$tracking_id",
     );
     $url = $this->aws_signed_url ($params,$marketplace);
@@ -97,7 +97,7 @@ class Aalb_Paapi_Helper {
       "SearchIndex" => "All",
       "Keywords" => "$search_keywords",
       "ResponseGroup" => "Images,ItemAttributes,Offers",
-      "Condition" => "New",
+      //"Condition" => "New",
       "AssociateTag" => "$tracking_id",
     );
     $url = $this->aws_signed_url ($params, $marketplace);

@@ -54,8 +54,6 @@ class Aalb_Template_Engine {
       $xml = $this->parse($products);
       $items = $this->get_items($xml);
 
-      //Add Click URL Prefix to required hyperlinks
-      $items = $this->xml_helper->prefix_click_URL($items);
       //Add custom nodes to the XML
       $custom_items = $this->xml_helper->add_custom_nodes($items, $marketplace);
 

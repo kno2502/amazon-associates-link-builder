@@ -85,18 +85,20 @@ function aalb_remove_selected_item(element) {
 function aalb_admin_show_create_shortcode_popup() {
   // http://stackoverflow.com/questions/5557641/how-can-i-reset-div-to-its-original-state-after-it-has-been-modified-by-java
   jQuery("#aalb-admin-popup-content").html(jQuery("#aalb-admin-popup-content").data('old-state'));
-  var keywords = jQuery("#aalb-admin-input-search").val();
   var selected = tinyMCE.activeEditor.selection.getContent({format : "text"});
-  console.log('keywords = ' + keywords);
-  if(selected) {
-    tb_show('Add Amazon Associates Link Builder Shortcode', '#TB_inline?inlineId=aalb-admin-popup-container',false); 
-    resize_thickbox(); 
+  var keywords = jQuery("#aalb-admin-input-search").val();
+  if (selected) {
+    tb_show('Add Amazon Associates Link Builder Shortcode', '#TB_inline?inlineId=aalb-admin-popup-container',false);
+    resize_thickbox();
 
-    // Getting the ItemSearch results
+    //Setting Search field with selected value.
     jQuery("#aalb-admin-input-search").attr('value',selected);
+    // Getting the ItemSearch results
     aalb_admin_get_item_search_items(jQuery("#aalb-admin-input-search").val());
     jQuery("#aalb-admin-popup-input-search").attr('value',selected);
-  } else if(keywords) {
+    //Chose ProductLink template By Default when some text is selected.
+    jQuery("#aalb_template_names_list").val('ProductLink');
+  } else if (keywords) {
     // Showing the TB and resetting the width - http://wordpress.stackexchange.com/questions/114107/thickbox-width-cant-be-changed-in-admin
     tb_show('Add Amazon Associates Link Builder Shortcode', '#TB_inline?inlineId=aalb-admin-popup-container',false); 
     resize_thickbox(); 
@@ -106,8 +108,9 @@ function aalb_admin_show_create_shortcode_popup() {
     jQuery("#aalb-admin-popup-input-search").attr('value',keywords);
   } else {
     alert("Please enter the keywords or select some text from the editor.");
-      jQuery("#aalb-admin-input-search").focus();
+    jQuery("#aalb-admin-input-search").focus();
   }
+  
 }
 
 /**
@@ -189,11 +192,9 @@ function aalb_admin_get_item_search_items(keywords) {
   jQuery("#aalb-add-shortcode-button").unbind().click(function(){
     var selectedAsins=aalb_get_selected_asins();
     var selected = tinyMCE.activeEditor.selection.getContent({format : "text"});
-    console.log("Is text selected? -> " + selected);
     if(selectedAsins){
       if(selected) {
-        /* If there was some text selected in the wordpress post editor. Implies amazon_text */
-        console.log("length = " + selectedAsins.split(",").length);
+        /* If there was some text selected in the wordpress post editor. Implies amazon_textlink */
         var selectedAsinsLength = selectedAsins.split(",").length;
         if(selectedAsinsLength > 1) {
           alert("Failed to create Text Link shortcode. Editor has some text selected. Only one item can be selected while adding text links");
@@ -201,12 +202,11 @@ function aalb_admin_get_item_search_items(keywords) {
           jQuery("#aalb-add-shortcode-alert").fadeTo("fast",1);
           aalb_add_shortcode(AALB_SHORTCODE_AMAZON_TEXT);
         }
-        
       } else {
         jQuery("#aalb-add-shortcode-alert").fadeTo("fast",1);
         aalb_add_shortcode(AALB_SHORTCODE_AMAZON_LINK);
       }
-    }else{
+    } else {
       alert("Please select atleast one product for display");
     }
   });
@@ -224,7 +224,7 @@ function aalb_add_shortcode(shortcodeName) {
     var selectedTemplate=aalb_get_selected_template();
     var selectedStore=aalb_get_selected_store();
     var selectedMarketplace=aalb_get_selected_marketplace_abbreviation();
-    
+
     shortcodeJson = {
       "name" : AALB_SHORTCODE_AMAZON_LINK,
       "params" : {
@@ -252,8 +252,7 @@ function aalb_add_shortcode(shortcodeName) {
       }
     };
     aalb_get_link_id(shortcodeJson);
-  }
-  else {
+  } else {
     console.log("Invalid Shortcode provided!");
     return;
   }
