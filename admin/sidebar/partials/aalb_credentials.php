@@ -106,7 +106,7 @@ wp_localize_script('aalb_credentials_js', 'wp_opt', array('plugin_url' => AALB_P
           <input id="aalb-terms-checkbox" type="checkbox" name="demo-checkbox" value="1" />
         </th>
         <td style="vertical-align:middle;">
-          Check here to indicate that you have read and agree to the Amazon Associates Link Builder Conditions of Use as applicable for your region - <a target="_blank" href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-US.pdf">US</a>, <a target="_blank" href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-CA.pdf">CA</a>, <a target="_blank" href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-CN.pdf">CN</a>, <a target="_blank" href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-EU.pdf">EU</a>.
+          Check here to indicate that you have read and agree to the Amazon Associates Link Builder <a href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-2017-01-17.pdf" target="_blank">Conditions of Use</a>.
         </td>
       </tr>
     </table>

@@ -209,7 +209,7 @@ class Aalb_Admin {
       $mustache_file = $_POST['mustache'];
       $real_mustache_file = realpath($mustache_file);
       if ($real_css_file === false || $real_mustache_file === false || strpos($real_css_file, $base_path) !== 0 || strpos($real_mustache_file, $base_path) !== 0) {
-        //Directry Traversal Attempted
+        //If base path is not a prefix of the realpath, this means that a directry traversal was attempted
         die('Not authorised to make request template content or Directory Traversal Attempted.');
       } else {
         //No vulnerability. Get file contents.
@@ -219,6 +219,8 @@ class Aalb_Admin {
         $response = array("css" => $css_file_content, "mustache" => $mustache_file_content);
         echo json_encode($response);
       }
+    } else {
+      die('Not authorised to make request');
     }
     wp_die();
   }

@@ -176,7 +176,6 @@ class Aalb_Xml_Helper {
         $aalb_node->StrikePrice = $price;
         $aalb_node->StrikePriceValue = $price_amount;
       }
-      
     } else {
       $aalb_node->CurrentPrice = $price;
       $aalb_node->CurrentPriceValue = $price_amount;

@@ -27,7 +27,7 @@ include 'aalb_admin_ui_common.php'; ?>
       <b>Note</b>
       <ul>
          <li>
-            You must review and accept the Amazon Associates Link Builder Conditions of Use as applicable for your region – <a target="_blank" href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-US.pdf">US</a>, <a target="_blank" href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-CA.pdf">CA</a>, <a target="_blank" href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-CN.pdf">CN</a>, <a target="_blank" href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-EU.pdf">EU</a>.
+            You must review and accept the Amazon Associates Link Builder <a href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-2017-01-17.pdf" target="_blank">Conditions of Use</a>.
          </li>
          <li>
             The plugin is currently in beta form. We intend to regularly add new features and enhancements throughout the beta period and beyond, and welcome your feedback and input.

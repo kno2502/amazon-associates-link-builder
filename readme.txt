@@ -3,7 +3,7 @@ Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
 Tested up to: 4.7.0
-Stable tag: 1.3.2
+Stable tag: 1.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,7 @@ The Amazon Associates Program is one of the original affiliate marketing program
 Link Builder is the official free Amazon Associates Program plugin for WordPress. The plugin enables you to search for products in the Amazon catalog, access real-time price and availability information, and easily create links in your posts to products on Amazon.com. You will be able to generate text links, create custom ad units, or take advantage of out-of-the-box widgets that we've designed and included with the plugin.
 
 = Note =
-* You must review and accept the Amazon Associates Link Builder Conditions of Use as applicable for your region - [US](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-US.pdf), [CA](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-CA.pdf), [EU](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-EU.pdf), [CN](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-CN.pdf).
+* You must review and accept the Amazon Associates Link Builder [Conditions of Use](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-2017-01-17.pdf).
 * The plugin is currently in beta form. We intend to regularly add new features and enhancements throughout the beta period and beyond, and welcome your feedback and input.
 
 == Installation ==
@@ -88,7 +88,14 @@ You can search products using keywords in any supported country, but you have to
 
 == Changelog ==
 
-= 1.3.2 - December 29, 2016 =
+= 1.4 - January 18, 2017 =
+* Conditions of Use have been updated with a worldwide version.  Please review the updated [Conditions of Use](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-2017-01-17.pdf) for the terms which are applicable to your use.
+* Enhancement: Now, you can create text links to Amazon products using amazon_textlink short code. Check [reference guide](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-Guide-HowToCreateTextLinks.pdf) for more details.
+* Fix: Display Amazon [buy box](https://www.amazon.com/gp/help/customer/display.html?nodeId=200401830) price.
+* General improvements to reduce the loading time of the links/ ad units created via the plugin.
+* Updated [plugin user guide](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-UserGuide.pdf).
+
+= 1.3.2 - December 30, 2016 =
 * If you are coming from any version other than v1.3 and are using custom templates, be sure to backup your custom templates before updating the plugin by following [these instructions](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-Guide-HowToBackupCustomTemplates.pdf). If you have not created any custom template or if you are coming from v1.3, you can simply update the plugin using the update now link.
 * Fix: Problems with rendering ads when using custom templates.
 
@@ -114,11 +121,11 @@ You can search products using keywords in any supported country, but you have to
 
 == Upgrade Notice ==
 
+= 1.4 =
+This update includes general performance improvements, and support for text links.
+
 = 1.3.2 =
 This update fixes the issue with improper rendering of ads using custom templates. If you are coming from v1.3, you don't need to take a backup of your templates before updating to v1.3.2.
 
 = 1.3 =
 This update includes a few minor fixes. In particular, you will no longer need to back up your custom templates when updating the plugin in future.
-
-= 1.2 =
-You will no longer get PHP syntax issues while activating the plugin. Take a backup of your custom templates before updating the plugin.

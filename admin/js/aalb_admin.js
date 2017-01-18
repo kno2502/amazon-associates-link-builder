@@ -14,8 +14,8 @@ var template;
 var TB_WIDTH,TB_HEIGHT;
 var tb_remove;
 var link_id = "";
-var AALB_SHORTCODE_AMAZON_LINK=api_pref.AALB_SHORTCODE_AMAZON_LINK; //constant value from server side is reused here
-var AALB_SHORTCODE_AMAZON_TEXT=api_pref.AALB_SHORTCODE_AMAZON_TEXT;
+var AALB_SHORTCODE_AMAZON_LINK = api_pref.AALB_SHORTCODE_AMAZON_LINK; //constant value from server side is reused here
+var AALB_SHORTCODE_AMAZON_TEXT = api_pref.AALB_SHORTCODE_AMAZON_TEXT;
 
 jQuery(document).ready(function() {
   // http://stackoverflow.com/questions/5557641/how-can-i-reset-div-to-its-original-state-after-it-has-been-modified-by-java
@@ -85,7 +85,7 @@ function aalb_remove_selected_item(element) {
 function aalb_admin_show_create_shortcode_popup() {
   // http://stackoverflow.com/questions/5557641/how-can-i-reset-div-to-its-original-state-after-it-has-been-modified-by-java
   jQuery("#aalb-admin-popup-content").html(jQuery("#aalb-admin-popup-content").data('old-state'));
-  var selected = tinyMCE.activeEditor.selection.getContent({format : "text"});
+  var selected = aalb_get_selected_text_from_editor();
   var keywords = jQuery("#aalb-admin-input-search").val();
   if (selected) {
     tb_show('Add Amazon Associates Link Builder Shortcode', '#TB_inline?inlineId=aalb-admin-popup-container',false);
@@ -191,7 +191,7 @@ function aalb_admin_get_item_search_items(keywords) {
   });
   jQuery("#aalb-add-shortcode-button").unbind().click(function(){
     var selectedAsins=aalb_get_selected_asins();
-    var selected = tinyMCE.activeEditor.selection.getContent({format : "text"});
+    var selected = aalb_get_selected_text_from_editor();
     if(selectedAsins){
       if(selected) {
         /* If there was some text selected in the wordpress post editor. Implies amazon_textlink */
@@ -219,12 +219,12 @@ function aalb_admin_get_item_search_items(keywords) {
  */
 function aalb_add_shortcode(shortcodeName) {
   var shortcodeJson;
-  if(shortcodeName == AALB_SHORTCODE_AMAZON_LINK) {
-    var selectedAsins=aalb_get_selected_asins();
-    var selectedTemplate=aalb_get_selected_template();
-    var selectedStore=aalb_get_selected_store();
-    var selectedMarketplace=aalb_get_selected_marketplace_abbreviation();
+  var selectedAsins=aalb_get_selected_asins();
+  var selectedTemplate=aalb_get_selected_template();
+  var selectedStore=aalb_get_selected_store();
+  var selectedMarketplace=aalb_get_selected_marketplace_abbreviation();
 
+  if(shortcodeName == AALB_SHORTCODE_AMAZON_LINK) {
     shortcodeJson = {
       "name" : AALB_SHORTCODE_AMAZON_LINK,
       "params" : {
@@ -234,28 +234,22 @@ function aalb_add_shortcode(shortcodeName) {
         "marketplace" : selectedMarketplace,
       }
     };
-    aalb_get_link_id(shortcodeJson);
   } else if (shortcodeName == AALB_SHORTCODE_AMAZON_TEXT) {
-    var selectedAsin=aalb_get_selected_asins();
-    var selectedTemplate=aalb_get_selected_template();
-    var selectedStore=aalb_get_selected_store();
-    var selectedMarketplace=aalb_get_selected_marketplace_abbreviation();
-    
     shortcodeJson = {
       "name" : AALB_SHORTCODE_AMAZON_TEXT,
       "params" : {
-        "asin" : selectedAsin,
-        "text" : tinyMCE.activeEditor.selection.getContent({format : "text"}),
+        "asin" : selectedAsins,
+        "text" : aalb_get_selected_text_from_editor(),
         "template" : selectedTemplate,
         "store" : selectedStore,
         "marketplace" : selectedMarketplace,
       }
     };
-    aalb_get_link_id(shortcodeJson);
   } else {
     console.log("Invalid Shortcode provided!");
     return;
   }
+  aalb_get_link_id(shortcodeJson);
 }
 
 /**
@@ -373,4 +367,13 @@ function aalb_get_selected_marketplace_abbreviation() {
     selectedMarketplace = $selectedMarketplace.text();
   }
   return selectedMarketplace;
+}
+
+/**
+ * Get selected text from the editor.
+ *
+ * @return String Selected text from the wordpress post editor.
+ */
+function aalb_get_selected_text_from_editor() {
+  return tinyMCE.activeEditor.selection.getContent({format : "text"});
 }
