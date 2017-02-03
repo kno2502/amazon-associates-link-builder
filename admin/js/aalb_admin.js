@@ -375,5 +375,9 @@ function aalb_get_selected_marketplace_abbreviation() {
  * @return String Selected text from the wordpress post editor.
  */
 function aalb_get_selected_text_from_editor() {
-  return tinyMCE.activeEditor.selection.getContent({format : "text"});
+  if(tinyMCE.activeEditor) {
+    return tinyMCE.activeEditor.selection.getContent({format : "text"});
+  } else {
+    return null;
+  }
 }

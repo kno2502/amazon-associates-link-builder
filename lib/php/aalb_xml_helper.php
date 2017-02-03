@@ -133,9 +133,15 @@ class Aalb_Xml_Helper {
    * @return    SimpleXMLElement    $aalb_node     Node to which values are to be added
    */
   public function add_savings_node($item, $aalb_node) {
-    $aalb_node = $this->add_xml_node($aalb_node, 'Saving', $item->Offers->Offer->OfferListing->AmountSaved->FormattedPrice);
-    $aalb_node = $this->add_xml_node($aalb_node, 'SavingValue', $item->Offers->Offer->OfferListing->AmountSaved->Amount);
-    $aalb_node = $this->add_xml_node($aalb_node, 'SavingPercent', $item->Offers->Offer->OfferListing->PercentageSaved);
+    if(!empty($item->Offers->Offer->OfferListing->AmountSaved->FormattedPrice)) {
+      $aalb_node = $this->add_xml_node($aalb_node, 'Saving', $item->Offers->Offer->OfferListing->AmountSaved->FormattedPrice);
+    }
+    if(!empty($item->Offers->Offer->OfferListing->AmountSaved->Amount)) {
+      $aalb_node = $this->add_xml_node($aalb_node, 'SavingValue', $item->Offers->Offer->OfferListing->AmountSaved->Amount);
+    }
+    if(!empty($item->Offers->Offer->OfferListing->PercentageSaved)) {
+      $aalb_node = $this->add_xml_node($aalb_node, 'SavingPercent', $item->Offers->Offer->OfferListing->PercentageSaved);
+    }
     return $aalb_node;
   }
 

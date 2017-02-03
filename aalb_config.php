@@ -13,7 +13,7 @@ and limitations under the License.
 */
 
 //version
-define('AALB_PLUGIN_CURRENT_VERSION','1.4');
+define('AALB_PLUGIN_CURRENT_VERSION','1.4.1');
 
 //paths
 define('AALB_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
