@@ -28,7 +28,7 @@ wp_localize_script('aalb_credentials_js', 'wp_opt', array('plugin_url' => AALB_P
     <table class="widefat fixed">
       <tr>
         <th scope="row" style="width:15%;">Access Key ID</th>
-        <td style="vertical-align:middle;"><input type="text" name="aalb_aws_access_key" style="width:90%" value="<?php echo esc_attr(openssl_decrypt(base64_decode(get_option(AALB_AWS_ACCESS_KEY)), AALB_ENCRYPTION_ALGORITHM, AALB_ENCRYPTION_KEY, 0, AALB_ENCRYPTION_IV)); ?>" /></td>
+        <td style="vertical-align:middle;"><input type="text" name="aalb_aws_access_key" required style="width:90%" value="<?php echo esc_attr(openssl_decrypt(base64_decode(get_option(AALB_AWS_ACCESS_KEY)), AALB_ENCRYPTION_ALGORITHM, AALB_ENCRYPTION_KEY, 0, AALB_ENCRYPTION_IV)); ?>" /></td>
         <td>Your Access Key ID that you generated after signing up for the Amazon Product Advertising API. If you have not already signed up for the Amazon Product Advertising API, you can do so by following instructions listed <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/CHAP_GettingStarted.html" target="_blank">here</a>.</td>
       </tr>
       <tr>
@@ -37,7 +37,7 @@ wp_localize_script('aalb_credentials_js', 'wp_opt', array('plugin_url' => AALB_P
           if($secret_key)
             $secret_key = AALB_AWS_SECRET_KEY_MASK;
         ?>
-        <td style="vertical-align:middle;"><input type="password" name="aalb_aws_secret_key" style="width:90%" value="<?php echo esc_attr($secret_key); ?>" autocomplete="off"/></td>
+        <td style="vertical-align:middle;"><input type="password" name="aalb_aws_secret_key" required style="width:90%" value="<?php echo esc_attr($secret_key); ?>" autocomplete="off"/></td>
         <td>A key that is used in conjunction with the Access Key ID to cryptographically sign an API request. To retrieve your Access Key ID or Secret Access Key, go to <a href="https://affiliate-program.amazon.com/gp/advertising/api/detail/your-account.html" target="_blank">Manage Your Account</a>. The plugin uses a default encryption key for encrypting the Secret Key. You can change the key using AALB_ENCRYPTION_KEY parameter defined in /aalb_config.php.</td>
       </tr>
       <tr>

@@ -19,7 +19,7 @@ and limitations under the License.
   $aalb_store_id_names = $helper->get_store_ids_array();
   ?>
   <div id="aalb-admin-searchbox">
-  <img src=<?=AALB_ADMIN_ICON?> id="aalb-admin-searchbox-amzlogo"><input type="text" id="aalb-admin-input-search" name="aalb-admin-input-search" placeholder="Enter keyword(s)" onkeypress='aalb_submit_event(event,"aalb-admin-button-create-amazon-shortcode")'/><a class="button" title="Add Amazon Associates Link Builder Shortcode" id="aalb-admin-button-create-amazon-shortcode" onclick="aalb_admin_show_create_shortcode_popup()">Search</a>
+  <img src=<?=AALB_ADMIN_ICON?> id="aalb-admin-searchbox-amzlogo" style="height: 30px; width: 30px; padding: 0px;"><input type="text" id="aalb-admin-input-search" name="aalb-admin-input-search" placeholder="Enter keyword(s)" onkeypress='aalb_submit_event(event,"aalb-admin-button-create-amazon-shortcode")'/><a class="button" title="Add Amazon Associates Link Builder Shortcode" id="aalb-admin-button-create-amazon-shortcode" onclick="aalb_admin_show_create_shortcode_popup()">Search</a>
   </div>
   <div id="aalb-admin-popup-container" style="display:none;">
     <div class="aalb-admin-popup-options">

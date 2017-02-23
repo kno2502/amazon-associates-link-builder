@@ -103,25 +103,26 @@ class Aalb_Paapi_Helper {
   }
 
   /**
-   * Paapi error messages to diaplay in case of request errors
+   * PA-API error messages to display in case of request errors
    * 
    * @param     string    $error code    Error code of the request.
-   * @return    string                   Paapi error message.
+   * @return    string                   PA-API error message.
    */
   function get_error_message($error) {
-    if($error == HTTP_BAD_REQUEST) {
-      return HTTP_BAD_REQUEST_MESSAGE;
+    switch($error){
+      case HTTP_BAD_REQUEST:
+          return HTTP_BAD_REQUEST_MESSAGE;
+      case HTTP_FORBIDDEN:
+          return HTTP_FORBIDDEN_MESSAGE;
+      case HTTP_REQUEST_URI_TOO_LONG:
+          return HTTP_REQUEST_URI_TOO_LONG_MESSAGE;
+      case HTTP_INTERNAL_SERVER_ERROR:
+          return HTTP_INTERNAL_SERVER_ERROR_MESSAGE;
+      case HTTP_THROTTLE:
+          return HTTP_THROTTLE_MESSAGE;
+      default:
+          return $error;
     }
-    if($error == HTTP_FORBIDDEN) {
-      return HTTP_FORBIDDEN_MESSAGE;
-    }
-    if($error == HTTP_INTERNAL_SERVER_ERROR) {
-      return HTTP_INTERNAL_SERVER_ERROR_MESSAGE;
-    }
-    if($error == HTTP_THROTTLE) {
-      return HTTP_THROTTLE_MESSAGE;
-    }
-    return $error;
   }
 
 }

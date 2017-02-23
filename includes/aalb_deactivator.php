@@ -34,8 +34,8 @@ class Aalb_Deactivator {
    */
   public function remove_settings() {
     global $wpdb;
-
-    $statement = 'DELETE from wp_options
+    $table_prefix = $wpdb->prefix;
+    $statement = 'DELETE from ' . $table_prefix . 'options
   		  WHERE option_name like %s';
     $settings = "aalb%";
     $prepared_statement = $wpdb->prepare($statement, $settings);

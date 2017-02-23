@@ -42,12 +42,12 @@ class Aalb_Xml_Helper {
     foreach ($items->Item as $item) {
       $aalb_node = $item->addChild('aalb');
 
-      $aalb_node->ASIN = $item->ASIN;
-      $aalb_node->Title = $item->ItemAttributes->Title;
-      $aalb_node->DetailPageURL = $item->DetailPageURL;
-      $aalb_node->LargeImageURL =  $item->LargeImage->URL;
-      $aalb_node->MediumImageURL = $item->MediumImage->URL;
-      $aalb_node->SmallImageURL = $item->SmallImage->URL;
+      $aalb_node->ASIN = isset($item->ASIN)?$item->ASIN:NULL;
+      $aalb_node->Title = isset($item->ItemAttributes->Title)?$item->ItemAttributes->Title:NULL;
+      $aalb_node->DetailPageURL = isset($item->DetailPageURL)?$item->DetailPageURL:NULL;
+      $aalb_node->LargeImageURL =  isset($item->LargeImage->URL)?$item->LargeImage->URL:NULL;
+      $aalb_node->MediumImageURL = isset($item->MediumImage->URL)?$item->MediumImage->URL:NULL;
+      $aalb_node->SmallImageURL = isset($item->MediumImage->URL)?$item->SmallImage->URL:NULL;
 
       //Marketplace
       $marketplace_node_name = $common_marketplace_node_name;
@@ -63,10 +63,10 @@ class Aalb_Xml_Helper {
       $aalb_node = $this->add_min_price_node($item, $aalb_node);
 
       //Prime
-      $aalb_node = $this->add_xml_node($aalb_node, 'Prime', $item->Offers->Offer->OfferListing->IsEligibleForPrime);
+      $aalb_node = $this->add_prime_node($item, $aalb_node);
 
       //Merchant Name
-      $aalb_node = $this->add_xml_node($aalb_node, 'Merchant', $item->Offers->Offer->Merchant->Name);
+      $aalb_node = $this->add_merchant_node($item, $aalb_node);
 
       //Current and Strike Price
       $aalb_node = $this->add_price_nodes($item, $aalb_node);
@@ -126,7 +126,8 @@ class Aalb_Xml_Helper {
 
   /**
    * Adds Savings related nodes
-   * Adds Amount saved in both raw and formatted way and the percentage saved
+   * Adds Amount saved in both raw and formatted way and the percentage saved.
+   * Savings node are added only if we get saving nodes in the XML response from PAAPI.
    *
    * @since     1.0.0
    * @param     SimpleXMLElement    $item          Well formed XML String: The Parent item node
@@ -154,8 +155,12 @@ class Aalb_Xml_Helper {
    * @return    SimpleXMLElement    $aalb_node     Node to which values are to be added
    */
   public function add_min_price_node($item, $aalb_node) {
-    $aalb_node = $this->add_xml_node($aalb_node, 'MinimumPrice', $item->OfferSummary->LowestNewPrice->FormattedPrice);
-    $aalb_node = $this->add_xml_node($aalb_node, 'MinimumPriceValue', $item->OfferSummary->LowestNewPrice->Amount);
+    if(!empty($item->OfferSummary->LowestNewPrice->FormattedPrice)) {
+      $aalb_node = $this->add_xml_node($aalb_node, 'MinimumPrice', $item->OfferSummary->LowestNewPrice->FormattedPrice);
+    }
+    if(!empty($item->OfferSummary->LowestNewPrice->Amount)) {
+      $aalb_node = $this->add_xml_node($aalb_node, 'MinimumPriceValue', $item->OfferSummary->LowestNewPrice->Amount);
+    }
     return $aalb_node;
   }
 
@@ -168,12 +173,12 @@ class Aalb_Xml_Helper {
    * @return    SimpleXMLElement    $aalb_node     Node to which values are to be added
    */
   public function add_price_nodes($item, $aalb_node) {
-    $list_price = $item->ItemAttributes->ListPrice->FormattedPrice;
-    $price = $item->Offers->Offer->OfferListing->Price->FormattedPrice;
-    $sale_price = $item->Offers->Offer->OfferListing->SalePrice->FormattedPrice;
-    $list_price_amount = $item->ItemAttributes->ListPrice->Amount;
-    $price_amount = $item->Offers->Offer->OfferListing->Price->Amount;
-    $sale_price_amount = $item->Offers->Offer->OfferListing->SalePrice->Amount;
+    $list_price = isset($item->ItemAttributes->ListPrice->FormattedPrice)?$item->ItemAttributes->ListPrice->FormattedPrice:NULL;
+    $price = isset($item->Offers->Offer->OfferListing->Price->FormattedPrice)?$item->Offers->Offer->OfferListing->Price->FormattedPrice:NULL;
+    $sale_price = isset($item->Offers->Offer->OfferListing->SalePrice->FormattedPrice)?$item->Offers->Offer->OfferListing->SalePrice->FormattedPrice:NULL;
+    $list_price_amount = isset($item->ItemAttributes->ListPrice->Amount)?$item->ItemAttributes->ListPrice->Amount:NULL;
+    $price_amount = isset($item->Offers->Offer->OfferListing->Price->Amount)?$item->Offers->Offer->OfferListing->Price->Amount:NULL;
+    $sale_price_amount = isset($item->Offers->Offer->OfferListing->SalePrice->Amount)?$item->Offers->Offer->OfferListing->SalePrice->Amount:NULL;
     if(!empty($sale_price_amount)) {
       //If Sale Price is returned
       $aalb_node->CurrentPrice = $sale_price;
@@ -194,6 +199,36 @@ class Aalb_Xml_Helper {
   }
 
   /**
+   * Adds Prime node
+   * Adds Prime node if the item is eligible for prime
+   *
+   * @since     1.4.1
+   * @param     SimpleXMLElement    $item          Well formed XML String: The Parent item node
+   * @return    SimpleXMLElement    $aalb_node     Node to which values are to be added
+   */
+  public function add_prime_node($item, $aalb_node) {
+    if(!empty($item->Offers->Offer->OfferListing->IsEligibleForPrime)) {
+      $aalb_node = $this->add_xml_node($aalb_node, 'Prime', $item->Offers->Offer->OfferListing->IsEligibleForPrime);
+    }
+    return $aalb_node;
+  }
+
+  /**
+   * Adds Merchant node
+   * Adds Merchant information inside the Merchant node
+   *
+   * @since     1.4.1
+   * @param     SimpleXMLElement    $item          Well formed XML String: The Parent item node
+   * @return    SimpleXMLElement    $aalb_node     Node to which values are to be added
+   */
+  public function add_merchant_node($item, $aalb_node) {
+    if(!empty($item->Offers->Offer->Merchant->Name)) {
+      $aalb_node = $this->add_xml_node($aalb_node, 'Merchant', $item->Offers->Offer->Merchant->Name);
+    }
+    return $aalb_node;
+  }
+
+  /**
    * Adds InStock node if the item is in stock; Updates Current Price otherwise
    *
    * @since     1.0.0
@@ -201,8 +236,8 @@ class Aalb_Xml_Helper {
    * @return    SimpleXMLElement    $aalb_node     Node to which values are to be added
    */
   public function add_out_of_stock_node($item, $aalb_node, $marketplace) {
-    $total_new = $item->OfferSummary->TotalNew;
-    $availability = $item->Offers->Offer->OfferListing->Availability;
+    $total_new = isset($item->OfferSummary->TotalNew)?$item->OfferSummary->TotalNew:NULL;
+    $availability = isset($item->Offers->Offer->OfferListing->Availability)?$item->Offers->Offer->OfferListing->Availability:NULL;
     if(($total_new == '0' or $availability == "Out of Stock")) {
       //If the item is out of stock, update Buying Price
       $aalb_node->CurrentPrice = $this->internationalization_helper->internationalize_by_marketplace(OUT_OF_STOCK, $marketplace);;

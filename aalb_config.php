@@ -174,13 +174,15 @@ define('PAAPI_URL_REGEX', '^https:\\/\\/(.*)\\/onca\\/xml\\?(.*)$');
 define('HTTP_SUCCESS', '200');
 define('HTTP_SUCCESS_MESSAGE', '<h4>Request Successful</h4>');
 define('HTTP_BAD_REQUEST', '400');
-define('HTTP_BAD_REQUEST_MESSAGE', '<h4>Your AWS Access Key Id is not registered as an Amazon Associate. Please register as an associate at the respective endpoint.</h4>');
+define('HTTP_BAD_REQUEST_MESSAGE', '<h4>Your AWS Access Key Id is not registered as an Amazon Associate. Please verify that you are <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingAssociate.html" target="_blank">registered as an Amazon Associate</a> in respective locale and you added the email address registered for the Product Advertising API as a <a href="https://affiliate-program.amazon.com/help/node/topic/202049770" target="_blank">secondary email address in your Amazon Associates account</a>.</h4>');
+define('HTTP_REQUEST_URI_TOO_LONG', '414');
+define('HTTP_REQUEST_URI_TOO_LONG_MESSAGE', '<h4>Your AccessKey Id is not registered for Product Advertising API. Please sign up for Product Advertising API by <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingDev.html" target="_blank">following these guidelines</a>.</h4>');
 define('HTTP_FORBIDDEN', '403');
-define('HTTP_FORBIDDEN_MESSAGE', '<h4>The AWS Access Key or Secret Key you provided does not exist in our records. Check your AWS Secret Access Key and signing method. Consult the service documentation for details.</h4>');
+define('HTTP_FORBIDDEN_MESSAGE', '<h4>Your AccessKey Id is not registered for Product Advertising API. Please sign up for Product Advertising API by <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingDev.html" target="_blank">following these guidelines</a>.</h4>');
 define('HTTP_INTERNAL_SERVER_ERROR', '500');
 define('HTTP_INTERNAL_SERVER_ERROR_MESSAGE', '<h4>Internal server error</h4>');
 define('HTTP_THROTTLE', '503');
-define('HTTP_THROTTLE_MESSAGE', '<h4>You are submitting requests too quickly. Please retry your requests at a slower rate.</h4>');
+define('HTTP_THROTTLE_MESSAGE', '<h4>You are submitting requests too quickly. Please retry your requests at a slower rate. For more information, see <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/TroubleshootingApplications.html#efficiency-guidelines" target="_blank">Efficiency Guidelines</a>.</h4>');
 
 /**
  * Cipher

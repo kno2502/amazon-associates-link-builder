@@ -287,12 +287,16 @@ function buildShortcode(shortcodeJson) {
  * 
  * @param Object shortcodeJson  Object describing the shortcode 
  */
-function aalb_get_link_id(shortcodeJson){
-  jQuery.post( api_pref.ajax_url, { "action" : "get_link_code", "shortcode_name":shortcodeJson.name, "shortcode_params":shortcodeJson.params}, function(json) {
-    link_id = json;
-    shortcodeJson.params.link_id=link_id;
-    jQuery("#aalb-add-shortcode-alert").fadeTo("slow",0);
-    aalb_add_shortcode_click_handler(shortcodeJson);
+function aalb_get_link_id(shortcodeJson) {
+  jQuery.post( api_pref.ajax_url, { "action": "get_link_code", "shortcode_name": shortcodeJson.name, "shortcode_params": shortcodeJson.params
+  }).success(function (data) {
+      link_id = data;
+  }).fail(function () {
+      link_id = "";
+  }).always(function () {
+      shortcodeJson.params.link_id = link_id;
+      jQuery("#aalb-add-shortcode-alert").fadeTo("slow", 0);
+      aalb_add_shortcode_click_handler(shortcodeJson);
   });
 }
 
