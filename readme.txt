@@ -2,8 +2,8 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.7.0
-Stable tag: 1.4
+Tested up to: 4.7.2
+Stable tag: 1.4.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,13 @@ You can search products using keywords in any supported country, but you have to
 
 == Changelog ==
 
+= 1.4.1 - February 23, 2017 =
+* Updated error messages to provide more detailed information on how to troubleshoot errors
+* Fix: Amazon search button not working in text mode.
+* Fix: Amazon logo size with other plugin editors
+* Fix: Problem with shortcode creation modal dialog hanging in some cases.
+* Fix: General fixes to remove PHP notices.
+
 = 1.4 - January 18, 2017 =
 * Conditions of Use have been updated with a worldwide version.  Please review the updated [Conditions of Use](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-2017-01-17.pdf) for the terms which are applicable to your use.
 * Enhancement: Now, you can create text links to Amazon products using amazon_textlink short code. Check [reference guide](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-Guide-HowToCreateTextLinks.pdf) for more details.
@@ -120,6 +127,9 @@ You can search products using keywords in any supported country, but you have to
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.4.1 =
+This update includes minor bug fixes.
 
 = 1.4 =
 This update includes general performance improvements, and support for text links.
