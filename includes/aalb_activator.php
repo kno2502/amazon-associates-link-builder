@@ -70,7 +70,7 @@ class Aalb_Activator {
      *
      * @since    1.4.2
      */
-    public function checkPHPVersionCompatibility() {
+    public function check_php_version_compatibility() {
         $phpversion = phpversion();
         if(version_compare($phpversion, AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION) < 0) {
             exit(sprintf('<span style="color:red;">%s plugin requires %s or higher. You’re still on %s.</span>', AALB_PLUGIN_NAME, AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION, $phpversion));

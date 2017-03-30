@@ -7,7 +7,7 @@
 /*
 Plugin Name: Amazon Associates Link Builder
 Description: Amazon Associates Link Builder is the official free Amazon Associates Program plugin for WordPress. The plugin enables you to search for products in the Amazon catalog, access real-time price and availability information, and easily create links in your posts to products on Amazon.com. You will be able to generate text links, create custom ad units, or take advantage of out-of-the-box widgets that we’ve designed and included with the plugin.
-Version: 1.3.7
+Version: 1.4.2
 Author: Amazon Associates Program
 Author URI: https://affiliate-program.amazon.com/
 License: GPLv2
@@ -66,14 +66,13 @@ aalb_autoload();
  */
 function aalb_activate() {
     $aalb_activator = new Aalb_Activator();
-    #$aalb_activator->checkPHPVersionCompatibility();
-    #$aalb_activator->load_templates();
-    #$aalb_activator->load_db_keys();
-   #$aalb_activator->load_store_ids();
+    $aalb_activator->check_php_version_compatibility();
+    $aalb_activator->load_templates();
+    $aalb_activator->load_db_keys();
+    $aalb_activator->load_store_ids();
 }
 
 register_activation_hook( __FILE__, 'aalb_activate' );
-
 
 /**
  * The code to run on deactivation
