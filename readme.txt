@@ -2,8 +2,8 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.7.2
-Stable tag: 1.4.1
+Tested up to: 4.7.3
+Stable tag: 1.4.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,6 +23,12 @@ Link Builder is the official free Amazon Associates Program plugin for WordPress
 == Installation ==
 
 = Pre-requisites =
+__Requires PHP Version:__ 5.3 or higher
+<br />
+
+__Requires WordPress Version:__ 3.0.1 or higher
+<br />
+
 __Become an Associate__ <br />
 To become an Associate, create an Amazon Associates account using URL for your country: [Brazil](https://associados.amazon.com.br/), [Canada](https://associates.amazon.ca/), [China](https://associates.amazon.cn/), [France](https://partenaires.amazon.fr/), [Germany](http://partnernet.amazon.de/), [India](https://affiliate-program.amazon.in/), [Italy](https://programma-affiliazione.amazon.it/), [Japan](https://affiliate.amazon.co.jp/), [Mexico](https://afiliados.amazon.com.mx/), [Spain](https://afiliados.amazon.es/), [United Kingdom](https://affiliate-program.amazon.co.uk/), [United States](http://affiliate-program.amazon.com/)
 <br />
@@ -88,6 +94,10 @@ You can search products using keywords in any supported country, but you have to
 
 == Changelog ==
 
+= 1.4.2 - March 30, 2017 =
+* Changes to ensure minimum PHP version requirements are met before plugin activation.
+* Fix: Amazon search text box and button not showing for editors like Site Origin Page Builder and Advanced Custom Fields.
+
 = 1.4.1 - February 23, 2017 =
 * Updated error messages to provide more detailed information on how to troubleshoot errors
 * Fix: Amazon search button not working in text mode.
@@ -127,6 +137,9 @@ You can search products using keywords in any supported country, but you have to
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.4.2 =
+This update restricts plugin activation to supported PHP versions, and fixes bug of plugin not working with other editors.
 
 = 1.4.1 =
 This update includes minor bug fixes.
