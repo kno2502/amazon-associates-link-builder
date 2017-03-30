@@ -24,62 +24,65 @@ and limitations under the License.
  */
 class Aalb_Cache_Loader {
 
-  public $loader;
-  protected $helper;
+    public $loader;
+    protected $helper;
 
-  public function __construct($loader) {
-    $this->loader = $loader;
-    $this->helper = new Aalb_Helper();
-  }
-
-  /**
-   * If the information is in the cache, then retrieve the information from the cache.
-   * Else get the information by making a GET request.
-   *
-   * @param     string    $key    Unique identification of the information.
-   * @param     string    $url    URL for making a request.
-   * @return    string            GET Response.
-   */
-  public function load($key, $url) {
-    $info = $this->lookup($key);
-    if($info !== false){
-      return $info;
-    } else {
-      return $this->load_and_save($key,$url);
+    public function __construct( $loader ) {
+        $this->loader = $loader;
+        $this->helper = new Aalb_Helper();
     }
-  }
 
-  /**
-   * Lookup in the cache for a particular key.
-   * If the key exists in the cache, the data is return.
-   * Else false is returned.
-   *
-   * @param     string    $key    Unique identification of the information.
-   * @return    string            Data in the cache.
-   */
-  private function lookup($key) {
-    return get_transient($key);
-  }
+    /**
+     * If the information is in the cache, then retrieve the information from the cache.
+     * Else get the information by making a GET request.
+     *
+     * @param string $key Unique identification of the information.
+     * @param string $url URL for making a request.
+     *
+     * @return string GET Response.
+     */
+    public function load( $key, $url ) {
+        $info = $this->lookup( $key );
+        if ( $info !== false ) {
+            return $info;
+        } else {
+            return $this->load_and_save( $key, $url );
+        }
+    }
 
-  /**
-   * Load the information with a GET request and save it in the cache. Return the loaded information.
-   *
-   * @param     string    $key    Unique identification of the information.
-   * @param     string    $url    URL for making a request.
-   * @return    string            GET Response.
-   */
-  private function load_and_save($key, $url) {
-    $info = $this->loader->load($url);
+    /**
+     * Lookup in the cache for a particular key.
+     * If the key exists in the cache, the data is return.
+     * Else false is returned.
+     *
+     * @param string $key Unique identification of the information.
+     *
+     * @return string  Data in the cache.
+     */
+    private function lookup( $key ) {
+        return get_transient( $key );
+    }
 
-    //use wordpress linkcode
-    $info = str_replace('linkCode%3Dxm2', 'linkCode%3Dalb', $info);
-    $info = str_replace('linkCode=xm2', 'linkCode=alb', $info);
+    /**
+     * Load the information with a GET request and save it in the cache. Return the loaded information.
+     *
+     * @param string $key Unique identification of the information.
+     * @param string $url URL for making a request.
+     *
+     * @return string  GET Response.
+     */
+    private function load_and_save( $key, $url ) {
+        $info = $this->loader->load( $url );
 
-    $this->helper->clear_expired_transients_at_intervals();
-    set_transient($key, $info, AALB_CACHE_FOR_ASIN_RAWINFO_TTL);
+        //use wordpress linkcode
+        $info = str_replace( 'linkCode%3Dxm2', 'linkCode%3Dalb', $info );
+        $info = str_replace( 'linkCode=xm2', 'linkCode=alb', $info );
 
-    return $info;
-  }
+        $this->helper->clear_expired_transients_at_intervals();
+        set_transient( $key, $info, AALB_CACHE_FOR_ASIN_RAWINFO_TTL );
+
+        return $info;
+    }
 }
 
 ?>

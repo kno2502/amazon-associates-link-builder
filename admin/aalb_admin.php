@@ -24,205 +24,216 @@ and limitations under the License.
  */
 class Aalb_Admin {
 
-  private $paapi_helper;
-  private $remote_loader;
-  private $tracking_api_helper;
-  private $helper;
+    private $paapi_helper;
+    private $remote_loader;
+    private $tracking_api_helper;
+    private $helper;
 
-  public function __construct() {
-    $this->paapi_helper = new Aalb_Paapi_Helper();
-    $this->remote_loader = new Aalb_Remote_Loader();
-    $this->tracking_api_helper = new Aalb_Tracking_Api_Helper();
-    $this->helper = new Aalb_Helper();
-    add_action('admin_notices', array($this, 'aalb_plugin_activation')) ;
-  }
-
-  /**
-   * Show warning message if the AWS Credentials are not yet set upon activation
-   *
-   * @since    1.0.0
-   */
-  public function aalb_plugin_activation() {
-    if(get_option(AALB_AWS_ACCESS_KEY) == '' or get_option(AALB_AWS_SECRET_KEY) == '') {
-      echo "<div class=\"notice notice-error\"><h3>Amazon Associates Link Builder Important Message!</h3><p>Please Note - You need to add your Access Key ID and Secret Access Key in the plugin settings page for adding links to Amazon using Amazon Associates Link Builder plugin.</p></div>";
-    }
-  }
-
-  /**
-   * Adding CSS for post and post-new pages
-   *
-   * @since    1.0.0
-   * @param    string    $hook    The name of the WordPress action that is being registered.
-   */
-  public function enqueue_styles($hook) {
-    if(WP_POST != $hook && WP_POST_NEW != $hook){return;}
-    wp_enqueue_style('aalb_basics_css', AALB_BASICS_CSS );
-    wp_enqueue_style('aalb_admin_css', AALB_ADMIN_CSS);
-    wp_enqueue_style('font_awesome_css', FONT_AWESOME_CSS);
-    wp_enqueue_style('thickbox');
-  }
-
-  /**
-   * Adding JS for post and post-new pages
-   *
-   * @since    1.0.0
-   * @param    string    $hook    The name of the WordPress action that is being registered.
-   */
-  public function enqueue_scripts($hook) {
-    if(WP_POST != $hook && WP_POST_NEW != $hook){return;}
-    wp_enqueue_style('thickbox');
-    wp_enqueue_script('jquery');
-    wp_enqueue_script('handlebars_js', HANDLEBARS_JS);
-    wp_enqueue_script('aalb_sha2_js', AALB_SHA2_JS);
-
-    wp_enqueue_script('aalb_admin_js', AALB_ADMIN_JS, array('handlebars_js', 'jquery', 'aalb_sha2_js'));
-    wp_enqueue_style('thickbox');
-    wp_localize_script('aalb_admin_js', 'api_pref', $this->get_paapi_pref());
-  }
-
-  /**
-   * Returns data to be localized in the script.
-   * Makes the variable values in PHP to be used in Javascript.
-   *
-   * @since     1.0.0
-   * @return    array    Data to be localized in the script
-   */
-  private function get_paapi_pref() {
-    return array(
-      'template_url' => AALB_ADMIN_ITEM_SEARCH_ITEMS_URL,
-      'max_search_result_items' => AALB_MAX_SEARCH_RESULT_ITEMS,
-      'store_id' => get_option(AALB_DEFAULT_STORE_ID),
-      'marketplace' => get_option(AALB_DEFAULT_MARKETPLACE),
-      'ajax_url' => admin_url('admin-ajax.php'),
-      'action' => 'get_item_search_result',
-      'item_search_nonce' => wp_create_nonce('aalb-item-search-nonce'),
-      'AALB_SHORTCODE_AMAZON_LINK' => AALB_SHORTCODE_AMAZON_LINK,
-      'AALB_SHORTCODE_AMAZON_TEXT' => AALB_SHORTCODE_AMAZON_TEXT
-    );
-  }
-
-  /**
-   * Block which run whenever the plugin has been updated.
-   * Refreshes the templates
-   *
-   * @since    1.3
-   */
-  public function handle_plugin_update() {
-    //Clear all transients for price changes to reflect
-    $this->helper->clear_cache_for_substring('');
-    $this->helper->clear_expired_transients();
-
-    global $wp_filesystem;
-    $this->helper->aalb_initialize_wp_filesystem_api();
-    $this->helper->refresh_template_list();
-    update_option(AALB_PLUGIN_VERSION, AALB_PLUGIN_CURRENT_VERSION);
-  }
-
-  /**
-   * Checks if the plugin has been updated and calls required method
-   *
-   * @since    1.3
-   */
-  public function check_update() {
-    if(AALB_PLUGIN_CURRENT_VERSION !== get_option(AALB_PLUGIN_VERSION)) {
-      $this->handle_plugin_update();
-    }
-  }
-
-  /**
-   * Prints the aalb-admin sidebar search box.
-   *
-   * @since    1.0.0
-   * @param    WP_Post    $post    The object for the current post/page.
-   */
-  function admin_display_callback($post) {
-    require_once(AALB_META_BOX_PARTIAL);
-  }
-
-  /**
-   * Asin button in text editor for putting the shortcode template
-   *
-   * @since    1.0.0
-   */
-  function add_quicktags() {
-    if (wp_script_is('quicktags')){
-    ?>
-      <script type="text/javascript">
-        QTags.addButton( 'aalb_asin_button', 'asins', '[amazon_link asins="" template="" marketplace="" link_id=""]', '', '', 'Amazon Link');
-      </script>
-    <?php
-    }
-  }
-
-  /**
-   * Supports the ajax request for item search.
-   *
-   * @since    1.0.0
-   */
-  public function get_item_search_result() {
-    $nonce = $_GET['item_search_nonce'];
-
-    //verify the user making the request.
-    if(!wp_verify_nonce($nonce, 'aalb-item-search-nonce')) {
-      die('Not authorised to make a request');
+    public function __construct() {
+        $this->paapi_helper = new Aalb_Paapi_Helper();
+        $this->remote_loader = new Aalb_Remote_Loader();
+        $this->tracking_api_helper = new Aalb_Tracking_Api_Helper();
+        $this->helper = new Aalb_Helper();
+        add_action( 'admin_notices', array( $this, 'aalb_plugin_activation' ) );
     }
 
-    //Only allow users who can edit post to make the request.
-    if(current_user_can('edit_posts')) {
-      $url = $this->paapi_helper->get_item_search_url($_GET['keywords'], $_GET['marketplace'], $_GET['store_id']);
-      try{
-        echo $this->remote_loader->load($url);
-      } catch(Exception $e){
-        echo $this->paapi_helper->get_error_message($e->getMessage());
-      }
+    /**
+     * Show warning message if the AWS Credentials are not yet set upon activation
+     *
+     * @since 1.0.0
+     */
+    public function aalb_plugin_activation() {
+        if ( get_option( AALB_AWS_ACCESS_KEY ) == '' or get_option( AALB_AWS_SECRET_KEY ) == '' ) {
+            echo "<div class=\"notice notice-error\">
+                    <h3>Amazon Associates Link Builder Important Message!</h3>
+                    <p>Please Note - You need to add your Access Key ID and Secret Access Key in the plugin settings page for adding links to Amazon using Amazon Associates Link Builder plugin.</p>
+                  </div>";
+        }
     }
 
-    wp_die();
-  }
-
-  /**
-   * Supports the ajax request for get link id API
-   *
-   * @since    1.0.0
-   */
-  public function get_link_code() {
-
-    $shortcode_params_json_string = $_POST['shortcode_params'];
-    $shortcode_name = $_POST['shortcode_name'];
-
-    echo $this->tracking_api_helper->get_link_id($shortcode_name, $shortcode_params_json_string);
-    wp_die();
-  }
-
-  /**
-   * Supports the ajax request for getting template contents for custom templates
-   *
-   * @since    1.3
-   */
-  public function get_custom_template_content() {
-    global $wp_filesystem;
-    $this->helper->aalb_initialize_wp_filesystem_api();
-    $base_path = $this->helper->get_template_upload_directory();
-    if(current_user_can('edit_posts')) {
-      $css_file = $_POST['css'];
-      $real_css_file = realpath($css_file);
-      $mustache_file = $_POST['mustache'];
-      $real_mustache_file = realpath($mustache_file);
-      if ($real_css_file === false || $real_mustache_file === false || strpos($real_css_file, $base_path) !== 0 || strpos($real_mustache_file, $base_path) !== 0) {
-        //If base path is not a prefix of the realpath, this means that a directry traversal was attempted
-        die('Not authorised to make request template content or Directory Traversal Attempted.');
-      } else {
-        //No vulnerability. Get file contents.
-        $css_file_content = $wp_filesystem->get_contents($css_file);
-        $mustache_file_content = $wp_filesystem->get_contents($mustache_file);
-
-        $response = array("css" => $css_file_content, "mustache" => $mustache_file_content);
-        echo json_encode($response);
-      }
-    } else {
-      die('Not authorised to make request');
+    /**
+     * Adding CSS for post and post-new pages
+     *
+     * @since 1.0.0
+     *
+     * @param string $hook The name of the WordPress action that is being registered.
+     */
+    public function enqueue_styles( $hook ) {
+        if ( WP_POST != $hook && WP_POST_NEW != $hook ) {
+            return;
+        }
+        wp_enqueue_style( 'aalb_basics_css', AALB_BASICS_CSS );
+        wp_enqueue_style( 'aalb_admin_css', AALB_ADMIN_CSS );
+        wp_enqueue_style( 'font_awesome_css', FONT_AWESOME_CSS );
+        wp_enqueue_style( 'thickbox' );
     }
-    wp_die();
-  }
+
+    /**
+     * Adding JS for post and post-new pages
+     *
+     * @since 1.0.0
+     *
+     * @param string $hook The name of the WordPress action that is being registered.
+     */
+    public function enqueue_scripts( $hook ) {
+        if ( WP_POST != $hook && WP_POST_NEW != $hook ) {
+            return;
+        }
+        wp_enqueue_style( 'thickbox' );
+        wp_enqueue_script( 'jquery' );
+        wp_enqueue_script( 'handlebars_js', HANDLEBARS_JS );
+        wp_enqueue_script( 'aalb_sha2_js', AALB_SHA2_JS );
+
+        wp_enqueue_script( 'aalb_admin_js', AALB_ADMIN_JS, array( 'handlebars_js', 'jquery', 'aalb_sha2_js' ) );
+        wp_enqueue_style( 'thickbox' );
+        wp_localize_script( 'aalb_admin_js', 'api_pref', $this->get_paapi_pref() );
+    }
+
+    /**
+     * Returns data to be localized in the script.
+     * Makes the variable values in PHP to be used in Javascript.
+     *
+     * @since 1.0.0
+     * @return array Data to be localized in the script
+     */
+    private function get_paapi_pref() {
+        return array(
+            'template_url' => AALB_ADMIN_ITEM_SEARCH_ITEMS_URL,
+            'max_search_result_items' => AALB_MAX_SEARCH_RESULT_ITEMS,
+            'store_id' => get_option( AALB_DEFAULT_STORE_ID ),
+            'marketplace' => get_option( AALB_DEFAULT_MARKETPLACE ),
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'action' => 'get_item_search_result',
+            'item_search_nonce' => wp_create_nonce( 'aalb-item-search-nonce' ),
+            'AALB_SHORTCODE_AMAZON_LINK' => AALB_SHORTCODE_AMAZON_LINK,
+            'AALB_SHORTCODE_AMAZON_TEXT' => AALB_SHORTCODE_AMAZON_TEXT
+        );
+    }
+
+    /**
+     * Checks if the plugin has been updated and calls required method
+     *
+     * @since 1.3
+     */
+    public function check_update() {
+        if ( AALB_PLUGIN_CURRENT_VERSION !== get_option( AALB_PLUGIN_VERSION ) ) {
+            $this->handle_plugin_update();
+        }
+    }
+
+    /**
+     * Block which runs whenever the plugin has been updated.
+     * Refreshes the templates
+     *
+     * @since 1.3
+     */
+    public function handle_plugin_update() {
+        //Clear all transients for price changes to reflect
+        $this->helper->clear_cache_for_substring( '' );
+        $this->helper->clear_expired_transients();
+
+        global $wp_filesystem;
+        $this->helper->aalb_initialize_wp_filesystem_api();
+        $this->helper->refresh_template_list();
+        update_option( AALB_PLUGIN_VERSION, AALB_PLUGIN_CURRENT_VERSION );
+    }
+
+    /**
+     * Prints the aalb-admin sidebar search box.
+     *
+     * @since 1.0.0
+     *
+     * @param WP_Post $post The object for the current post/page.
+     */
+    function admin_display_callback( $post ) {
+        require( AALB_META_BOX_PARTIAL );
+    }
+
+    /**
+     * Asin button in text editor for putting the shortcode template
+     *
+     * @since 1.0.0
+     */
+    function add_quicktags() {
+        if ( wp_script_is( 'quicktags' ) ) {
+            ?>
+            <script type="text/javascript">
+                QTags.addButton( 'aalb_asin_button', 'asins', '[amazon_link asins="" template="" marketplace="" link_id=""]', '', '', 'Amazon Link' );
+            </script>
+            <?php
+        }
+    }
+
+    /**
+     * Supports the ajax request for item search.
+     *
+     * @since 1.0.0
+     */
+    public function get_item_search_result() {
+        $nonce = $_GET['item_search_nonce'];
+
+        //verify the user making the request.
+        if ( ! wp_verify_nonce( $nonce, 'aalb-item-search-nonce' ) ) {
+            die( 'Not authorised to make a request' );
+        }
+
+        //Only allow users who can edit post to make the request.
+        if ( current_user_can( 'edit_posts' ) ) {
+            $url = $this->paapi_helper->get_item_search_url( $_GET['keywords'], $_GET['marketplace'], $_GET['store_id'] );
+            try {
+                echo $this->remote_loader->load( $url );
+            } catch ( Exception $e ) {
+                echo $this->paapi_helper->get_error_message( $e->getMessage() );
+            }
+        }
+
+        wp_die();
+    }
+
+    /**
+     * Supports the ajax request for get link id API
+     *
+     * @since 1.0.0
+     */
+    public function get_link_code() {
+
+        $shortcode_params_json_string = $_POST['shortcode_params'];
+        $shortcode_name = $_POST['shortcode_name'];
+
+        echo $this->tracking_api_helper->get_link_id( $shortcode_name, $shortcode_params_json_string );
+        wp_die();
+    }
+
+    /**
+     * Supports the ajax request for getting template contents for custom templates
+     *
+     * @since 1.3
+     */
+    public function get_custom_template_content() {
+        global $wp_filesystem;
+        $this->helper->aalb_initialize_wp_filesystem_api();
+        $base_path = $this->helper->get_template_upload_directory();
+        if ( current_user_can( 'edit_posts' ) ) {
+            $css_file = $_POST['css'];
+            $real_css_file = realpath( $css_file );
+            $mustache_file = $_POST['mustache'];
+            $real_mustache_file = realpath( $mustache_file );
+            if ( $real_css_file === false || $real_mustache_file === false || strpos( $real_css_file, $base_path ) !== 0 || strpos( $real_mustache_file, $base_path ) !== 0 ) {
+                //If base path is not a prefix of the realpath, this means that a directry traversal was attempted
+                die( 'Not authorised to make request template content or Directory Traversal Attempted.' );
+            } else {
+                //No vulnerability. Get file contents.
+                $css_file_content = $wp_filesystem->get_contents( $css_file );
+                $mustache_file_content = $wp_filesystem->get_contents( $mustache_file );
+
+                $response = array( "css" => $css_file_content, "mustache" => $mustache_file_content );
+                echo json_encode( $response );
+            }
+        } else {
+            die( 'Not authorised to make request' );
+        }
+        wp_die();
+    }
 }
+
 ?>

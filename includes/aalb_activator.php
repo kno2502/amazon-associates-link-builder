@@ -23,46 +23,60 @@ and limitations under the License.
  */
 class Aalb_Activator {
 
-  protected $helper;
+    protected $helper;
 
-  public function __construct() {
-    $this->helper = new Aalb_Helper();
-  }
-
-  /**
-   * Add the template names to the database from the filesystem.
-   *
-   * @since    1.0.0
-   */
-  public function load_templates() {
-    $this->helper->refresh_template_list();
-  }
-
-  /**
-   * Add the aws key options into the database on activation.
-   * This solves the problem of encryption as wordpress called an update option before calling
-   * add option while sanitizing.
-   * https://codex.wordpress.org/Function_Reference/register_setting
-   *
-   * @since    1.0.0
-   */
-  public function load_db_keys() {
-    if(!get_option(AALB_AWS_ACCESS_KEY)) {
-      update_option(AALB_AWS_ACCESS_KEY, '');
+    public function __construct() {
+        $this->helper = new Aalb_Helper();
     }
-    if(!get_option(AALB_AWS_SECRET_KEY)) {
-      update_option(AALB_AWS_SECRET_KEY, '');
-    }
-  }
 
-  /**
-   * Init store ids key and add todatabase.
-   *
-   * @since    1.0.0
-   */
-  public function load_store_ids() {
-    update_option(AALB_STORE_IDS, '');
-  }
+    /**
+     * Add the template names to the database from the filesystem.
+     *
+     * @since 1.0.0
+     */
+    public function load_templates() {
+        $this->helper->refresh_template_list();
+    }
+
+    /**
+     * Add the aws key options into the database on activation.
+     * This solves the problem of encryption as wordpress called an update option before calling
+     * add option while sanitizing.
+     * https://codex.wordpress.org/Function_Reference/register_setting
+     *
+     * @since 1.0.0
+     */
+    public function load_db_keys() {
+        if ( ! get_option( AALB_AWS_ACCESS_KEY ) ) {
+            update_option( AALB_AWS_ACCESS_KEY, '' );
+        }
+        if ( ! get_option( AALB_AWS_SECRET_KEY ) ) {
+            update_option( AALB_AWS_SECRET_KEY, '' );
+        }
+    }
+
+    /**
+     * Init store ids key and add todatabase.
+     *
+     * @since 1.0.0
+     */
+    public function load_store_ids() {
+        update_option( AALB_STORE_IDS, '' );
+    }
+
+    /**
+     * Checks current PHP version of user and exits with error message
+     * in case user's phpVersion is less than AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION
+     *
+     * @since    1.4.2
+     */
+    public function checkPHPVersionCompatibility() {
+        $phpversion = phpversion();
+        if(version_compare($phpversion, AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION) < 0) {
+            exit(sprintf('<span style="color:red;">%s plugin requires %s or higher. You’re still on %s.</span>', AALB_PLUGIN_NAME, AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION, $phpversion));
+        }
+    }
+
 }
 
 ?>

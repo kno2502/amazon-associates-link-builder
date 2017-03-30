@@ -15,114 +15,120 @@ and limitations under the License.
 /**
  * The class for adding menu and submenu pages on the sidebar.
  * Registers the settings using the Wordpress Settings API for suing in the partials
- * 
+ *
  * @since      1.0.0
  * @package    AmazonAssociatesLinkBuilder
  * @subpackage AmazonAssociatesLinkBuilder/admin/sidebar
  */
 class Aalb_Sidebar {
 
-  /**
-   * Adds categories to the menu page
-   *
-   * @since    1.0.0
-   */
-  public function register_sidebar_config_page() {
-    // Create new top-level menu
-    add_menu_page(AALB_PROJECT_TITLE, AALB_PROJECT_TITLE, 'manage_options', 'associates-link-builder-about', array($this, 'about_callback'), AALB_ICON);
-    add_submenu_page('associates-link-builder-about', 'Configure ' . AALB_PROJECT_TITLE . ' About', 'About', 'manage_options', 'associates-link-builder-about', array($this, 'about_callback'));
-    add_submenu_page('associates-link-builder-about', 'Configure ' . AALB_PROJECT_TITLE . ' Settings', 'Settings', 'manage_options', 'associates-link-builder-settings', array($this, 'settings_callback'));
-    add_submenu_page('associates-link-builder-about', 'Configure ' . AALB_PROJECT_TITLE . ' Templates', 'Templates', 'manage_options', 'associates-link-builder-templates', array($this, 'templates_callback'));
-  }
-
-  /**
-   * Registers credentials to the config group
-   *
-   * @since    1.0.0
-   */
-  public function register_cred_config_group() {
-    // Register Credentials
-    register_setting(AALB_CRED_CONFIG_GROUP, AALB_AWS_ACCESS_KEY, array($this, 'validate_access_key'));
-    register_setting(AALB_CRED_CONFIG_GROUP, AALB_AWS_SECRET_KEY, array($this, 'validate_secret_key'));
-    register_setting(AALB_CRED_CONFIG_GROUP, AALB_DEFAULT_STORE_ID);
-    register_setting(AALB_CRED_CONFIG_GROUP, AALB_DEFAULT_MARKETPLACE);
-    register_setting(AALB_CRED_CONFIG_GROUP, AALB_DEFAULT_TEMPLATE);
-    register_setting(AALB_CRED_CONFIG_GROUP, AALB_STORE_ID_NAMES);
-  }
-
-  /**
-   * Load the about page partial
-   * Callbacks to load the page makes the url to use the slug, making it clean.
-   * 
-   * @since    1.0.0
-   */
-  public function about_callback() {
-    require_once(AALB_ABOUT_PHP);
-  }
-
-  /**
-   * Load the settings page partial
-   * The page to save the credentials and default settings of the admin.
-   * 
-   * @since    1.0.0
-   */
-  public function settings_callback() {
-    require_once(AALB_CREDENTIALS_PHP);
-  }
-
-  /**
-   * Load the template page partial
-   * The page to make changes to the templates, add new templates or remove existing templates.
-   * 
-   * @since    1.0.0
-   */
-  public function templates_callback() {
-    require_once(AALB_TEMPLATE_PHP);
-  }
-
-  /**
-   * Sanitize the access key provided by the admin.
-   * Encrypt the access key and store in the db.
-   * 
-   * @since    1.0.0
-   * @param    string    $input    Access key input by the user.
-   */
-  public function validate_access_key($input) {
-    $old_data = get_option(AALB_AWS_ACCESS_KEY);
-    return $this->encrypt_keys($input, $old_data);
-  }
-
-  /**
-   * Sanitize the secret key provided by the admin.
-   * Encrypt the secret key and store in the db.
-   * 
-   * @since    1.0.0
-   * @param    string    $input    Secret key input by the user.
-   */
-  public function validate_secret_key($input) {
-    $old_data = get_option(AALB_AWS_SECRET_KEY);
-    return $this->encrypt_keys($input, $old_data);
-  }
-
-  /**
-   * Encrypt the keys provided by the user.
-   * If the data already exists in the database, then do not retrieve and print it on the viewer page.
-   * Else encrypt the data and store it in the db.
-   * 
-   * @since    1.0.0
-   * @param    string    $input       Key input by the user to encrypt.
-   * @param    string    $old_data    The data if already stored in the database.
-   */
-  private function encrypt_keys($input, $old_data) {
-    if (!isset($input) || trim($input) === '') {
-      return $input;
-    } elseif ($input == AALB_AWS_SECRET_KEY_MASK){
-      return $old_data;
+    /**
+     * Adds categories to the menu page
+     *
+     * @since 1.0.0
+     */
+    public function register_sidebar_config_page() {
+        // Create new top-level menu
+        add_menu_page( AALB_PROJECT_TITLE, AALB_PROJECT_TITLE, 'manage_options', 'associates-link-builder-about', array( $this, 'about_callback' ), AALB_ICON );
+        add_submenu_page( 'associates-link-builder-about', 'Configure ' . AALB_PROJECT_TITLE . ' About', 'About', 'manage_options', 'associates-link-builder-about', array( $this, 'about_callback' ) );
+        add_submenu_page( 'associates-link-builder-about', 'Configure ' . AALB_PROJECT_TITLE . ' Settings', 'Settings', 'manage_options', 'associates-link-builder-settings', array( $this, 'settings_callback' ) );
+        add_submenu_page( 'associates-link-builder-about', 'Configure ' . AALB_PROJECT_TITLE . ' Templates', 'Templates', 'manage_options', 'associates-link-builder-templates', array( $this, 'templates_callback' ) );
     }
 
-    $output = base64_encode(openssl_encrypt($input, AALB_ENCRYPTION_ALGORITHM, AALB_ENCRYPTION_KEY, 0, AALB_ENCRYPTION_IV));
-    return $output;
-  }
+    /**
+     * Registers credentials to the config group
+     *
+     * @since 1.0.0
+     */
+    public function register_cred_config_group() {
+        // Register Credentials
+        register_setting( AALB_CRED_CONFIG_GROUP, AALB_AWS_ACCESS_KEY, array( $this, 'validate_access_key' ) );
+        register_setting( AALB_CRED_CONFIG_GROUP, AALB_AWS_SECRET_KEY, array( $this, 'validate_secret_key' ) );
+        register_setting( AALB_CRED_CONFIG_GROUP, AALB_DEFAULT_STORE_ID );
+        register_setting( AALB_CRED_CONFIG_GROUP, AALB_DEFAULT_MARKETPLACE );
+        register_setting( AALB_CRED_CONFIG_GROUP, AALB_DEFAULT_TEMPLATE );
+        register_setting( AALB_CRED_CONFIG_GROUP, AALB_STORE_ID_NAMES );
+    }
+
+    /**
+     * Load the about page partial
+     * Callbacks to load the page makes the url to use the slug, making it clean.
+     *
+     * @since 1.0.0
+     */
+    public function about_callback() {
+        require_once( AALB_ABOUT_PHP );
+    }
+
+    /**
+     * Load the settings page partial
+     * The page to save the credentials and default settings of the admin.
+     *
+     * @since 1.0.0
+     */
+    public function settings_callback() {
+        require_once( AALB_CREDENTIALS_PHP );
+    }
+
+    /**
+     * Load the template page partial
+     * The page to make changes to the templates, add new templates or remove existing templates.
+     *
+     * @since 1.0.0
+     */
+    public function templates_callback() {
+        require_once( AALB_TEMPLATE_PHP );
+    }
+
+    /**
+     * Sanitize the access key provided by the admin.
+     * Encrypt the access key and store in the db.
+     *
+     * @since 1.0.0
+     *
+     * @param string $input Access key input by the user.
+     */
+    public function validate_access_key( $input ) {
+        $old_data = get_option( AALB_AWS_ACCESS_KEY );
+
+        return $this->encrypt_keys( $input, $old_data );
+    }
+
+    /**
+     * Sanitize the secret key provided by the admin.
+     * Encrypt the secret key and store in the db.
+     *
+     * @since 1.0.0
+     *
+     * @param string $input Secret key input by the user.
+     */
+    public function validate_secret_key( $input ) {
+        $old_data = get_option( AALB_AWS_SECRET_KEY );
+
+        return $this->encrypt_keys( $input, $old_data );
+    }
+
+    /**
+     * Encrypt the keys provided by the user.
+     * If the data already exists in the database, then do not retrieve and print it on the viewer page.
+     * Else encrypt the data and store it in the db.
+     *
+     * @since 1.0.0
+     *
+     * @param string $input Key input by the user to encrypt.
+     * @param string $old_data The data if already stored in the database.
+     */
+    private function encrypt_keys( $input, $old_data ) {
+        if ( ! isset( $input ) || trim( $input ) === '' ) {
+            return $input;
+        } elseif ( $input == AALB_AWS_SECRET_KEY_MASK ) {
+            return $old_data;
+        }
+
+        $output = base64_encode( openssl_encrypt( $input, AALB_ENCRYPTION_ALGORITHM, AALB_ENCRYPTION_KEY, 0, AALB_ENCRYPTION_IV ) );
+
+        return $output;
+    }
 
 }
 

@@ -23,67 +23,77 @@ and limitations under the License.
  */
 class Aalb_Remote_Loader {
 
-  /**
-   * Load the information by making a GET request.
-   *
-   * @since     1.0.0
-   * @param     string    $url              URL for making a request.
-   * @return    string                      GET response body.
-   */
-  public function load($url) {
-    $response = $this->fetch($url);
-    return $this->verify($response);
-  }
+    /**
+     * Load the information by making a GET request.
+     *
+     * @since 1.0.0
+     *
+     * @param string $url URL for making a request.
+     *
+     * @return string GET response body.
+     */
+    public function load( $url ) {
+        $response = $this->fetch( $url );
 
-  /**
-   * Load the information by making a POST request.
-   *
-   * @since     1.0.0
-   * @param     string    $url     URL for making a request.
-   * @param     string    $body    Body of the POST request.
-   * @return    string             POST response body.
-   */
-  public function post($url, $body) {
-    $response = wp_remote_post($url, array('body' => $body));
-    return $this->verify($response);
-  }
+        return $this->verify( $response );
+    }
 
-  /**
-   * Make a GET request and return the response.
-   *
-   * @since     1.0.0
-   * @param     string    $url              URL for making a request.
-   * @return    string                      GET Response.
-   */
-  private function fetch($url) {
-    return wp_remote_get($url);
-  }
+    /**
+     * Make a GET request and return the response.
+     *
+     * @since 1.0.0
+     *
+     * @param string $url URL for making a request.
+     *
+     * @return string GET Response.
+     */
+    private function fetch( $url ) {
+        return wp_remote_get( $url );
+    }
 
-  /**
-   * Verify the response the throw exceptions accordingly.
-   * Return only the response body.
-   *
-   * @since     1.0.0
-   * @param     string    $response          Whole response including headers,body and footers.
-   * @return    string                       Response body.
-   */
-  private function verify($response) {
-    if(is_wp_error($response)) {
-      $error_message = $response->get_error_message();
-      throw new Exception('HTTP Request failed! ' . $error_message);
+    /**
+     * Verify the response the throw exceptions accordingly.
+     * Return only the response body.
+     *
+     * @since 1.0.0
+     *
+     * @param string $response Whole response including headers,body and footers.
+     *
+     * @return string Response body.
+     */
+    private function verify( $response ) {
+        if ( is_wp_error( $response ) ) {
+            $error_message = $response->get_error_message();
+            throw new Exception( 'HTTP Request failed! ' . $error_message );
+        }
+        $code = $response['response']['code'];
+        if ( $code != HTTP_SUCCESS ) {
+            throw new Exception( $code );
+        }
+        $response_body = wp_remote_retrieve_body( $response );
+        if ( ! isset( $response_body ) || trim( $response_body ) === '' ) {
+            throw new Exception( 'Response body is empty' );
+        }
+
+        return $response_body;
     }
-    $code = $response['response']['code'];
-    if($code != HTTP_SUCCESS) {
-      throw new Exception($code);
+
+    /**
+     * Load the information by making a POST request.
+     *
+     * @since 1.0.0
+     *
+     * @param string $url URL for making a request.
+     * @param string $body Body of the POST request.
+     *
+     * @return string POST response body.
+     */
+    public function post( $url, $body ) {
+        $response = wp_remote_post( $url, array( 'body' => $body ) );
+
+        return $this->verify( $response );
     }
-    $response_body = wp_remote_retrieve_body($response);
-    if(!isset($response_body) || trim($response_body)==='') {
-      throw new Exception('Response body is empty');
-    }
-    
-    return $response_body;
-  } 
- 
+
 }
 
 ?>

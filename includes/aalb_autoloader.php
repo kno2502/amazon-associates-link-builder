@@ -23,47 +23,50 @@ and limitations under the License.
  */
 class Aalb_Autoloader {
 
-  private $dir;
+    private $dir;
 
-  /**
-   * Register the autoloader for a directory in the plugin.
-   *
-   * @since    1.0.0
-   * @param    string    $dir    Path of the directory.
-   */
-  public function __construct($dir = '') {
-    if(!empty($dir)) {
-      $this->dir = $dir;
+    /**
+     * Register the autoloader for a directory in the plugin.
+     *
+     * @since 1.0.0
+     *
+     * @param string $dir Path of the directory.
+     */
+    public function __construct( $dir = '' ) {
+        if ( ! empty( $dir ) ) {
+            $this->dir = $dir;
+        }
+
+        spl_autoload_register( array( $this, 'autoload' ) );
     }
 
-    spl_autoload_register(array($this, 'autoload'));
-  }
+    /**
+     * Make instances of the autoloaders for each directory in the plugin.
+     *
+     * @since 1.0.0
+     */
+    public static function register() {
+        new self( AALB_INCLUDES_DIR );
+        new self( AALB_ADMIN_DIR );
+        new self( AALB_SIDEBAR_DIR );
+        new self( AALB_PAAPI_DIR );
+        new self( AALB_SHORTCODE_DIR );
+        new self( AALB_LIBRARY_DIR );
+    }
 
-  /**
-   * Make instances of the autoloaders for each directory in the plugin.
-   *
-   * @since    1.0.0
-   */
-  public static function register() {
-    new self(AALB_INCLUDES_DIR);
-    new self(AALB_ADMIN_DIR);
-    new self(AALB_SIDEBAR_DIR);
-    new self(AALB_PAAPI_DIR);
-    new self(AALB_SHORTCODE_DIR);
-    new self(AALB_LIBRARY_DIR);
-  }
-
-  /**
-   * Callback function of spl_autoload_register to autoload the class.
-   *
-   * @since    1.0.0
-   * @param    string    $class    Name of the class to autoload.
-   */
-  public function autoload($class) {
-    $path = $this->dir . strtolower($class) . '.php';
-    if(file_exists($path)) {
-      require_once($path);
-    } 
-  }
+    /**
+     * Callback function of spl_autoload_register to autoload the class.
+     *
+     * @since 1.0.0
+     *
+     * @param string $class Name of the class to autoload.
+     */
+    public function autoload( $class ) {
+        $path = $this->dir . strtolower( $class ) . '.php';
+        if ( file_exists( $path ) ) {
+            require_once( $path );
+        }
+    }
 }
+
 ?>

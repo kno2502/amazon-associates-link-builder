@@ -7,7 +7,7 @@
 /*
 Plugin Name: Amazon Associates Link Builder
 Description: Amazon Associates Link Builder is the official free Amazon Associates Program plugin for WordPress. The plugin enables you to search for products in the Amazon catalog, access real-time price and availability information, and easily create links in your posts to products on Amazon.com. You will be able to generate text links, create custom ad units, or take advantage of out-of-the-box widgets that we’ve designed and included with the plugin.
-Version: 1.4.1
+Version: 1.3.7
 Author: Amazon Associates Program
 Author URI: https://affiliate-program.amazon.com/
 License: GPLv2
@@ -26,35 +26,35 @@ and limitations under the License.
 */
 
 if ( ! defined( 'WPINC' ) ) {
-  die;
+    die;
 }
 
-require_once( plugin_dir_path( __FILE__ ) . 'aalb_config.php');
+require_once( plugin_dir_path( __FILE__ ) . 'aalb_config.php' );
 
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'add_action_links' );
-function add_action_links ( $links ) {
- $mylinks = array(
- '<a href="' . admin_url( 'admin.php?page=associates-link-builder-about' ) . '">About</a>',
- '<a href="' . admin_url( 'admin.php?page=associates-link-builder-settings' ) . '">Settings</a>',
- '<a href="' . admin_url( 'admin.php?page=associates-link-builder-templates' ) . '">Templates</a>',
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'add_action_links' );
+function add_action_links( $links ) {
+    $mylinks = array(
+        '<a href="' . admin_url( 'admin.php?page=associates-link-builder-about' ) . '">About</a>',
+        '<a href="' . admin_url( 'admin.php?page=associates-link-builder-settings' ) . '">Settings</a>',
+        '<a href="' . admin_url( 'admin.php?page=associates-link-builder-templates' ) . '">Templates</a>',
+    );
 
- );
-return array_merge( $links, $mylinks );
+    return array_merge( $links, $mylinks );
 }
 
 /**
  * Autoload the files required for the plugin.
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
 function aalb_autoload() {
-  //Load the autoloader for mustache.
-  require_once(MUSTACHE_AUTOLOADER_PHP);
-  Mustache_Autoloader::register();
+    //Load the autoloader for mustache.
+    require_once( MUSTACHE_AUTOLOADER_PHP );
+    Mustache_Autoloader::register();
 
-  //Load the autoloader for plugin files.
-  require_once(AALB_AUTOLOADER);
-  Aalb_Autoloader::register();
+    //Load the autoloader for plugin files.
+    require_once( AALB_AUTOLOADER );
+    Aalb_Autoloader::register();
 }
 
 aalb_autoload();
@@ -62,25 +62,27 @@ aalb_autoload();
 /**
  * The code to run on activation
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
 function aalb_activate() {
-  $aalb_activator = new Aalb_Activator();
-  $aalb_activator->load_templates();
-  $aalb_activator->load_db_keys();
-  $aalb_activator->load_store_ids();
+    $aalb_activator = new Aalb_Activator();
+    #$aalb_activator->checkPHPVersionCompatibility();
+    #$aalb_activator->load_templates();
+    #$aalb_activator->load_db_keys();
+   #$aalb_activator->load_store_ids();
 }
 
 register_activation_hook( __FILE__, 'aalb_activate' );
 
+
 /**
  * The code to run on deactivation
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
 function aalb_deactivate() {
-  $aalb_deactivator = new Aalb_Deactivator();
-  $aalb_deactivator->remove_cache();
+    $aalb_deactivator = new Aalb_Deactivator();
+    $aalb_deactivator->remove_cache();
 }
 
 register_deactivation_hook( __FILE__, 'aalb_deactivate' );
@@ -88,12 +90,12 @@ register_deactivation_hook( __FILE__, 'aalb_deactivate' );
 /**
  * The code to run on uninstalltion
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
 function aalb_uninstall() {
-  $aalb_deactivator = new Aalb_Deactivator();
-  $aalb_deactivator->remove_settings();
-  $aalb_deactivator->remove_uploads_dir();
+    $aalb_deactivator = new Aalb_Deactivator();
+    $aalb_deactivator->remove_settings();
+    $aalb_deactivator->remove_uploads_dir();
 }
 
 register_uninstall_hook( __FILE__, 'aalb_uninstall' );
@@ -101,11 +103,11 @@ register_uninstall_hook( __FILE__, 'aalb_uninstall' );
 /**
  * Execute the plugin
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
 function aalb_execute() {
-  $aalb_manager = new Aalb_Manager();
-  $aalb_manager->execute();
+    $aalb_manager = new Aalb_Manager();
+    $aalb_manager->execute();
 }
 
 aalb_execute();

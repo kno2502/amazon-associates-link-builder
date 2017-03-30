@@ -16,16 +16,17 @@ and limitations under the License.
 
 include 'aalb_ui_common.php';
 
-if (!is_admin())
-  die("Permission Denied");
+if ( ! is_admin() ) {
+    die( "Permission Denied" );
+}
 
-if (!is_ssl()) {
-  //action when page is NOT using SSL
-  if(!get_option(AALB_SHOW_HTTP_WARNING_ONCE)) {
-    // This info message is showed only once.
-    aalb_info_notice('We <b>recommend</b> using HTTPs connection for improved security.');
-    update_option(AALB_SHOW_HTTP_WARNING_ONCE, true);
-  }
+if ( ! is_ssl() ) {
+    //action when page is NOT using SSL
+    if ( ! get_option( AALB_SHOW_HTTP_WARNING_ONCE ) ) {
+        // This info message is showed only once.
+        aalb_info_notice( 'We <b>recommend</b> using HTTPs connection for improved security.' );
+        update_option( AALB_SHOW_HTTP_WARNING_ONCE, true );
+    }
 }
 
 ?>

@@ -21,82 +21,83 @@ and limitations under the License.
  * @package    AmazonAssociatesLinkBuilder
  * @subpackage AmazonAssociatesLinkBuilder/shortcode
  */
-
 class Aalb_Shortcode_Text {
 
-  protected $paapi_helper;
-  protected $template_engine;
-  protected $helper;
-  protected $tracking_api_helper;
-  protected $shortcode_helper;
+    protected $paapi_helper;
+    protected $template_engine;
+    protected $helper;
+    protected $tracking_api_helper;
+    protected $shortcode_helper;
 
-  public function __construct() {
-    $this->template_engine = new Aalb_Template_Engine();
-    $this->paapi_helper = new Aalb_Paapi_Helper();
-    $this->helper = new Aalb_Helper();
-    $this->tracking_api_helper = new Aalb_Tracking_Api_Helper();
-    $this->shortcode_helper = new Aalb_Shortcode_Helper();
-  }
+    public function __construct() {
+        $this->template_engine = new Aalb_Template_Engine();
+        $this->paapi_helper = new Aalb_Paapi_Helper();
+        $this->helper = new Aalb_Helper();
+        $this->tracking_api_helper = new Aalb_Tracking_Api_Helper();
+        $this->shortcode_helper = new Aalb_Shortcode_Helper();
+    }
 
-  /**
-   * Add basic styles
-   *
-   * @since    1.4
-   */
-  public function enqueue_styles() {
-    wp_enqueue_style('aalb_basics_css', AALB_BASICS_CSS );
-  }
+    /**
+     * Add basic styles
+     *
+     * @since 1.4
+     */
+    public function enqueue_styles() {
+        wp_enqueue_style( 'aalb_basics_css', AALB_BASICS_CSS );
+    }
 
-  /**
-   * The function responsible for rendering the shortcode.
-   * Makes a GET request and calls the render_xml to render the response.
-   *
-   * @since     1.4
-   * @param     array    $atts    Shortcode attribute and values.
-   * @return    HTML              Rendered html to display.
-   */
-  public function render($atts) {
-    try {
-      $shortcode_attributes = $this->get_shortcode_attributes($atts);
+    /**
+     * The function responsible for rendering the shortcode.
+     * Makes a GET request and calls the render_xml to render the response.
+     *
+     * @since 1.4
+     *
+     * @param array $atts Shortcode attribute and values.
+     *
+     * @return HTML Rendered html to display.
+     */
 
-      $validated_link_id = $this->shortcode_helper->get_validated_link_id($shortcode_attributes['link_id']);
-      $validated_marketplace = $this->shortcode_helper->get_validated_marketplace($shortcode_attributes['marketplace']);
-      $validated_asins = $this->shortcode_helper->get_validated_asins($shortcode_attributes['asin']);
-      $validated_template = $this->shortcode_helper->get_validated_template($shortcode_attributes['template']);
-      $validated_store_id = $this->shortcode_helper->get_validated_store_id($shortcode_attributes['store']);
-      $link_text = $shortcode_attributes['text'];
-      
-      $marketplace = $this->shortcode_helper->get_marketplace_endpoint($validated_marketplace);
-      $url = $this->paapi_helper->get_item_lookup_url($validated_asins, $marketplace, $validated_store_id);
-      $asins = $this->shortcode_helper->format_asins($validated_asins);
-      $products_key = $this->helper->build_products_cache_key($asins, $marketplace, $validated_store_id);
-      $products_template_key = $this->helper->build_template_cache_key($asins, $marketplace, $validated_store_id, $validated_template );
-      
-      $this->shortcode_helper->enqueue_template_styles($validated_template);
-      return str_replace(array('[[UNIQUE_ID]]', '[[Amazon_Link_Text]]'), array(str_replace('.','-',$products_template_key), $link_text), $this->template_engine->render($products_template_key, $products_key, $validated_template, $url, $validated_marketplace));
-    } catch (Exception $e) {
-        error_log($this->paapi_helper->get_error_message($e->getMessage()));
-    }    
-  }
+    public function render( $atts ) {
+        try {
+            $shortcode_attributes = $this->get_shortcode_attributes( $atts );
 
-  /**
-   * Returns default shortcode attributes if not mentioned
-   *
-   * @since     1.4
-   * @param     array    $atts    Shortcode attributes.
-   * @return    array             Default shortcode attributes if not mentioned.
-   */
-  private function get_shortcode_attributes($atts) {
-    $shortcode_attributes=shortcode_atts(array(
-      'asin' => null,
-      'marketplace' => get_option(AALB_DEFAULT_MARKETPLACE),
-      'store' => get_option(AALB_DEFAULT_STORE_ID),
-      'template' => get_option(AALB_DEFAULT_TEMPLATE),
-      'link_id' => null,
-      'text' => null
-    ),$atts);
-    return $shortcode_attributes;
-  }
+            $validated_link_id = $this->shortcode_helper->get_validated_link_id( $shortcode_attributes['link_id'] );
+            $validated_marketplace = $this->shortcode_helper->get_validated_marketplace( $shortcode_attributes['marketplace'] );
+            $validated_asins = $this->shortcode_helper->get_validated_asins( $shortcode_attributes['asin'] );
+            $validated_template = $this->shortcode_helper->get_validated_template( $shortcode_attributes['template'] );
+            $validated_store_id = $this->shortcode_helper->get_validated_store_id( $shortcode_attributes['store'] );
+            $link_text = $shortcode_attributes['text'];
+
+            $marketplace = $this->shortcode_helper->get_marketplace_endpoint( $validated_marketplace );
+            $url = $this->paapi_helper->get_item_lookup_url( $validated_asins, $marketplace, $validated_store_id );
+            $asins = $this->shortcode_helper->format_asins( $validated_asins );
+            $products_key = $this->helper->build_products_cache_key( $asins, $marketplace, $validated_store_id );
+            $products_template_key = $this->helper->build_template_cache_key( $asins, $marketplace, $validated_store_id, $validated_template );
+
+            $this->shortcode_helper->enqueue_template_styles( $validated_template );
+
+            return str_replace( array( '[[UNIQUE_ID]]', '[[Amazon_Link_Text]]' ), array( str_replace( '.', '-', $products_template_key ), $link_text ), $this->template_engine->render( $products_template_key, $products_key, $validated_template, $url, $validated_marketplace ) );
+        } catch ( Exception $e ) {
+            error_log( $this->paapi_helper->get_error_message( $e->getMessage() ) );
+        }
+    }
+
+    /**
+     * Returns default shortcode attributes if not mentioned
+     *w
+     * @since 1.4
+     *
+     * @param array $atts Shortcode attributes.
+     *
+     * @return array  Default shortcode attributes if not mentioned.
+     */
+    private function get_shortcode_attributes( $atts ) {
+        $shortcode_attributes = shortcode_atts( array(
+            'asin' => null, 'marketplace' => get_option( AALB_DEFAULT_MARKETPLACE ), 'store' => get_option( AALB_DEFAULT_STORE_ID ), 'template' => get_option( AALB_DEFAULT_TEMPLATE ), 'link_id' => null, 'text' => null
+        ), $atts );
+
+        return $shortcode_attributes;
+    }
 }
 
 ?>

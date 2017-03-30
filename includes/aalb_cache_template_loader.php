@@ -23,27 +23,30 @@ and limitations under the License.
  */
 class Aalb_Cache_Template_Loader {
 
-  /**
-   * Get the html of the display unit from the cache
-   *
-   * @since     1.0.0
-   * @param     string    $key    Unique Key for the display unit in cache.
-   * @return    string            HTML of the display unit.
-   */
-  public function get_display_unit($key) {
-    return get_transient($key);
-  }
+    /**
+     * Get the html of the display unit from the cache
+     *
+     * @since 1.0.0
+     *
+     * @param string $key Unique Key for the display unit in cache.
+     *
+     * @return string  HTML of the display unit.
+     */
+    public function get_display_unit( $key ) {
+        return get_transient( $key );
+    }
 
-  /**
-   * Get the product information.
-   *
-   * @since    1.0.0
-   * @param    string    $key             Unique identification of the product.
-   * @param    string    $display_unit    HTML of the display unit to save in the cache.
-   */
-  public function save_display_unit($key, $display_unit) {
-    set_transient($key, $display_unit, AALB_CACHE_FOR_ASIN_ADUNIT_TTL);
-  }
+    /**
+     * Get the product information.
+     *
+     * @since 1.0.0
+     *
+     * @param string $key Unique identification of the product.
+     * @param string $display_unit HTML of the display unit to save in the cache.
+     */
+    public function save_display_unit( $key, $display_unit ) {
+        set_transient( $key, $display_unit, AALB_CACHE_FOR_ASIN_ADUNIT_TTL );
+    }
 
 }
 

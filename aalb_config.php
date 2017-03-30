@@ -13,119 +13,124 @@ and limitations under the License.
 */
 
 //version
-define('AALB_PLUGIN_CURRENT_VERSION','1.4.1');
+define( 'AALB_PLUGIN_CURRENT_VERSION', '1.3.7' );
 
+//PHP version compatible for AALB plugin
+define('AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION','5.3.0');
+
+//Plugin Name
+define('AALB_PLUGIN_NAME','Amazon Associates Link Builder');
 //paths
-define('AALB_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
-define('AALB_PLUGIN_URL', plugin_dir_url( __FILE__ ));
+define( 'AALB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'AALB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 //Project Title
-define('AALB_PROJECT_TITLE', 'Associates Link Builder');
+define( 'AALB_PROJECT_TITLE', 'Associates Link Builder' );
 
 /**
  * File paths
  */
 
 //Library
-define('MUSTACHE_AUTOLOADER_PHP', AALB_PLUGIN_DIR .'lib/php/Mustache/Autoloader.php');
-define('AALB_PAAPI_HELPER_PHP', AALB_PLUGIN_DIR .'lib/php/Paapi/aalb_paapi_helper.php');
-define('AALB_VALIDATION_HELPER_PHP', AALB_PLUGIN_DIR .'lib/php/aalb_validation_helper.php');
-define('AALB_XML_HELPER_PHP', AALB_PLUGIN_DIR .'lib/php/aalb_xml_helper.php');
-define('AALB_TRACKING_API_HELPER_PHP', AALB_PLUGIN_DIR .'lib/php/aalb_tracking_api_helper.php');
+define( 'MUSTACHE_AUTOLOADER_PHP', AALB_PLUGIN_DIR . 'lib/php/Mustache/Autoloader.php' );
+define( 'AALB_PAAPI_HELPER_PHP', AALB_PLUGIN_DIR . 'lib/php/Paapi/aalb_paapi_helper.php' );
+define( 'AALB_VALIDATION_HELPER_PHP', AALB_PLUGIN_DIR . 'lib/php/aalb_validation_helper.php' );
+define( 'AALB_XML_HELPER_PHP', AALB_PLUGIN_DIR . 'lib/php/aalb_xml_helper.php' );
+define( 'AALB_TRACKING_API_HELPER_PHP', AALB_PLUGIN_DIR . 'lib/php/aalb_tracking_api_helper.php' );
 
 //Shortcode
-define('AALB_SHORTCODE_PHP', AALB_PLUGIN_DIR .'shortcode/aalb_shortcode.php');
-define('AALB_SHORTCODE_TEXT_PHP', AALB_PLUGIN_DIR .'shortcode/aalb_shortcode_text.php');
-define('AALB_SHORTCODE_LOADER', AALB_PLUGIN_DIR . 'shortcode/aalb_shortcode_loader.php');
-define('AALB_SHORTCODE_HELPER', AALB_PLUGIN_DIR . 'shortcode/aalb_shortcode_helper.php');
+define( 'AALB_SHORTCODE_PHP', AALB_PLUGIN_DIR . 'shortcode/aalb_shortcode.php' );
+define( 'AALB_SHORTCODE_TEXT_PHP', AALB_PLUGIN_DIR . 'shortcode/aalb_shortcode_text.php' );
+define( 'AALB_SHORTCODE_LOADER', AALB_PLUGIN_DIR . 'shortcode/aalb_shortcode_loader.php' );
+define( 'AALB_SHORTCODE_HELPER', AALB_PLUGIN_DIR . 'shortcode/aalb_shortcode_helper.php' );
 
 //Shortcodes supported
-define('AALB_SHORTCODE_AMAZON_LINK', 'amazon_link');
-define('AALB_SHORTCODE_AMAZON_TEXT', 'amazon_textlink');
+define( 'AALB_SHORTCODE_AMAZON_LINK', 'amazon_link' );
+define( 'AALB_SHORTCODE_AMAZON_TEXT', 'amazon_textlink' );
 
 //Admin
-define('AALB_SIDEBAR_PHP', AALB_PLUGIN_DIR .'admin/sidebar/aalb_sidebar.php');
-define('AALB_ADMIN_PHP', AALB_PLUGIN_DIR .'admin/aalb_admin.php');
-define('AALB_ABOUT_PHP', AALB_PLUGIN_DIR . 'admin/sidebar/partials/aalb_about.php');
-define('AALB_CREDENTIALS_PHP', AALB_PLUGIN_DIR . 'admin/sidebar/partials/aalb_credentials.php');
-define('AALB_TEMPLATE_PHP', AALB_PLUGIN_DIR . 'admin/sidebar/partials/aalb_templates.php');
+define( 'AALB_SIDEBAR_PHP', AALB_PLUGIN_DIR . 'admin/sidebar/aalb_sidebar.php' );
+define( 'AALB_ADMIN_PHP', AALB_PLUGIN_DIR . 'admin/aalb_admin.php' );
+define( 'AALB_ABOUT_PHP', AALB_PLUGIN_DIR . 'admin/sidebar/partials/aalb_about.php' );
+define( 'AALB_CREDENTIALS_PHP', AALB_PLUGIN_DIR . 'admin/sidebar/partials/aalb_credentials.php' );
+define( 'AALB_TEMPLATE_PHP', AALB_PLUGIN_DIR . 'admin/sidebar/partials/aalb_templates.php' );
 
 //Directories
-define('AALB_TEMPLATE_DIR', AALB_PLUGIN_DIR . 'template/');
-define('AALB_ADMIN_DIR', AALB_PLUGIN_DIR . 'admin/');
-define('AALB_SIDEBAR_DIR', AALB_PLUGIN_DIR . 'admin/sidebar/');
-define('AALB_INCLUDES_DIR', AALB_PLUGIN_DIR . 'includes/');
-define('AALB_PAAPI_DIR', AALB_PLUGIN_DIR . 'lib/php/Paapi/');
-define('AALB_SHORTCODE_DIR', AALB_PLUGIN_DIR . 'shortcode/');
-define('AALB_LIBRARY_DIR', AALB_PLUGIN_DIR . 'lib/php/');
+define( 'AALB_TEMPLATE_DIR', AALB_PLUGIN_DIR . 'template/' );
+define( 'AALB_ADMIN_DIR', AALB_PLUGIN_DIR . 'admin/' );
+define( 'AALB_SIDEBAR_DIR', AALB_PLUGIN_DIR . 'admin/sidebar/' );
+define( 'AALB_INCLUDES_DIR', AALB_PLUGIN_DIR . 'includes/' );
+define( 'AALB_PAAPI_DIR', AALB_PLUGIN_DIR . 'lib/php/Paapi/' );
+define( 'AALB_SHORTCODE_DIR', AALB_PLUGIN_DIR . 'shortcode/' );
+define( 'AALB_LIBRARY_DIR', AALB_PLUGIN_DIR . 'lib/php/' );
 
 //Includes
-define('AALB_ACTIVATOR_PHP', AALB_PLUGIN_DIR . 'includes/aalb_activator.php');
-define('AALB_DEACTIVATOR_PHP', AALB_PLUGIN_DIR . 'includes/aalb_deactivator.php');
-define('AALB_MANAGER', AALB_PLUGIN_DIR . 'includes/aalb_manager.php');
-define('AALB_HOOK_LOADER', AALB_PLUGIN_DIR . 'includes/aalb_hook_loader.php');
-define('AALB_CACHE_LOADER', AALB_PLUGIN_DIR . 'includes/aalb_cache_loader.php');
-define('AALB_REMOTE_LOADER', AALB_PLUGIN_DIR . 'includes/aalb_remote_loader.php');
-define('AALB_AUTOLOADER', AALB_PLUGIN_DIR . 'includes/aalb_autoloader.php');
+define( 'AALB_ACTIVATOR_PHP', AALB_PLUGIN_DIR . 'includes/aalb_activator.php' );
+define( 'AALB_DEACTIVATOR_PHP', AALB_PLUGIN_DIR . 'includes/aalb_deactivator.php' );
+define( 'AALB_MANAGER', AALB_PLUGIN_DIR . 'includes/aalb_manager.php' );
+define( 'AALB_HOOK_LOADER', AALB_PLUGIN_DIR . 'includes/aalb_hook_loader.php' );
+define( 'AALB_CACHE_LOADER', AALB_PLUGIN_DIR . 'includes/aalb_cache_loader.php' );
+define( 'AALB_REMOTE_LOADER', AALB_PLUGIN_DIR . 'includes/aalb_remote_loader.php' );
+define( 'AALB_AUTOLOADER', AALB_PLUGIN_DIR . 'includes/aalb_autoloader.php' );
 
 //Templates Directory
-define('AALB_TEMPLATE_URL', AALB_PLUGIN_URL . 'template/');
-define('AALB_TEMPLATE_UPLOADS_FOLDER', 'amazon-associates-link-builder/template/');
+define( 'AALB_TEMPLATE_URL', AALB_PLUGIN_URL . 'template/' );
+define( 'AALB_TEMPLATE_UPLOADS_FOLDER', 'amazon-associates-link-builder/template/' );
 
 //Partials
-define('AALB_META_BOX_PARTIAL', AALB_PLUGIN_DIR . 'admin/partials/aalb_meta_box.php');
+define( 'AALB_META_BOX_PARTIAL', AALB_PLUGIN_DIR . 'admin/partials/aalb_meta_box.php' );
 
 //Proxy
-define('AALB_PROXY_URL', AALB_PLUGIN_URL . 'lib/php/Paapi/aalb_paapi_proxy.php');
+define( 'AALB_PROXY_URL', AALB_PLUGIN_URL . 'lib/php/Paapi/aalb_paapi_proxy.php' );
 
 //Tracking API Endpoint
-define('AALB_TRACKING_API_ENDPOINT', 'https://rx5hfxbp45.execute-api.us-east-1.amazonaws.com/aalb/');
-define('AALB_TRACKING_API_SOURCE_TOOL_QUERY_PARAM', 'source-tool=aalb');
-define('AALB_TRACKING_API_ACCESS_KEY_QUERY_PARAM', 'aws-access-key-id=');
+define( 'AALB_TRACKING_API_ENDPOINT', 'https://rx5hfxbp45.execute-api.us-east-1.amazonaws.com/aalb/' );
+define( 'AALB_TRACKING_API_SOURCE_TOOL_QUERY_PARAM', 'source-tool=aalb' );
+define( 'AALB_TRACKING_API_ACCESS_KEY_QUERY_PARAM', 'aws-access-key-id=' );
 
 //Wordpress Pages
-define('WP_POST', 'post.php');
-define('WP_POST_NEW', 'post-new.php');
+define( 'WP_POST', 'post.php' );
+define( 'WP_POST_NEW', 'post-new.php' );
 
 /**
  * Styles and scripts
  */
 
 //Local Styles
-define('AALB_ADMIN_CSS', AALB_PLUGIN_URL . 'admin/css/aalb_admin.css');
-define('AALB_BASICS_CSS', AALB_PLUGIN_URL . 'css/aalb_basics.css');
+define( 'AALB_ADMIN_CSS', AALB_PLUGIN_URL . 'admin/css/aalb_admin.css' );
+define( 'AALB_BASICS_CSS', AALB_PLUGIN_URL . 'css/aalb_basics.css' );
 
 //Local Scripts
-define('AALB_SHA2_JS', AALB_PLUGIN_URL . 'lib/js/jssha2/sha2.js');
-define('AALB_ADMIN_JS', AALB_PLUGIN_URL . 'admin/js/aalb_admin.js');
-define('AALB_ADMIN_ITEM_SEARCH_ITEMS_URL', AALB_PLUGIN_URL . 'aalb_admin_item_search_items.hbs');
-define('AALB_TEMPLATE_JS', AALB_PLUGIN_URL . 'admin/sidebar/js/aalb_template.js');
-define('AALB_CREDENTIALS_JS', AALB_PLUGIN_URL . 'admin/sidebar/js/aalb_credentials.js');
+define( 'AALB_SHA2_JS', AALB_PLUGIN_URL . 'lib/js/jssha2/sha2.js' );
+define( 'AALB_ADMIN_JS', AALB_PLUGIN_URL . 'admin/js/aalb_admin.js' );
+define( 'AALB_ADMIN_ITEM_SEARCH_ITEMS_URL', AALB_PLUGIN_URL . 'aalb_admin_item_search_items.hbs' );
+define( 'AALB_TEMPLATE_JS', AALB_PLUGIN_URL . 'admin/sidebar/js/aalb_template.js' );
+define( 'AALB_CREDENTIALS_JS', AALB_PLUGIN_URL . 'admin/sidebar/js/aalb_credentials.js' );
 
 //External Scripts
-define('HANDLEBARS_JS', 'https://d8fd03967nrad.cloudfront.net/libs/handlebars.js/4.0.5/handlebars.min.js');
-define('CODEMIRROR_JS', 'https://d8fd03967nrad.cloudfront.net/libs/codemirror/5.13.2/codemirror.min.js');
-define('CODEMIRROR_MODE_XML_JS', 'https://d8fd03967nrad.cloudfront.net/libs/codemirror/5.13.2/mode/xml/xml.min.js');
-define('CODEMIRROR_MODE_CSS_JS', 'https://d8fd03967nrad.cloudfront.net/libs/codemirror/5.13.2/mode/css/css.min.js');
+define( 'HANDLEBARS_JS', 'https://d8fd03967nrad.cloudfront.net/libs/handlebars.js/4.0.5/handlebars.min.js' );
+define( 'CODEMIRROR_JS', 'https://d8fd03967nrad.cloudfront.net/libs/codemirror/5.13.2/codemirror.min.js' );
+define( 'CODEMIRROR_MODE_XML_JS', 'https://d8fd03967nrad.cloudfront.net/libs/codemirror/5.13.2/mode/xml/xml.min.js' );
+define( 'CODEMIRROR_MODE_CSS_JS', 'https://d8fd03967nrad.cloudfront.net/libs/codemirror/5.13.2/mode/css/css.min.js' );
 
 //External Styles
-define('FONT_AWESOME_CSS', 'https://d8fd03967nrad.cloudfront.net/libs/font-awesome/4.5.0/css/font-awesome.min.css');
-define('CODEMIRROR_CSS', 'https://d8fd03967nrad.cloudfront.net/libs/codemirror/5.13.2/codemirror.min.css');
+define( 'FONT_AWESOME_CSS', 'https://d8fd03967nrad.cloudfront.net/libs/font-awesome/4.5.0/css/font-awesome.min.css' );
+define( 'CODEMIRROR_CSS', 'https://d8fd03967nrad.cloudfront.net/libs/codemirror/5.13.2/codemirror.min.css' );
 
 /**
  * Icons
  */
-define('AALB_SECURE_HOSTNAME', 'https://images-na.ssl-images-amazon.com/');
-define('AALB_NORMAL_HOSTNAME', 'http://g-ecx.images-amazon.com/');
-define('AALB_ICON_LOCATION', 'images/G/01/PAAPI/AmazonAssociatesLinkBuilder/icon-2._V276841048_.png');
-define('AALB_ADMIN_ICON_LOCATION', 'images/G/01/PAAPI/AmazonAssociatesLinkBuilder/icon._V278877987_.png');
+define( 'AALB_SECURE_HOSTNAME', 'https://images-na.ssl-images-amazon.com/' );
+define( 'AALB_NORMAL_HOSTNAME', 'http://g-ecx.images-amazon.com/' );
+define( 'AALB_ICON_LOCATION', 'images/G/01/PAAPI/AmazonAssociatesLinkBuilder/icon-2._V276841048_.png' );
+define( 'AALB_ADMIN_ICON_LOCATION', 'images/G/01/PAAPI/AmazonAssociatesLinkBuilder/icon._V278877987_.png' );
 //AALB_ICON URL is generated by wordpress at run-time by checking the remotehost's encryption. Image source has different URLs depending upon the encryption used.
-if(is_ssl()){
-  define('AALB_ICON', AALB_SECURE_HOSTNAME . AALB_ICON_LOCATION);
+if ( is_ssl() ) {
+    define( 'AALB_ICON', AALB_SECURE_HOSTNAME . AALB_ICON_LOCATION );
 } else {
-  define('AALB_ICON', AALB_NORMAL_HOSTNAME . AALB_ICON_LOCATION);
+    define( 'AALB_ICON', AALB_NORMAL_HOSTNAME . AALB_ICON_LOCATION );
 }
-define('AALB_ADMIN_ICON', AALB_SECURE_HOSTNAME . AALB_ADMIN_ICON_LOCATION);
+define( 'AALB_ADMIN_ICON', AALB_SECURE_HOSTNAME . AALB_ADMIN_ICON_LOCATION );
 
 
 /**
@@ -133,71 +138,71 @@ define('AALB_ADMIN_ICON', AALB_SECURE_HOSTNAME . AALB_ADMIN_ICON_LOCATION);
  */
 
 //Search result items. Paapi returns 10 items by default.
-define('AALB_MAX_SEARCH_RESULT_ITEMS', 9);
+define( 'AALB_MAX_SEARCH_RESULT_ITEMS', 9 );
 //List of Default Amazon Template names
-define('AALB_AMAZON_TEMPLATE_NAMES', 'ProductCarousel,ProductGrid,ProductAd,PriceLink,ProductLink');
+define( 'AALB_AMAZON_TEMPLATE_NAMES', 'ProductCarousel,ProductGrid,ProductAd,PriceLink,ProductLink' );
 
 //Database keys
-define('AALB_TEMPLATE_NAMES', 'aalb_template_names');
-define('AALB_MARKETPLACE_NAMES', 'aalb_marketplace_names');
-define('AALB_DEFAULT_TEMPLATE', 'aalb_default_template');
-define('AALB_DEFAULT_STORE_ID', 'aalb_default_store_id');
-define('AALB_DEFAULT_MARKETPLACE', 'aalb_default_marketplace');
-define('AALB_AWS_ACCESS_KEY', 'aalb_aws_access_key');
-define('AALB_AWS_SECRET_KEY', 'aalb_aws_secret_key');
-define('AALB_CRED_CONFIG_GROUP', 'aalb_cred_config_group');
-define('AALB_STORE_ID_NAMES', 'aalb_store_id_names');
-define('AALB_SHOW_HTTP_WARNING_ONCE', 'aalb_show_http_warning_once');
-define('AALB_PLUGIN_VERSION', 'aalb_plugin_version');
+define( 'AALB_TEMPLATE_NAMES', 'aalb_template_names' );
+define( 'AALB_MARKETPLACE_NAMES', 'aalb_marketplace_names' );
+define( 'AALB_DEFAULT_TEMPLATE', 'aalb_default_template' );
+define( 'AALB_DEFAULT_STORE_ID', 'aalb_default_store_id' );
+define( 'AALB_DEFAULT_MARKETPLACE', 'aalb_default_marketplace' );
+define( 'AALB_AWS_ACCESS_KEY', 'aalb_aws_access_key' );
+define( 'AALB_AWS_SECRET_KEY', 'aalb_aws_secret_key' );
+define( 'AALB_CRED_CONFIG_GROUP', 'aalb_cred_config_group' );
+define( 'AALB_STORE_ID_NAMES', 'aalb_store_id_names' );
+define( 'AALB_SHOW_HTTP_WARNING_ONCE', 'aalb_show_http_warning_once' );
+define( 'AALB_PLUGIN_VERSION', 'aalb_plugin_version' );
 
 //Masking constant
-define('AALB_AWS_SECRET_KEY_MASK', '••••••••••••••••••••••••••••••••••••••••');
+define( 'AALB_AWS_SECRET_KEY_MASK', '••••••••••••••••••••••••••••••••••••••••' );
 
 
 //Defaults in case DB doesn't contain them.
-define('AALB_DEFAULT_TEMPLATE_NAME', 'ProductCarousel');
-define('AALB_DEFAULT_MARKETPLACE_NAME', 'US');
-define('AALB_DEFAULT_STORE_ID_NAME', 'not-specified');
+define( 'AALB_DEFAULT_TEMPLATE_NAME', 'ProductCarousel' );
+define( 'AALB_DEFAULT_MARKETPLACE_NAME', 'US' );
+define( 'AALB_DEFAULT_STORE_ID_NAME', 'not-specified' );
 
 //Marketplaces
-define('MARKETPLACES_URL', 'https://webservices.amazon.com/scratchpad/assets/config/config.json');
+define( 'MARKETPLACES_URL', 'https://webservices.amazon.com/scratchpad/assets/config/config.json' );
 
 //PAAPI
-define('PAAPI_URI', '/onca/xml');
-define('PAAPI_TRANSFER_PROTOCOL', 'https://');
-define('PAAPI_URL_QUERY_SEPARATOR', '?');
-define('PAAPI_SERVICE', 'AWSECommerceService');
-define('PAAPI_VERSION', '2013-08-01');
-define('PAAPI_URL_REGEX', '^https:\\/\\/(.*)\\/onca\\/xml\\?(.*)$');
+define( 'PAAPI_URI', '/onca/xml' );
+define( 'PAAPI_TRANSFER_PROTOCOL', 'https://' );
+define( 'PAAPI_URL_QUERY_SEPARATOR', '?' );
+define( 'PAAPI_SERVICE', 'AWSECommerceService' );
+define( 'PAAPI_VERSION', '2013-08-01' );
+define( 'PAAPI_URL_REGEX', '^https:\\/\\/(.*)\\/onca\\/xml\\?(.*)$' );
 
 //HTTP Status Codes
-define('HTTP_SUCCESS', '200');
-define('HTTP_SUCCESS_MESSAGE', '<h4>Request Successful</h4>');
-define('HTTP_BAD_REQUEST', '400');
-define('HTTP_BAD_REQUEST_MESSAGE', '<h4>Your AWS Access Key Id is not registered as an Amazon Associate. Please verify that you are <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingAssociate.html" target="_blank">registered as an Amazon Associate</a> in respective locale and you added the email address registered for the Product Advertising API as a <a href="https://affiliate-program.amazon.com/help/node/topic/202049770" target="_blank">secondary email address in your Amazon Associates account</a>.</h4>');
-define('HTTP_REQUEST_URI_TOO_LONG', '414');
-define('HTTP_REQUEST_URI_TOO_LONG_MESSAGE', '<h4>Your AccessKey Id is not registered for Product Advertising API. Please sign up for Product Advertising API by <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingDev.html" target="_blank">following these guidelines</a>.</h4>');
-define('HTTP_FORBIDDEN', '403');
-define('HTTP_FORBIDDEN_MESSAGE', '<h4>Your AccessKey Id is not registered for Product Advertising API. Please sign up for Product Advertising API by <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingDev.html" target="_blank">following these guidelines</a>.</h4>');
-define('HTTP_INTERNAL_SERVER_ERROR', '500');
-define('HTTP_INTERNAL_SERVER_ERROR_MESSAGE', '<h4>Internal server error</h4>');
-define('HTTP_THROTTLE', '503');
-define('HTTP_THROTTLE_MESSAGE', '<h4>You are submitting requests too quickly. Please retry your requests at a slower rate. For more information, see <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/TroubleshootingApplications.html#efficiency-guidelines" target="_blank">Efficiency Guidelines</a>.</h4>');
+define( 'HTTP_SUCCESS', '200' );
+define( 'HTTP_SUCCESS_MESSAGE', '<h4>Request Successful</h4>' );
+define( 'HTTP_BAD_REQUEST', '400' );
+define( 'HTTP_BAD_REQUEST_MESSAGE', '<h4>Your AWS Access Key Id is not registered as an Amazon Associate. Please verify that you are <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingAssociate.html" target="_blank">registered as an Amazon Associate</a> in respective locale and you added the email address registered for the Product Advertising API as a <a href="https://affiliate-program.amazon.com/help/node/topic/202049770" target="_blank">secondary email address in your Amazon Associates account</a>.</h4>' );
+define( 'HTTP_REQUEST_URI_TOO_LONG', '414' );
+define( 'HTTP_REQUEST_URI_TOO_LONG_MESSAGE', '<h4>Your AccessKey Id is not registered for Product Advertising API. Please sign up for Product Advertising API by <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingDev.html" target="_blank">following these guidelines</a>.</h4>' );
+define( 'HTTP_FORBIDDEN', '403' );
+define( 'HTTP_FORBIDDEN_MESSAGE', '<h4>Your AccessKey Id is not registered for Product Advertising API. Please sign up for Product Advertising API by <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingDev.html" target="_blank">following these guidelines</a>.</h4>' );
+define( 'HTTP_INTERNAL_SERVER_ERROR', '500' );
+define( 'HTTP_INTERNAL_SERVER_ERROR_MESSAGE', '<h4>Internal server error</h4>' );
+define( 'HTTP_THROTTLE', '503' );
+define( 'HTTP_THROTTLE_MESSAGE', '<h4>You are submitting requests too quickly. Please retry your requests at a slower rate. For more information, see <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/TroubleshootingApplications.html#efficiency-guidelines" target="_blank">Efficiency Guidelines</a>.</h4>' );
 
 /**
  * Cipher
  */
 //Make a key of length 32 byte.
 //Specify your unique encryption key here.
-define('AALB_ENCRYPTION_KEY', 'put your unique phrase here');
+define( 'AALB_ENCRYPTION_KEY', 'put your unique phrase here' );
 //Default Encryption Key. Do NOT change this.
-define('AALB_ENCRYPTION_KEY_DEFAULT', 'put your unique phrase here');
+define( 'AALB_ENCRYPTION_KEY_DEFAULT', 'put your unique phrase here' );
 
 //Make IV of 16 bytes
-define('AALB_ENCRYPTION_IV', '0123456789ABCDEF');
+define( 'AALB_ENCRYPTION_IV', '0123456789ABCDEF' );
 
 //Algorithm to use
-define('AALB_ENCRYPTION_ALGORITHM', 'aes-256-cbc');
+define( 'AALB_ENCRYPTION_ALGORITHM', 'aes-256-cbc' );
 
 //Caching Requirements
 //====================
@@ -207,25 +212,25 @@ define('AALB_ENCRYPTION_ALGORITHM', 'aes-256-cbc');
 //Note that the plugin uses a two tier cache. It caches the ASINs as well as the rendered templates.
 //At any given time the sum of ASIN cache TTL and Rendered AdUnit cache TTL should be less than or equal to one hour.
 //The below configuration is compliant with the License Agreement. Any modification may result in the violation of the license agreement.
-define('AALB_CACHE_FOR_ASIN_RAWINFO_TTL', 30*MINUTE_IN_SECONDS);
-define('AALB_CACHE_FOR_ASIN_ADUNIT_TTL', 30*MINUTE_IN_SECONDS);
+define( 'AALB_CACHE_FOR_ASIN_RAWINFO_TTL', 30 * MINUTE_IN_SECONDS );
+define( 'AALB_CACHE_FOR_ASIN_ADUNIT_TTL', 30 * MINUTE_IN_SECONDS );
 
 //Translation keys
-define('CHECK_ON_AMAZON','Check on Amazon');
-define('OUT_OF_STOCK','Out of stock');
+define( 'CHECK_ON_AMAZON', 'Check on Amazon' );
+define( 'OUT_OF_STOCK', 'Out of stock' );
 
 //Marketplaces supported for translations
-define('US','US');
-define('FR','FR');
-define('IT','IT');
-define('DE','DE');
-define('ES','ES');
-define('BR','BR');
-define('CA','CA');
-define('CN','CN');
-define('IN','IN');
-define('JP','JP');
-define('MX','MX');
-define('UK','UK');
+define( 'US', 'US' );
+define( 'FR', 'FR' );
+define( 'IT', 'IT' );
+define( 'DE', 'DE' );
+define( 'ES', 'ES' );
+define( 'BR', 'BR' );
+define( 'CA', 'CA' );
+define( 'CN', 'CN' );
+define( 'IN', 'IN' );
+define( 'JP', 'JP' );
+define( 'MX', 'MX' );
+define( 'UK', 'UK' );
 
 ?>

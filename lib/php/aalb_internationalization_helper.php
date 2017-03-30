@@ -21,64 +21,68 @@ and limitations under the License.
  */
 class Aalb_Internationalization_Helper {
 
-  /**
-   * Array that defines the translations for various marketplaces
-   */
-  protected $translation_array;
+    /**
+     * Array that defines the translations for various marketplaces
+     */
+    protected $translation_array;
 
-  public function __construct() {
-    $this->translation_array = array(
-                                  CHECK_ON_AMAZON => array(
-                                                          US => "Check on Amazon",
-                                                          FR => "Consulter sur Amazon.fr",
-                                                          IT => "Vedi su Amazon.it",
-                                                          DE => "Hier auf Amazon.de",
-                                                          ES => "Consultar en Amazon.es",
-                                                          BR => "Check on Amazon",
-                                                          CA => "Check on Amazon",
-                                                          CN => "Check on Amazon",
-                                                          IN => "Check on Amazon",
-                                                          JP => "Check on Amazon",
-                                                          MX => "Check on Amazon",
-                                                          UK => "Check on Amazon",
-                                                          ),
-                                  OUT_OF_STOCK => array(
-                                                          US => "Out of stock",
-                                                          FR => "Rupture de stock",
-                                                          IT => "Non disponibile",
-                                                          DE => "Derzeit nicht verfügbar",
-                                                          ES => "Producto no disponible",
-                                                          BR => "Out of stock",
-                                                          CA => "Out of stock",
-                                                          CN => "Out of stock",
-                                                          IN => "Out of stock",
-                                                          JP => "Out of stock",
-                                                          MX => "Out of stock",
-                                                          UK => "Out of stock",
-                                                        ),
-                                  );
-  }  
-
-  /**
-   * Internationalize stings by marketplace
-   *
-   * @since     1.0.0
-   * @param     String    $key            Identifier of string to be translated
-   * @return    String    $marketplace    The target marketplace name
-   */
-  public function internationalize_by_marketplace($key, $marketplace) {
-    $translated_string = $this->translation_array[$key][$marketplace];
-
-    if($translated_string == null) {
-      //use english if transation is not available
-      $translated_string = $this->translation_array[$key][AALB_DEFAULT_MARKETPLACE_NAME];
-      if($translated_string == null) {
-        //use key name if english is also not available
-        $translated_string = $key;
-      }    
+    public function __construct() {
+        $this->translation_array = array(
+            CHECK_ON_AMAZON => array(
+                US => "Check on Amazon",
+                FR => "Consulter sur Amazon.fr",
+                IT => "Vedi su Amazon.it",
+                DE => "Hier auf Amazon.de",
+                ES => "Consultar en Amazon.es",
+                BR => "Check on Amazon",
+                CA => "Check on Amazon",
+                CN => "Check on Amazon",
+                IN => "Check on Amazon",
+                JP => "Check on Amazon",
+                MX => "Check on Amazon",
+                UK => "Check on Amazon",
+            ),
+            OUT_OF_STOCK => array(
+                US => "Out of stock",
+                FR => "Rupture de stock",
+                IT => "Non disponibile",
+                DE => "Derzeit nicht verfügbar",
+                ES => "Producto no disponible",
+                BR => "Out of stock",
+                CA => "Out of stock",
+                CN => "Out of stock",
+                IN => "Out of stock",
+                JP => "Out of stock",
+                MX => "Out of stock",
+                UK => "Out of stock",
+            ),
+        );
     }
-    return $translated_string;
-  }
+
+    /**
+     * Internationalize stings by marketplace
+     *
+     * @since 1.0.0
+     *
+     * @param string $key Identifier of string to be translated
+     * @param string $marketplace The target marketplace name
+     *
+     * @return string
+     */
+    public function internationalize_by_marketplace( $key, $marketplace ) {
+        $translated_string = $this->translation_array[ $key ][ $marketplace ];
+
+        if ( $translated_string == null ) {
+            //use english if transation is not available
+            $translated_string = $this->translation_array[ $key ][ AALB_DEFAULT_MARKETPLACE_NAME ];
+            if ( $translated_string == null ) {
+                //use key name if english is also not available
+                $translated_string = $key;
+            }
+        }
+
+        return $translated_string;
+    }
 }
 
 ?>

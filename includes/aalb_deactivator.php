@@ -21,52 +21,52 @@ and limitations under the License.
  */
 class Aalb_Deactivator {
 
-  protected $helper;
+    protected $helper;
 
-  public function __construct() {
-    $this->helper = new Aalb_Helper();
-  }
-  
-  /**
-   * Remove the settings stored by the admin in the database
-   * 
-   * @since    1.0.0
-   */
-  public function remove_settings() {
-    global $wpdb;
-    $table_prefix = $wpdb->prefix;
-    $statement = 'DELETE from ' . $table_prefix . 'options
-  		  WHERE option_name like %s';
-    $settings = "aalb%";
-    $prepared_statement = $wpdb->prepare($statement, $settings);
-
-    try {
-      $wpdb->query($prepared_statement);
-    } catch(Exception $e) {
-      error_log('Unable to clear settings. Query failed with the Exception ' . $e->getMessage());
+    public function __construct() {
+        $this->helper = new Aalb_Helper();
     }
-  }
 
-  /**
-   * Remove the cache stored in the database.
-   * 
-   * @since    1.0.0
-   */
-  public function remove_cache() {
-    $this->helper->clear_cache_for_substring('');
-  }
+    /**
+     * Remove the settings stored by the admin in the database
+     *
+     * @since 1.0.0
+     */
+    public function remove_settings() {
+        global $wpdb;
+        $table_prefix = $wpdb->prefix;
+        $statement = 'DELETE from ' . $table_prefix . 'options
+          WHERE option_name like %s';
+        $settings = "aalb%";
+        $prepared_statement = $wpdb->prepare( $statement, $settings );
 
-  /**
-   * Recursively remove the template uploads dir
-   *
-   * @since    1.3
-   */
-  public function remove_uploads_dir() {
-    global $wp_filesystem;
-    $this->helper->aalb_initialize_wp_filesystem_api();
-    $upload_dir = $this->helper->get_template_upload_directory();
-    $wp_filesystem->rmdir($upload_dir, true);
-  }
+        try {
+            $wpdb->query( $prepared_statement );
+        } catch ( Exception $e ) {
+            error_log( 'Unable to clear settings. Query failed with the Exception ' . $e->getMessage() );
+        }
+    }
+
+    /**
+     * Remove the cache stored in the database.
+     *
+     * @since 1.0.0
+     */
+    public function remove_cache() {
+        $this->helper->clear_cache_for_substring( '' );
+    }
+
+    /**
+     * Recursively remove the template uploads dir
+     *
+     * @since 1.3
+     */
+    public function remove_uploads_dir() {
+        global $wp_filesystem;
+        $this->helper->aalb_initialize_wp_filesystem_api();
+        $upload_dir = $this->helper->get_template_upload_directory();
+        $wp_filesystem->rmdir( $upload_dir, true );
+    }
 }
 
 ?>
