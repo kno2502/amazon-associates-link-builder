@@ -60,7 +60,7 @@ class Aalb_Admin_Notice_Manager {
         add_action( 'admin_notices', $function_to_add, $priority, $accepted_args );
         $key = get_class( $obj ) . "::" . $callback_function;
         //Overrides the value of key if already present to prevent multiple entries in case object is instantiated again
-        self::$instance->$functions_list[$key] = array(
+        $this->functions_list[$key] = array(
             "function_to_add" => $function_to_add,
             "priority"        => $priority,
             "accepted_args"   => $accepted_args
@@ -74,11 +74,12 @@ class Aalb_Admin_Notice_Manager {
      * @since    1.4.3
      */
     public function remove_all_notices() {
-        foreach ( self::$instance->$functions_list as $key => $value ) {
+        foreach ( $this->functions_list as $key => $value ) {
             remove_action( 'admin_notices', $value["function_to_add"], $value["priority"],
                 $value["accepted_args"] );
-            unset( self::$instance->$functions_list[$key] );
+            unset( $this->functions_list[$key] );
         }
     }
 }
+
 ?>
