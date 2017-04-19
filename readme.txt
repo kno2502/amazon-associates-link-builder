@@ -3,7 +3,7 @@ Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
 Tested up to: 4.7.3
-Stable tag: 1.4.1
+Stable tag: 1.4.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,9 @@ You can review the **About** section under the Associates Link Builder menu ba
 You can search products using keywords in any supported country, but you have to join the Associates Program in those countries separately to be able to do this. For example - If you are a blogger in UK interested in linking to Amazon.com (US) site, then you will first need to join the Amazon Associates Program in US to be able to search for products on Amazon.com site.
 
 == Changelog ==
+
+= 1.4.3 - April 19, 2017 =
+* Fix: Add shortcode button not clickable for some users after version 1.4.2.
 
 = 1.4.2 - March 30, 2017 =
 * Changes to ensure minimum PHP version requirements are met before plugin activation.
