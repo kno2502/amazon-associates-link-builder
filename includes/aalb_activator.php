@@ -1,7 +1,7 @@
 <?php
 
 /*
-Copyright 2016-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2016-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the GNU General Public License as published by the Free Software Foundation,
 Version 2.0 (the "License"). You may not use this file except in compliance with the License.
@@ -24,9 +24,11 @@ and limitations under the License.
 class Aalb_Activator {
 
     protected $helper;
+    private $aalb_compatibility_helper;
 
     public function __construct() {
         $this->helper = new Aalb_Helper();
+        $this->aalb_compatibility_helper = new Aalb_Compatibility_Helper();
     }
 
     /**
@@ -34,7 +36,7 @@ class Aalb_Activator {
      *
      * @since 1.0.0
      */
-    public function load_templates() {
+    private function load_templates() {
         $this->helper->refresh_template_list();
     }
 
@@ -46,7 +48,7 @@ class Aalb_Activator {
      *
      * @since 1.0.0
      */
-    public function load_db_keys() {
+    private function load_db_keys() {
         if ( ! get_option( AALB_AWS_ACCESS_KEY ) ) {
             update_option( AALB_AWS_ACCESS_KEY, '' );
         }
@@ -60,23 +62,33 @@ class Aalb_Activator {
      *
      * @since 1.0.0
      */
-    public function load_store_ids() {
+    private function load_store_ids() {
         update_option( AALB_STORE_IDS, '' );
     }
 
     /**
-     * Checks current PHP version of user and exits with error message
-     * in case user's phpVersion is less than AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION
+     * Halts activation process if the plugin is not compatible with the user environment
      *
-     * @since    1.4.2
+     * @since 1.4.3
      */
-    public function check_php_version_compatibility() {
-        $phpversion = phpversion();
-        if(version_compare($phpversion, AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION) < 0) {
-            exit(sprintf('<span style="color:red;">%s plugin requires %s or higher. You’re still on %s.</span>', AALB_PLUGIN_NAME, AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION, $phpversion));
-        }
+    private function halt_activation() {
+        exit(sprintf('<span style="color:red;">%s plugin requires PHP Version %s or higher. You’re still on %s.</span>', AALB_PLUGIN_NAME, AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION, phpversion()));
     }
 
+    /**
+     * The code to run on activation
+     *
+     * @since 1.4.3
+     */
+    function activate() {
+        if($this->aalb_compatibility_helper->is_plugin_compatible()) {
+            $this->load_templates();
+            $this->load_db_keys();
+            $this->load_store_ids();
+        } else {
+            $this->halt_activation();
+        }
+    }
 }
 
 ?>

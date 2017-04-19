@@ -1,7 +1,7 @@
 <?php
 
 /*
-Copyright 2016-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2016-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the GNU General Public License as published by the Free Software Foundation,
 Version 2.0 (the "License"). You may not use this file except in compliance with the License.
@@ -49,6 +49,7 @@ class Aalb_Manager {
         $this->hook_loader->add_action( 'wp_ajax_get_link_code', $aalb_admin, 'get_link_code' );
         $this->hook_loader->add_action( 'wp_ajax_get_custom_template_content', $aalb_admin, 'get_custom_template_content' );
         $this->hook_loader->add_action( 'media_buttons', $aalb_admin, 'admin_display_callback' );
+        $this->hook_loader->add_action( 'admin_footer', $aalb_admin, 'admin_footer_callback' );
         $this->hook_loader->add_action( 'plugins_loaded', $aalb_admin, 'check_update' );
 
         $aalb_sidebar = new Aalb_Sidebar();

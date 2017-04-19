@@ -1,7 +1,7 @@
 <?php
 
 /*
-Copyright 2016-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2016-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the GNU General Public License as published by the Free Software Foundation,
 Version 2.0 (the "License"). You may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@ and limitations under the License.
 */
 
 //version
-define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.2' );
+define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.3' );
 
 //PHP version compatible for AALB plugin
 define('AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION','5.3.0');
@@ -79,6 +79,7 @@ define( 'AALB_TEMPLATE_UPLOADS_FOLDER', 'amazon-associates-link-builder/template
 
 //Partials
 define( 'AALB_META_BOX_PARTIAL', AALB_PLUGIN_DIR . 'admin/partials/aalb_meta_box.php' );
+define( 'AALB_EDITOR_SEARCH_BOX', AALB_PLUGIN_DIR . 'admin/partials/aalb_editor_search_box.php' );
 
 //Proxy
 define( 'AALB_PROXY_URL', AALB_PLUGIN_URL . 'lib/php/Paapi/aalb_paapi_proxy.php' );

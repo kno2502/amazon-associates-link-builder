@@ -1,7 +1,7 @@
 <?php
 
 /*
-Copyright 2016-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2016-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the GNU General Public License as published by the Free Software Foundation,
 Version 2.0 (the "License"). You may not use this file except in compliance with the License.
@@ -28,13 +28,17 @@ class Aalb_Admin {
     private $remote_loader;
     private $tracking_api_helper;
     private $helper;
+    private $admin_notice_manager;
+    private $compatibility_helper;
 
     public function __construct() {
+        $this->compatibility_helper = new Aalb_Compatibility_Helper();
         $this->paapi_helper = new Aalb_Paapi_Helper();
         $this->remote_loader = new Aalb_Remote_Loader();
         $this->tracking_api_helper = new Aalb_Tracking_Api_Helper();
         $this->helper = new Aalb_Helper();
-        add_action( 'admin_notices', array( $this, 'aalb_plugin_activation' ) );
+        $admin_notice_manager = Aalb_Admin_Notice_Manager::getInstance();
+        $admin_notice_manager->add_notice( $this, 'aalb_plugin_activation' );
     }
 
     /**
@@ -128,25 +132,40 @@ class Aalb_Admin {
      * @since 1.3
      */
     public function handle_plugin_update() {
-        //Clear all transients for price changes to reflect
-        $this->helper->clear_cache_for_substring( '' );
-        $this->helper->clear_expired_transients();
+        if( $this->compatibility_helper->is_plugin_compatible() ) {
+            //Clear all transients for price changes to reflect
+            $this->helper->clear_cache_for_substring( '' );
+            $this->helper->clear_expired_transients();
 
-        global $wp_filesystem;
-        $this->helper->aalb_initialize_wp_filesystem_api();
-        $this->helper->refresh_template_list();
-        update_option( AALB_PLUGIN_VERSION, AALB_PLUGIN_CURRENT_VERSION );
+            global $wp_filesystem;
+            $this->helper->aalb_initialize_wp_filesystem_api();
+            $this->helper->refresh_template_list();
+            update_option( AALB_PLUGIN_VERSION, AALB_PLUGIN_CURRENT_VERSION );
+        } else {
+            $this->compatibility_helper->aalb_deactivate();
+        }
     }
 
     /**
-     * Prints the aalb-admin sidebar search box.
+     * Prints Search box to be displayed in Editor where user can type in keywords for search. @see aalb_editor_search_box.php
+     * This callback is attached with "media_buttons" hook of wordpress. @see aalb_manager::add_admin_hooks()
      *
-     * @since 1.0.0
-     *
-     * @param WP_Post $post The object for the current post/page.
+     * @since 1.4.3 Only prints search box displayed in editor.
+     * @since 1.0.0 Prints the aalb-admin sidebar search box.
      */
-    function admin_display_callback( $post ) {
-        require( AALB_META_BOX_PARTIAL );
+    function admin_display_callback() {
+        require( AALB_EDITOR_SEARCH_BOX );
+    }
+
+    /**
+     * Prints  Popup box of the plugin used to create shortcode. @see aalb_meta_box.php
+     * This callback is attached with "admin_footer" hook of wordpress. @see aalb_manager::add_admin_hooks()
+     *
+     * @since 1.4.3
+     *
+     */
+    function admin_footer_callback() {
+        require_once( AALB_META_BOX_PARTIAL );
     }
 
     /**

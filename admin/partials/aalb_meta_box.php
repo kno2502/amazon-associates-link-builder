@@ -1,7 +1,7 @@
 <?php
 
 /*
-Copyright 2016-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2016-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the GNU General Public License as published by the Free Software Foundation,
 Version 2.0 (the "License"). You may not use this file except in compliance with the License.
@@ -12,29 +12,25 @@ either express or implied. See the License for the specific language governing p
 and limitations under the License.
 */
 
+/**
+ * UI for Add short code popup. responsible to show list of products items based on the keywords.
+ * This Metabox enables users to choose template, Associate ID and Market place for which product is being added based on the
+ * details selected by plugin user short code is generated.
+ */
+
 $aalb_template_names = get_option( AALB_TEMPLATE_NAMES );
 $config_loader = new Aalb_Config_Loader();
 $aalb_marketplace_names = $config_loader->fetch_marketplaces();
 $helper = new Aalb_Helper();
 $aalb_store_id_names = $helper->get_store_ids_array();
 ?>
-<div id="aalb-admin-searchbox">
-    <img src=<?= AALB_ADMIN_ICON ?> id="aalb-admin-searchbox-amzlogo"
-            style="height: 30px; width: 30px; padding: 0px;">
-    <input type="text" id="aalb-admin-input-search"
-            name="aalb-admin-input-search"
-            placeholder="Enter keyword(s)"
-            onkeypress='aalb_submit_event(event,"aalb-admin-button-create-amazon-shortcode")'/>
-    <a class="button" title="Add Amazon Associates Link Builder Shortcode"
-            id="aalb-admin-button-create-amazon-shortcode" onclick="aalb_admin_show_create_shortcode_popup()">Search
-    </a>
-</div>
+
 <div id="aalb-admin-popup-container" style="display:none;">
-    <div class="aalb-admin-popup-options">
+    <div class="aalb-admin-searchbox aalb-admin-popup-options">
         <input type="text" id="aalb-admin-popup-input-search" name="aalb-admin-popup-input-search"
-                placeholder="Enter keyword(s)" onkeypress='aalb_submit_event(event,"aalb-admin-popup-search-button")'/>
+            placeholder="Enter keyword(s)" onkeypress='aalb_submit_event(event,"aalb-btn-primary",this)'/>
         <button class="aalb-btn aalb-btn-primary" id="aalb-admin-popup-search-button" type="button"
-                onclick="aalb_admin_popup_search_items()" style="margin-top:1%">Search
+            onclick="aalb_admin_popup_search_items()" style="margin-top:1%">Search
         </button>
     </div><!--end .aalb-admin-popup-options-->
     <div id="aalb-admin-popup-content">

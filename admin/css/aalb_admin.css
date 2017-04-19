@@ -1,5 +1,5 @@
 /*
-Copyright 2016-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2016-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the GNU General Public License as published by the Free Software Foundation,
 Version 2.0 (the "License"). You may not use this file except in compliance with the License.
@@ -10,7 +10,7 @@ either express or implied. See the License for the specific language governing p
 and limitations under the License.
 */
 
-#aalb-admin-searchbox {
+.aalb-admin-inline {
     display: inline;
 }
 
@@ -20,14 +20,14 @@ img#aalb-admin-searchbox-amzlogo {
     padding: 0px;
 }
 
-input#aalb-admin-input-search {
+input.aalb-admin-input-search {
     vertical-align: top;
     margin-left: 3px;
     margin-right: 3px;
     height: 28px;
 }
 
-a#aalb-admin-button-create-amazon-shortcode {
+ .aalb-admin-searchbox a.aalb-admin-button-create-amazon-shortcode {
     box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4) inset;
     background: transparent linear-gradient(to bottom, #F7DFA5, #F0C14B) repeat scroll 0% 0%;
     background-color: transparent;
@@ -44,6 +44,10 @@ a#aalb-admin-button-create-amazon-shortcode {
     border-bottom-color: #846A29;
     border-left-color: #9C7E31;
     color: #111;
+}
+
+.aalb-admin-searchbox a.aalb-admin-button-create-amazon-shortcode:hover {
+    background: transparent linear-gradient(to bottom, #F7DFA5, #F0C14B) repeat scroll 0% 0%;
 }
 
 html, body {

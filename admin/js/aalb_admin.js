@@ -1,5 +1,5 @@
 /*
- Copyright 2016-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ Copyright 2016-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
  Licensed under the GNU General Public License as published by the Free Software Foundation,
  Version 2.0 (the "License"). You may not use this file except in compliance with the License.
@@ -58,22 +58,28 @@ function resize_thickbox() {
 
 /**
  * Ensure a button click on a return key press event
+ * Caller element and button_to_click_class needs to be part of a container having class name aalb-admin-searchbox.
  *
  * @param HTML_DOM_EVENT  event OnKeyPress event
- * @param HTML_DOM_OBJECT button_to_click Button id to click on a return key press event
+ * @param string button_to_click_class name of a button to click on a return key press event
+ * @param HTMLElement caller_element caller of this function
+ *
+ * @since 1.4.3 added param caller_element and modified param button_to_click_class
  */
-function aalb_submit_event( event, button_to_click ) {
+function aalb_submit_event( event, button_to_click_class, caller_element ) {
     //Code for the RETURN key is 13
     if ( event.keyCode == 13 ) {
         event.preventDefault();
-        jQuery( '#' + button_to_click ).click();
+        //Find button to click in the container and invoke a click event.
+        var container_search_box = jQuery( caller_element ).closest( ".aalb-admin-searchbox" );
+        jQuery( container_search_box ).find( '.' + button_to_click_class ).click();
     }
 }
 
 /**
  * Removes the selected HTML element
  *
- * @param HTML_DOM_OBJECT element HTML element to be removed.
+ * @param HTMLElement element HTML element to be removed.
  */
 function aalb_remove_selected_item( element ) {
     jQuery( element ).remove();
@@ -81,36 +87,44 @@ function aalb_remove_selected_item( element ) {
 
 /**
  * Display pop up thickbox
+ *
+ * @param HTMLElement search_button  reference to the clicked button element to get to the keyword of interest.
+ *
+ * @since 1.4.3 added param search_button
  */
-function aalb_admin_show_create_shortcode_popup() {
+function aalb_admin_show_create_shortcode_popup( search_button ) {
+    // Retain content from old state of pop content primarily input text of search box.
     // http://stackoverflow.com/questions/5557641/how-can-i-reset-div-to-its-original-state-after-it-has-been-modified-by-java
     jQuery( "#aalb-admin-popup-content" ).html( jQuery( "#aalb-admin-popup-content" ).data( 'old-state' ) );
-    var selected = aalb_get_selected_text_from_editor();
-    var keywords = jQuery( "#aalb-admin-input-search" ).val();
-    if ( selected ) {
-        tb_show( 'Add Amazon Associates Link Builder Shortcode', '#TB_inline?inlineId=aalb-admin-popup-container', false );
-        resize_thickbox();
 
-        //Setting Search field with selected value.
-        jQuery( "#aalb-admin-input-search" ).attr( 'value', selected );
-        // Getting the ItemSearch results
-        aalb_admin_get_item_search_items( jQuery( "#aalb-admin-input-search" ).val() );
-        jQuery( "#aalb-admin-popup-input-search" ).attr( 'value', selected );
-        //Chose ProductLink template By Default when some text is selected.
+    var editor_selected_text = aalb_get_selected_text_from_editor();
+
+    if ( editor_selected_text ) {
+        //Make ProductLink template as a default choice of template when some text is selected.
         jQuery( "#aalb_template_names_list" ).val( 'ProductLink' );
-    } else if ( keywords ) {
-        // Showing the TB and resetting the width - http://wordpress.stackexchange.com/questions/114107/thickbox-width-cant-be-changed-in-admin
-        tb_show( 'Add Amazon Associates Link Builder Shortcode', '#TB_inline?inlineId=aalb-admin-popup-container', false );
-        resize_thickbox();
-
-        // Getting the ItemSearch results
-        aalb_admin_get_item_search_items( jQuery( "#aalb-admin-input-search" ).val() );
-        jQuery( "#aalb-admin-popup-input-search" ).attr( 'value', keywords );
-    } else {
-        alert( "Please enter the keywords or select some text from the editor." );
-        jQuery( "#aalb-admin-input-search" ).focus();
     }
 
+    var editor_search_box_input = jQuery( search_button ).siblings( ".aalb-admin-input-search" );
+
+    var search_keywords = editor_selected_text || editor_search_box_input.val();
+    if ( search_keywords ) {
+
+        tb_show( 'Add Amazon Associates Link Builder Shortcode', '#TB_inline?inlineId=aalb-admin-popup-container', false );
+        resize_thickbox();
+
+        // Getting the ItemSearch results
+        aalb_admin_get_item_search_items( search_keywords );
+
+        //Setting search input of shortcode popup with search keyword.
+        jQuery( "#aalb-admin-popup-input-search" ).attr( 'value', search_keywords );
+
+        //Setting editor search input with search keyword.
+        editor_search_box_input.attr( 'value', search_keywords );
+
+    } else {
+        alert( "Please enter the keywords or select some text from the editor." );
+        editor_search_box_input.focus();
+    }
 }
 
 /**
