@@ -140,6 +140,8 @@ You can search products using keywords in any supported country, but you have to
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+= 1.4.3 =
+This update fixes the issue of add shortcode button not clickable for some users after v1.4.2.
 
 = 1.4.2 =
 This update restricts plugin activation to supported PHP versions, and fixes bug of plugin not working with other editors.
