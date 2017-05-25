@@ -2,8 +2,8 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.7.3
-Stable tag: 1.4.3
+Tested up to: 4.7.5
+Stable tag: 1.4.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,13 @@ You can search products using keywords in any supported country, but you have to
 
 == Changelog ==
 
+= 1.4.4 - May 25, 2017 =
+* Default Templates provided by the plugin will now render correctly on mobile devices. Your existing posts with default templates will reflect these changes after update. This does not affect custom templates and they will continue to render as before.
+* UI Change: Template, Country and Associate ID select boxes are now at the top of the 'Add Shortcode' dialog box to better reflect the order of operations.
+* PriceLink, ProductAd & ProductLink templates will now allow only a single product to be added. This does not affect existing posts. To add more than one product to the single product templates, create a custom template by cloning the original one.
+* A shortcode can now contain only one instance of a specific product. This does not affect existing posts.
+* Fix: After plugin update, changes not being reflected due to browser caching.
+
 = 1.4.3 - April 19, 2017 =
 * Fix: Add shortcode button not clickable for some users after version 1.4.2.
 
@@ -140,6 +147,9 @@ You can search products using keywords in any supported country, but you have to
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+= 1.4.4 =
+This update improves mobile rendering of default templates and some bug fixes.
+
 = 1.4.3 =
 This update fixes the issue of add shortcode button not clickable for some users after v1.4.2.
 
