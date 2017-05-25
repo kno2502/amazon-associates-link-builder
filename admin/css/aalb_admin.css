@@ -25,6 +25,7 @@ input.aalb-admin-input-search {
     margin-left: 3px;
     margin-right: 3px;
     height: 28px;
+    border: 1px solid #F0C14B;
 }
 
  .aalb-admin-searchbox a.aalb-admin-button-create-amazon-shortcode {
@@ -65,10 +66,11 @@ html, body {
 #aalb-admin-popup-container {
     height: 100%;
     width: 100%;
+    display: none;
 }
 
 #aalb-admin-popup-content {
-    padding-top: 30px;
+    padding-top: 5px;
     height: 50%;
     width: 100%;
 }
@@ -124,7 +126,6 @@ html, body {
     width: 100%;
     height: 90%;
     display: none;
-    padding-top: 3%;
 }
 
 .aalb-admin-item-search-items {
@@ -138,6 +139,7 @@ html, body {
     -moz-column-count: 3;
     -webkit-column-count: 3;
     column-count: 3;
+    overflow: scroll;
 }
 
 .aalb-admin-item-search-items-item {
@@ -228,6 +230,24 @@ and(-webkit-min-device-pixel-ratio: 0) {
         }
     }
 }
+/* fix for safari 10.1 */
+@media not all and (min-resolution:.001dpcm) {
+    @media {
+    .aalb-admin-item-search-items-item-title {
+        position: initial;
+        margin-left: 2em;
+        margin-right: 0em;
+        font-weight: bold;
+        word-break: break-all;
+        font-size: 1em;
+        overflow: hidden;
+        position: relative;
+        line-height: 1.2em;
+        max-height: 2.4em;
+        text-align: justify;
+    }
+
+}}
 
 .aalb-admin-item-search-items-item-price {
     font-size: 1em;
@@ -244,6 +264,8 @@ and(-webkit-min-device-pixel-ratio: 0) {
 .aalb-admin-popup-shortocde-wrapper {
     display: block;
     width: 100%;
+    margin-top: 10px;
+    padding-top: 5px;
 }
 
 .aalb-admin-popup-shortcode-options {
@@ -276,6 +298,8 @@ and(-webkit-min-device-pixel-ratio: 0) {
 
 .aalb-add-shortcode-button {
     padding-top: 20px;
+    bottom: 2px;
+    position: absolute;
 }
 
 .aalb-admin-popup-options {
@@ -289,6 +313,7 @@ and(-webkit-min-device-pixel-ratio: 0) {
     margin-top: 1%;
     height: 33px;
     vertical-align: middle;
+    border: 1px solid #F0C14B;
 }
 
 #aalb-admin-popup-search-button {
@@ -381,3 +406,35 @@ and(-webkit-min-device-pixel-ratio: 0) {
 .aalb-selected-asin {
     display: none;
 }
+
+.aalb-admin-searchbox.aalb-admin-popup-options {
+    margin-bottom: 15px;
+}
+
+#aalb-add-asin-error {
+    padding: 2px;
+    display: inline;
+    padding-left: 10px;
+    float: right;
+}
+
+#aalb-add-template-asin-error {
+    color: #FF0000;
+    font-size: 12px;
+    display: block;
+}
+
+#aalb_template_names_list , #aalb-admin-popup-store-id , #aalb_marketplace_names_list {
+    width: 100%;
+}
+
+input.aalb-admin-input-search:focus {
+    box-shadow: #F0C14B;
+}
+
+#aalb-add-shortcode-button:disabled {
+    cursor : not-allowed;
+    background : transparent;
+    opacity : 0.2;
+}
+

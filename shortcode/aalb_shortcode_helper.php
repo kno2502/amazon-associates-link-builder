@@ -41,10 +41,10 @@ class Aalb_Shortcode_Helper {
     public function enqueue_template_styles( $template_name ) {
         $aalb_default_templates = explode( ",", AALB_AMAZON_TEMPLATE_NAMES );
         if ( in_array( $template_name, $aalb_default_templates ) ) {
-            wp_enqueue_style( 'aalb_template' . $template_name . '_css', AALB_TEMPLATE_URL . $template_name . '.css' );
+            wp_enqueue_style( 'aalb_template' . $template_name . '_css', AALB_TEMPLATE_URL . $template_name . '.css', array(), AALB_PLUGIN_CURRENT_VERSION );
         } else {
             $aalb_template_upload_url = $this->helper->get_template_upload_directory_url();
-            wp_enqueue_style( 'aalb_template' . $template_name . '_css', $aalb_template_upload_url . $template_name . '.css' );
+            wp_enqueue_style( 'aalb_template' . $template_name . '_css', $aalb_template_upload_url . $template_name . '.css', array(), AALB_PLUGIN_CURRENT_VERSION );
         }
     }
 

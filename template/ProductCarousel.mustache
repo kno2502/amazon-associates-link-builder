@@ -81,15 +81,14 @@
             return true;
         }
 
-        var rows            = $adUnit.find('input[name=rows]').length && parseInt($adUnit.find('input[name=rows]').val(), 10),
-            columns         = $adUnit.find('input[name=columns]').length && parseInt($adUnit.find('input[name=columns]').val(), 10),
-            disableCarousel = $adUnit.find('input[name=disable-carousel]').length || rows || columns;
+        var rows            = $adUnit.find('input[name=rows]').length && parseInt($adUnit.find('input[name=rows]').val(), 10);
+        var columns         = $adUnit.find('input[name=columns]').length && parseInt($adUnit.find('input[name=columns]').val(), 10);
 
-        if (columns) {
+        if( columns ) {
             var productContainerMinWidth = columns * (CONSTANTS.productMinWidth + CONSTANTS.productMargin) + 'px';
-            $adUnit.css('min-width', productContainerMinWidth);
-            $productContainer.css('min-width', productContainerMinWidth);
-            $products.filter(':nth-child(' + columns + 'n + 1)').css('clear', 'both');
+            $adUnit.css( 'min-width', productContainerMinWidth );
+            $productContainer.css( 'min-width', productContainerMinWidth );
+            $products.filter( ':nth-child(' + columns + 'n + 1)' ).css( 'clear', 'both' );
         }
 
         if (rows && columns) {
@@ -98,30 +97,39 @@
         }
 
         function updateLayout() {
-            var wrapperWidth    = $wrapper.width(),
-                possibleColumns = columns || parseInt(wrapperWidth / (CONSTANTS.productMinWidth + CONSTANTS.productMargin), 10),
-                actualColumns   = columns || possibleColumns < productCount ? possibleColumns : productCount,
-                productWidth    = parseInt(wrapperWidth / actualColumns, 10) - CONSTANTS.productMargin;
+            var wrapperWidth = $wrapper.width();
+            var possibleColumns = columns || parseInt( wrapperWidth / (CONSTANTS.productMinWidth + CONSTANTS.productMargin), 10 );
+            var actualColumns = columns || possibleColumns < productCount ? possibleColumns : productCount;
 
-            $products.css('width', productWidth + 'px');
-
-            if (!disableCarousel) {
-                if ((productCount * productWidth > wrapperWidth) && actualColumns !== 1) {
-                    $btnNext.css('visibility', 'visible').removeClass('disabled').unbind('click');
-                    $btnPrev.css('visibility', 'visible').removeClass('disabled').unbind('click');
-                    $productContainer.jCarouselLite({
-                        btnNext  : '#' + $adUnit.attr('id') + ' .aalb-pc-btn-next',
-                        btnPrev  : '#' + $adUnit.attr('id') + ' .aalb-pc-btn-prev',
-                        visible  : actualColumns,
-                        circular : false
-                    });
-                } else {
-                    $productContainer.css('width', 'auto');
-                    $productList.css('width', 'auto');
-                    $btnNext.css('visibility', 'hidden').unbind('click');
-                    $btnPrev.css('visibility', 'hidden').unbind('click');
-                }
+            /**
+             * The actual columns can be zero when the wraperwidth is less than sum of CONSTANTS.productMinWidth and
+             * CONSTANTS.productMargin.The parseInt will use floor function and converts any value less than 1 to
+             * zero.Therefore making actual columns 1 .
+             **/
+            if( actualColumns == 0 ) {
+                actualColumns = 1;
             }
+
+            var productWidth = parseInt( wrapperWidth / actualColumns, 10 ) - CONSTANTS.productMargin;
+
+            $products.css( 'width', productWidth + 'px' );
+
+            /**
+             * Removing the Carousel navigation button when the number of products selected by admin is less
+             * than the actual columns (the number of products) can be shown on screen
+             **/
+            if( productCount > actualColumns ) {
+                $btnNext.css( 'visibility', 'visible' ).removeClass( 'disabled' ).unbind( 'click' );
+                $btnPrev.css( 'visibility', 'visible' ).removeClass( 'disabled' ).unbind( 'click' );
+            }
+            $productContainer.jCarouselLite( {
+                btnNext : '#' + $adUnit.attr( 'id' ) + ' .aalb-pc-btn-next',
+                btnPrev : '#' + $adUnit.attr( 'id' ) + ' .aalb-pc-btn-prev',
+                visible : actualColumns,
+                circular: false
+            } );
+
+
         }
 
         updateLayout();

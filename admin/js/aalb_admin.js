@@ -16,6 +16,13 @@ var tb_remove;
 var link_id = "";
 var AALB_SHORTCODE_AMAZON_LINK = api_pref.AALB_SHORTCODE_AMAZON_LINK; //constant value from server side is reused here
 var AALB_SHORTCODE_AMAZON_TEXT = api_pref.AALB_SHORTCODE_AMAZON_TEXT;
+//object used as map to check duplicate asin selected by admin
+var asin_map = {};
+var SINGLE_ASIN_TEMPLATE = {
+    PriceLink  : 'true',
+    ProductAd  : 'true',
+    ProductLink: 'true'
+};
 
 jQuery( document ).ready( function() {
     // http://stackoverflow.com/questions/5557641/how-can-i-reset-div-to-its-original-state-after-it-has-been-modified-by-java
@@ -34,6 +41,9 @@ jQuery( document ).ready( function() {
 
     //Custom tb_remove function
     tb_remove = function() {
+        aalb_reset_add_short_button_and_error_warnings();
+        //re initializing asin_map on window remove
+        asin_map = {};
         //call actual tb_remove
         old_tb_remove();
         //custom actions to execute
@@ -41,6 +51,24 @@ jQuery( document ).ready( function() {
             aalb_remove_selected_item( this );
         } );
     };
+
+    /**
+     * TO check the number of selected products on template change
+     **/
+    jQuery( '#aalb_template_names_list' ).on( 'change', function() {
+        var user_selected_template = aalb_get_selected_template();
+        var selected_products = jQuery( 'div.aalb-selected-item[data-asin]' ).length || 0;
+        var aalb_add_short_code_button = jQuery( '#aalb-add-shortcode-button' );
+        //checking for user selected template and number of products selected by user
+        if( ( selected_products > 1 ) && SINGLE_ASIN_TEMPLATE[ user_selected_template ] ) {
+            jQuery( '#aalb-add-template-asin-error' ).text( aalb_strings.template_asin_error + ' ' + user_selected_template );
+			aalb_add_short_code_button.prop( 'disabled', true );
+
+        } else {
+            aalb_add_short_code_button.prop( 'disabled', false );
+            jQuery( '#aalb-add-template-asin-error' ).text( '' );
+        }
+    } );
 } );
 
 /**
@@ -122,7 +150,7 @@ function aalb_admin_show_create_shortcode_popup( search_button ) {
         editor_search_box_input.attr( 'value', search_keywords );
 
     } else {
-        alert( "Please enter the keywords or select some text from the editor." );
+        alert( aalb_strings.empty_product_search_bar );
         editor_search_box_input.focus();
     }
 }
@@ -139,7 +167,7 @@ function aalb_admin_popup_search_items() {
         jQuery( "#aalb-admin-popup-input-search" ).attr( 'value', keywords );
 
     } else {
-        alert( "Please enter the keywords" );
+        alert( aalb_strings.empty_product_search_bar );
         jQuery( "#aalb-admin-popup-input-search" ).focus();
     }
 }
@@ -182,13 +210,18 @@ function aalb_admin_get_item_search_items( keywords ) {
             jQuery( ".aalb-admin-item-search-loading" ).slideUp( "slow" );
             jQuery( ".aalb-admin-item-search" ).fadeIn( "slow" );
             jQuery( ".aalb-admin-item-search-items-item" ).on( "click", function() {
-                var dataAsin = jQuery( this ).attr( "data-asin" );
+
+                var data_asin = jQuery( this ).attr( "data-asin" );
+                //return on duplicate asin selected
+                if( !aalb_validate_asins( data_asin, 'add' ) ) {
+                    return;
+                }
                 var productImage = jQuery( this ).find( "img" ).attr( "src" );
                 var productTitle = jQuery( this ).find( "div.aalb-admin-item-search-items-item-title" ).text();
                 var productPrice = jQuery( this ).find( "div.aalb-admin-item-search-items-item-price" ).text();
 
-                var selectedAsinHTML = '<div class="aalb-selected-item" onclick="aalb_remove_selected_item(this)"';
-                selectedAsinHTML += ' data-asin="' + dataAsin + '">';
+                var selectedAsinHTML = '<div class="aalb-selected-item" onclick="aalb_remove_asin(this)"';
+                selectedAsinHTML += ' data-asin="' + data_asin + '">';
                 selectedAsinHTML += '<div class="aalb-selected-item-img-wrap"><span class="aalb-selected-item-close">&times;</span>';
                 selectedAsinHTML += '<img class="aalb-selected-item-img" src="' + productImage + '"></img></div>';
                 selectedAsinHTML += '<div class="aalb-selected-item-title"><h3>' + productTitle + '</h3>';
@@ -217,7 +250,7 @@ function aalb_admin_get_item_search_items( keywords ) {
                 /* If there was some text selected in the wordpress post editor. Implies amazon_textlink */
                 var selectedAsinsLength = selectedAsins.split( "," ).length;
                 if ( selectedAsinsLength > 1 ) {
-                    alert( "Failed to create Text Link shortcode. Editor has some text selected. Only one item can be selected while adding text links" );
+                    alert( aalb_strings.short_code_create_failure );
                 } else {
                     jQuery( "#aalb-add-shortcode-alert" ).fadeTo( "fast", 1 );
                     aalb_add_shortcode( AALB_SHORTCODE_AMAZON_TEXT );
@@ -227,7 +260,7 @@ function aalb_admin_get_item_search_items( keywords ) {
                 aalb_add_shortcode( AALB_SHORTCODE_AMAZON_LINK );
             }
         } else {
-            alert( "Please select at least one product for display" );
+            alert( aalb_strings.no_asin_selected_error );
         }
     } );
 }
@@ -406,3 +439,62 @@ function aalb_get_selected_text_from_editor() {
         return null;
     }
 }
+
+/**
+ * To check the validity of ASIN based on different actions
+ *
+ * @param String Asin ASIN of Product selected by Admin
+ * @param String action Admin action either 'add' or 'remove'
+ *
+ * @return Boolean true if single ASIN is selected or false on multiple ASIN selected
+ **/
+function aalb_validate_asins( asin, action ) {
+    var count_of_selected_items = jQuery( '.aalb-selected-item' ).length;
+    var selected_template = aalb_get_selected_template();
+    var aalb_add_short_code_button = jQuery( '#aalb-add-shortcode-button' );
+    var max_allowed_items;
+    if( action === 'add' ) {
+        max_allowed_items = 0;
+
+        //if ASIN is already present no need to add the ASIN
+        if( !asin_map[ asin ] ) {
+            asin_map[ asin ] = 1;
+        } else {
+            return false;
+        }
+    } else if( action === 'remove' ) {
+        max_allowed_items = 1;
+        delete asin_map[ asin ];
+    }
+
+    var template_asin_error = ( count_of_selected_items > max_allowed_items ) && SINGLE_ASIN_TEMPLATE[ selected_template ];
+
+    if( ( !template_asin_error ) ) {
+        aalb_reset_add_short_button_and_error_warnings();
+    } else {
+        jQuery( '#aalb-add-template-asin-error' ).text( aalb_strings.template_asin_error + ' ' + selected_template );
+        aalb_add_short_code_button.prop( 'disabled', true );
+    }
+    return true;
+}
+
+/**
+ * To remove ASIN element from list
+ *
+ * @param element HTMLDivElement
+ **/
+function aalb_remove_asin( element ) {
+    var removed_product_asin = element.getAttribute( 'data-asin' );
+    jQuery( element ).remove();
+    aalb_validate_asins( removed_product_asin , 'remove' );
+}
+
+/**
+ * To enable add short code button and remove  template asin error
+ **/
+function aalb_reset_add_short_button_and_error_warnings() {
+    var aalb_add_short_code_button = jQuery( '#aalb-add-shortcode-button' );
+    aalb_add_short_code_button.prop( 'disabled', false );
+    jQuery( '#aalb-add-template-asin-error' ).text( '' );
+}
+

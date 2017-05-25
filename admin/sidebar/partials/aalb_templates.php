@@ -194,7 +194,7 @@ wp_enqueue_script( 'codemirror_mode_xml_js', CODEMIRROR_MODE_XML_JS );
 wp_enqueue_script( 'codemirror_mode_css_js', CODEMIRROR_MODE_CSS_JS );
 wp_enqueue_style( 'codemirror_css', CODEMIRROR_CSS );
 
-wp_enqueue_script( 'aalb_template_js', AALB_TEMPLATE_JS, array( 'jquery', 'codemirror_js', 'codemirror_mode_xml_js', 'codemirror_mode_css_js' ) );
+wp_enqueue_script( 'aalb_template_js', AALB_TEMPLATE_JS, array( 'jquery', 'codemirror_js', 'codemirror_mode_xml_js', 'codemirror_mode_css_js' ), AALB_PLUGIN_CURRENT_VERSION );
 wp_localize_script( 'aalb_template_js', 'wp_opt', array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'upload_url' => $helper->get_template_upload_directory(), 'plugin_url' => AALB_PLUGIN_URL, 'aalb_default_templates' => AALB_AMAZON_TEMPLATE_NAMES ) );
 
 ?>

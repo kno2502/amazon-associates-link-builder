@@ -16,7 +16,7 @@ include 'aalb_admin_ui_common.php';
 $helper = new Aalb_Helper();
 $aalb_store_id_names = $helper->get_store_ids_array();
 wp_enqueue_script( 'jquery' );
-wp_enqueue_script( 'aalb_credentials_js', AALB_CREDENTIALS_JS, array( 'jquery' ) );
+wp_enqueue_script( 'aalb_credentials_js', AALB_CREDENTIALS_JS, array( 'jquery' ), AALB_PLUGIN_CURRENT_VERSION );
 wp_localize_script( 'aalb_credentials_js', 'wp_opt', array( 'plugin_url' => AALB_PLUGIN_URL ) );
 ?>
 

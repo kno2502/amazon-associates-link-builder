@@ -43,7 +43,7 @@ class Aalb_Shortcode_Text {
      * @since 1.4
      */
     public function enqueue_styles() {
-        wp_enqueue_style( 'aalb_basics_css', AALB_BASICS_CSS );
+        wp_enqueue_style( 'aalb_basics_css', AALB_BASICS_CSS, array(), AALB_PLUGIN_CURRENT_VERSION );
     }
 
     /**

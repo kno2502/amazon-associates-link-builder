@@ -66,8 +66,8 @@ class Aalb_Admin {
         if ( WP_POST != $hook && WP_POST_NEW != $hook ) {
             return;
         }
-        wp_enqueue_style( 'aalb_basics_css', AALB_BASICS_CSS );
-        wp_enqueue_style( 'aalb_admin_css', AALB_ADMIN_CSS );
+        wp_enqueue_style( 'aalb_basics_css', AALB_BASICS_CSS, array(), AALB_PLUGIN_CURRENT_VERSION );
+        wp_enqueue_style( 'aalb_admin_css', AALB_ADMIN_CSS, array(), AALB_PLUGIN_CURRENT_VERSION );
         wp_enqueue_style( 'font_awesome_css', FONT_AWESOME_CSS );
         wp_enqueue_style( 'thickbox' );
     }
@@ -86,12 +86,13 @@ class Aalb_Admin {
         wp_enqueue_style( 'thickbox' );
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'handlebars_js', HANDLEBARS_JS );
-        wp_enqueue_script( 'aalb_sha2_js', AALB_SHA2_JS );
+        wp_enqueue_script( 'aalb_sha2_js', AALB_SHA2_JS, array(), AALB_PLUGIN_CURRENT_VERSION );
 
-        wp_enqueue_script( 'aalb_admin_js', AALB_ADMIN_JS, array( 'handlebars_js', 'jquery', 'aalb_sha2_js' ) );
+        wp_enqueue_script( 'aalb_admin_js', AALB_ADMIN_JS, array( 'handlebars_js', 'jquery', 'aalb_sha2_js' ), AALB_PLUGIN_CURRENT_VERSION );
         wp_enqueue_style( 'thickbox' );
         wp_localize_script( 'aalb_admin_js', 'api_pref', $this->get_paapi_pref() );
-    }
+        wp_localize_script( 'aalb_admin_js', 'aalb_strings', $this->get_aalb_strings() );
+	}
 
     /**
      * Returns data to be localized in the script.
@@ -111,6 +112,22 @@ class Aalb_Admin {
             'item_search_nonce' => wp_create_nonce( 'aalb-item-search-nonce' ),
             'AALB_SHORTCODE_AMAZON_LINK' => AALB_SHORTCODE_AMAZON_LINK,
             'AALB_SHORTCODE_AMAZON_TEXT' => AALB_SHORTCODE_AMAZON_TEXT
+        );
+    }
+
+	/**
+	 * Returns constant strings to be used in aalb_admin.js
+	 * Makes the variable values in PHP to be used in Javascript.
+	 *
+	 * @since 1.4.4
+	 * @return array Data to be localized in the script
+	 **/
+    private function get_aalb_strings() {
+        return array(
+            "template_asin_error"       => "Only one product can be selected for template",
+            "no_asin_selected_error"    => "Please select at least one product for display",
+            "empty_product_search_bar"  => "Please Enter a Product Name ",
+            "short_code_create_failure" => "Failed to create Text Link shortcode. Editor has some text selected. Only one item can be selected while adding text links"
         );
     }
 
