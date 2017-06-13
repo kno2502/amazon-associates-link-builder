@@ -77,6 +77,7 @@ class Aalb_Manager {
     public function execute() {
         $this->hook_loader->execute();
         $this->shortcode_loader->add_shortcode();
+        Aalb_Content_Filter::attach();
     }
 
 }

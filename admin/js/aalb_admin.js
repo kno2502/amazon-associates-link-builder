@@ -16,6 +16,7 @@ var tb_remove;
 var link_id = "";
 var AALB_SHORTCODE_AMAZON_LINK = api_pref.AALB_SHORTCODE_AMAZON_LINK; //constant value from server side is reused here
 var AALB_SHORTCODE_AMAZON_TEXT = api_pref.AALB_SHORTCODE_AMAZON_TEXT;
+var IS_PAAPI_CREDENTIALS_SET = api_pref.IS_PAAPI_CREDENTIALS_SET;
 //object used as map to check duplicate asin selected by admin
 var asin_map = {};
 var SINGLE_ASIN_TEMPLATE = {
@@ -62,13 +63,17 @@ jQuery( document ).ready( function() {
         //checking for user selected template and number of products selected by user
         if( ( selected_products > 1 ) && SINGLE_ASIN_TEMPLATE[ user_selected_template ] ) {
             jQuery( '#aalb-add-template-asin-error' ).text( aalb_strings.template_asin_error + ' ' + user_selected_template );
-			aalb_add_short_code_button.prop( 'disabled', true );
+            aalb_add_short_code_button.prop( 'disabled', true );
 
         } else {
             aalb_add_short_code_button.prop( 'disabled', false );
             jQuery( '#aalb-add-template-asin-error' ).text( '' );
         }
     } );
+
+    if(!IS_PAAPI_CREDENTIALS_SET){
+        aalb_disable_editor_search();
+    }
 } );
 
 /**
@@ -498,3 +503,13 @@ function aalb_reset_add_short_button_and_error_warnings() {
     jQuery( '#aalb-add-template-asin-error' ).text( '' );
 }
 
+/**
+ * To disable editor search for AALB plugin
+ **/
+function aalb_disable_editor_search() {
+    jQuery(".aalb-admin-button-create-amazon-shortcode").addClass('aalb-admin-button-create-amazon-shortcode-disabled');
+    jQuery( ".aalb-admin-input-search" ).prop( 'disabled', true );
+    var aalb_admin_searchbox_tooltip = jQuery('.aalb-admin-searchbox-tooltip-disabled');
+    aalb_admin_searchbox_tooltip.addClass('aalb-admin-searchbox-tooltip-text');
+    aalb_admin_searchbox_tooltip.removeClass('aalb-admin-searchbox-tooltip-disabled');
+}

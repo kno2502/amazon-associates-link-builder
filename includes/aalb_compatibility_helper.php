@@ -71,7 +71,7 @@ class Aalb_Compatibility_Helper {
         if(is_plugin_active($plugin) ) {
             deactivate_plugins($plugin);
             //Remove action_links from admin page present below the plugin
-            remove_filter( 'plugin_action_links_' . $plugin, 'add_action_links' );
+            remove_filter( 'plugin_action_links_' . $plugin, 'aalb_add_action_links' );
             $aalb_admin_notice_manager = Aalb_Admin_Notice_Manager::getInstance();
             $aalb_admin_notice_manager->remove_all_notices();
             $aalb_admin_notice_manager->add_notice($this, 'incompatible_environment_message');

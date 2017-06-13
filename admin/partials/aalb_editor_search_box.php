@@ -11,6 +11,10 @@ and limitations under the License.
 */
 -->
 
+<?php
+$aalb_settings_page_url = admin_url( 'admin.php?page=associates-link-builder-settings' ) ;
+?>
+
 <!--
 
   UI for Search box shown in WordPress editors. User can type in keyword and trigger add short code box.
@@ -18,8 +22,9 @@ and limitations under the License.
 -->
 
 <div class="aalb-admin-inline aalb-admin-searchbox">
-    <img src=<?= AALB_ADMIN_ICON ?> class="aalb-admin-searchbox-amzlogo"
-        style="height: 30px; width: 30px; padding: 0px;">
+    <span class="aalb-admin-searchbox-tooltip-disabled">Please configure your PA-API credentials in the <a href= <?php echo $aalb_settings_page_url ?> >Settings Page</a> to use the Link Builder features.
+    </span>
+    <img src=<?= AALB_ADMIN_ICON ?> class="aalb-admin-searchbox-amzlogo">
     <input type="text" class="aalb-admin-input-search"
         name="aalb-admin-input-search"
         placeholder="Enter keyword(s)"

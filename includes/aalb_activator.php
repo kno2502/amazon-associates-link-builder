@@ -58,15 +58,6 @@ class Aalb_Activator {
     }
 
     /**
-     * Init store ids key and add todatabase.
-     *
-     * @since 1.0.0
-     */
-    private function load_store_ids() {
-        update_option( AALB_STORE_IDS, '' );
-    }
-
-    /**
      * Halts activation process if the plugin is not compatible with the user environment
      *
      * @since 1.4.3
@@ -84,7 +75,6 @@ class Aalb_Activator {
         if($this->aalb_compatibility_helper->is_plugin_compatible()) {
             $this->load_templates();
             $this->load_db_keys();
-            $this->load_store_ids();
         } else {
             $this->halt_activation();
         }

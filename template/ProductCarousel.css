@@ -167,23 +167,14 @@
 }
 
 .aalb-pc-ad-unit .aalb-pc-product-prime-icon .icon-prime-all {
-    background: url('https://images-na.ssl-images-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-sprite_1x-e1a6545ba46e2ced9fc835dbdec4fff037b5b6bf._V2_.png') no-repeat;
+    background: url("https://images-na.ssl-images-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-sprite_2x_weblab_AUI_100106_T1-4e9f4ae74b1b576e5f55de370aae7aedaedf390d._V2_.png") no-repeat;
     display: inline-block;
     margin-top: -1px;
     vertical-align: middle;
-    background-position: -205px -246px;
-    width: 47px;
+    background-position: -192px -911px;
+    background-size: 560px 938px;
+    width: 52px;
     height: 15px;
-}
-
-.aalb-pc-ad-unit .aalb-pc-product-prime-icon .icon-prime-es {
-    background: url('https://images-na.ssl-images-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-sprite_1x-e1a6545ba46e2ced9fc835dbdec4fff037b5b6bf._V2_.png') no-repeat;
-    display: inline-block;
-    margin-top: -1px;
-    vertical-align: middle;
-    background-position: -205px -274px;
-    width: 62px;
-    height: 16px;
 }
 
 .aalb-pc-ad-unit .aalb-pc-product-offer-price,
@@ -240,22 +231,13 @@
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .aalb-pc-ad-unit .aalb-pc-product-prime-icon .icon-prime-all {
-        background: url('https://images-na.ssl-images-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-sprite_1x-e1a6545ba46e2ced9fc835dbdec4fff037b5b6bf._V2_.png') no-repeat;
+        background: url("https://images-na.ssl-images-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-sprite_2x_weblab_AUI_100106_T1-4e9f4ae74b1b576e5f55de370aae7aedaedf390d._V2_.png") no-repeat;
         display: inline-block;
         margin-top: -1px;
         vertical-align: middle;
-        background-position: -205px -246px;
-        width: 47px;
+        background-position: -192px -911px;
+        background-size: 560px 938px;
+        width: 52px;
         height: 15px;
-    }
-
-    .aalb-pc-ad-unit .aalb-pc-product-prime-icon .icon-prime-es {
-        background: url('https://images-na.ssl-images-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-sprite_1x-e1a6545ba46e2ced9fc835dbdec4fff037b5b6bf._V2_.png') no-repeat;
-        display: inline-block;
-        margin-top: -1px;
-        vertical-align: middle;
-        background-position: -205px -274px;
-        width: 62px;
-        height: 16px;
     }
 }

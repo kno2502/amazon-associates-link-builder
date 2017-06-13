@@ -28,7 +28,6 @@ class Aalb_Admin {
     private $remote_loader;
     private $tracking_api_helper;
     private $helper;
-    private $admin_notice_manager;
     private $compatibility_helper;
 
     public function __construct() {
@@ -37,22 +36,16 @@ class Aalb_Admin {
         $this->remote_loader = new Aalb_Remote_Loader();
         $this->tracking_api_helper = new Aalb_Tracking_Api_Helper();
         $this->helper = new Aalb_Helper();
-        $admin_notice_manager = Aalb_Admin_Notice_Manager::getInstance();
-        $admin_notice_manager->add_notice( $this, 'aalb_plugin_activation' );
     }
 
     /**
-     * Show warning message if the AWS Credentials are not yet set upon activation
+     * Checks whether PA-API Credentials are set
      *
-     * @since 1.0.0
+     * @since 1.4.5
+     * @return boolean true if PA-API credentials are set
      */
-    public function aalb_plugin_activation() {
-        if ( get_option( AALB_AWS_ACCESS_KEY ) == '' or get_option( AALB_AWS_SECRET_KEY ) == '' ) {
-            echo "<div class=\"notice notice-error\">
-                    <h3>Amazon Associates Link Builder Important Message!</h3>
-                    <p>Please Note - You need to add your Access Key ID and Secret Access Key in the plugin settings page for adding links to Amazon using Amazon Associates Link Builder plugin.</p>
-                  </div>";
-        }
+    public function aalb_is_paapi_credentials_set() {
+        return !( get_option( AALB_AWS_ACCESS_KEY ) == '' or get_option( AALB_AWS_SECRET_KEY ) == '' );
     }
 
     /**
@@ -92,7 +85,7 @@ class Aalb_Admin {
         wp_enqueue_style( 'thickbox' );
         wp_localize_script( 'aalb_admin_js', 'api_pref', $this->get_paapi_pref() );
         wp_localize_script( 'aalb_admin_js', 'aalb_strings', $this->get_aalb_strings() );
-	}
+    }
 
     /**
      * Returns data to be localized in the script.
@@ -111,17 +104,18 @@ class Aalb_Admin {
             'action' => 'get_item_search_result',
             'item_search_nonce' => wp_create_nonce( 'aalb-item-search-nonce' ),
             'AALB_SHORTCODE_AMAZON_LINK' => AALB_SHORTCODE_AMAZON_LINK,
-            'AALB_SHORTCODE_AMAZON_TEXT' => AALB_SHORTCODE_AMAZON_TEXT
+            'AALB_SHORTCODE_AMAZON_TEXT' => AALB_SHORTCODE_AMAZON_TEXT,
+            'IS_PAAPI_CREDENTIALS_SET' =>  $this->aalb_is_paapi_credentials_set()
         );
     }
 
-	/**
-	 * Returns constant strings to be used in aalb_admin.js
-	 * Makes the variable values in PHP to be used in Javascript.
-	 *
-	 * @since 1.4.4
-	 * @return array Data to be localized in the script
-	 **/
+    /**
+     * Returns constant strings to be used in aalb_admin.js
+     * Makes the variable values in PHP to be used in Javascript.
+     *
+     * @since 1.4.4
+     * @return array Data to be localized in the script
+     */
     private function get_aalb_strings() {
         return array(
             "template_asin_error"       => "Only one product can be selected for template",

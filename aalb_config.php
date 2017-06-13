@@ -13,7 +13,7 @@ and limitations under the License.
 */
 
 //version
-define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.4' );
+define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.5' );
 
 //PHP version compatible for AALB plugin
 define('AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION','5.3.0');
@@ -99,6 +99,7 @@ define( 'WP_POST_NEW', 'post-new.php' );
 
 //Local Styles
 define( 'AALB_ADMIN_CSS', AALB_PLUGIN_URL . 'admin/css/aalb_admin.css' );
+define( 'AALB_CREDENTIALS_CSS', AALB_PLUGIN_URL . 'admin/css/aalb_credentials.css' );
 define( 'AALB_BASICS_CSS', AALB_PLUGIN_URL . 'css/aalb_basics.css' );
 
 //Local Scripts
@@ -157,6 +158,7 @@ define( 'AALB_CRED_CONFIG_GROUP', 'aalb_cred_config_group' );
 define( 'AALB_STORE_ID_NAMES', 'aalb_store_id_names' );
 define( 'AALB_SHOW_HTTP_WARNING_ONCE', 'aalb_show_http_warning_once' );
 define( 'AALB_PLUGIN_VERSION', 'aalb_plugin_version' );
+define( 'AALB_NO_REFERRER_DISABLED', 'aalb_no_referrer_disabled' );
 
 //Masking constant
 define( 'AALB_AWS_SECRET_KEY_MASK', '••••••••••••••••••••••••••••••••••••••••' );
@@ -235,5 +237,22 @@ define( 'IN', 'IN' );
 define( 'JP', 'JP' );
 define( 'MX', 'MX' );
 define( 'UK', 'UK' );
+
+//Amazon URLs To be used in Aalb_Content_Filter.
+$AALB_AMAZON_DOMAINS = array(
+	'amazon\.com',
+	'amazon\.fr',
+	'amazon\.it',
+	'amazon\.de',
+	'amazon\.es',
+	'amazon\.com\.br',
+	'amazon\.ca',
+	'amazon\.cn',
+	'amazon\.in',
+	'amazon\.co\.jp',
+	'amazon\.com\.mx',
+	'amazon\.co\.uk',
+	'amzn\.to'
+);
 
 ?>

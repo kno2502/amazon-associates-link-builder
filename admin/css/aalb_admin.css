@@ -14,7 +14,7 @@ and limitations under the License.
     display: inline;
 }
 
-img#aalb-admin-searchbox-amzlogo {
+.aalb-admin-searchbox-amzlogo {
     width: 30px;
     height: 30px;
     padding: 0px;
@@ -438,3 +438,42 @@ input.aalb-admin-input-search:focus {
     opacity : 0.2;
 }
 
+.aalb-admin-inline.aalb-admin-searchbox:hover .aalb-admin-searchbox-tooltip-text {
+    visibility: visible;
+}
+
+input.aalb-admin-input-search:disabled {
+    opacity: 0.8;
+}
+
+.aalb-admin-button-create-amazon-shortcode-disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.4;
+}
+
+.aalb-admin-inline.aalb-admin-searchbox .aalb-admin-searchbox-tooltip-text {
+    visibility: hidden;
+    background-color: #ffffff;
+    color: black;
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 60%;
+    width: 290px;
+    box-shadow: 3px 3px 10px 0px rgba(44, 50, 50, 0.76);
+    border: 1px  black;
+    font-size: 12px;
+}
+
+.aalb-admin-searchbox-tooltip-disabled {
+    display: none;
+}
+
+.aalb-admin-searchbox-tooltip-text a {
+    text-decoration: underline !important;
+    color: #0073aa !important;
+    font-weight: bold;
+}
