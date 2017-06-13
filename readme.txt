@@ -2,8 +2,8 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.7.5
-Stable tag: 1.4.4
+Tested up to: 4.8.0
+Stable tag: 1.4.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -92,7 +92,19 @@ You can review the **About** section under the Associates Link Builder menu ba
 = How can I add links to different Amazon sites in my blog? =
 You can search products using keywords in any supported country, but you have to join the Associates Program in those countries separately to be able to do this. For example - If you are a blogger in UK interested in linking to Amazon.com (US) site, then you will first need to join the Amazon Associates Program in US to be able to search for products on Amazon.com site.
 
+= How can I use this plugin to remove rel="noreferrer" from affiliate links in my site? =
+You can remove rel="noreferrer" from links to Amazon sites in all posts by selecting the appropriate checkbox in the settings page. This will not remove rel="noopener", if present. This feature only affects links to Amazon sites. This change is reversible and as soon as you deselect the checkbox on settings page, the pages will be restored to the original content.
+
+= Are Amazon Product Advertising API credentials required to use the feature to remove rel="noreferrer" for Amazon Affiliate Links from all posts? =
+Amazon Product Advertising API credentials are not required to use the feature to remove rel="noreferrer" for Amazon Affiliate Links from all posts.
+
 == Changelog ==
+
+= 1.4.5 - June 13, 2017 =
+* Prime branding changes.
+* UI Change: Settings page revamped.
+* Remove rel="noreferrer" for Amazon Affiliate Links from all posts by clicking the checkbox in settings.
+* Fix: Naming conflict in function name
 
 = 1.4.4 - May 25, 2017 =
 * Default Templates provided by the plugin will now render correctly on mobile devices. Your existing posts with default templates will reflect these changes after update. This does not affect custom templates and they will continue to render as before.
@@ -147,6 +159,9 @@ You can search products using keywords in any supported country, but you have to
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+= 1.4.5 =
+Prime branding changes, feature to remove rel="noreferrer" from Amazon Affiliate links.
+
 = 1.4.4 =
 This update improves mobile rendering of default templates and some bug fixes.
 
