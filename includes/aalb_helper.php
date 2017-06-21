@@ -222,19 +222,16 @@ class Aalb_Helper {
      * If the dir doesn't exists, it is created and returned.
      *
      * @since 1.3
-     * @return Full directory path of the template uploads directory
+     * @return string Full directory path of the template uploads directory
      */
     public function get_template_upload_directory() {
         global $wp_filesystem;
         $this->aalb_initialize_wp_filesystem_api();
-        $aalb_template_upload_dir = $this->get_template_upload_directory_name( $wp_filesystem );
-        if ( ! $wp_filesystem->is_dir( $aalb_template_upload_dir ) ) {
-            if ( ! $this->create_template_upload_dir( $aalb_template_upload_dir ) ) {
+        $template_upload_path = $this->aalb_get_template_upload_path();
+        if ( ! $wp_filesystem->is_dir( $template_upload_path ) && ! $this->aalb_create_dir( $template_upload_path ) ) {
                 return false;
-            }
         }
-
-        return $aalb_template_upload_dir;
+        return $template_upload_path;
     }
 
     /**
@@ -243,27 +240,36 @@ class Aalb_Helper {
      * @since 1.3
      * @return full path of the template uploads directory
      */
-    public function get_template_upload_directory_name() {
-        global $wp_filesystem;
-        $upload_dir = wp_upload_dir();
-
-        return $wp_filesystem->find_folder( $upload_dir['basedir'] ) . AALB_TEMPLATE_UPLOADS_FOLDER;
+    private function aalb_get_template_upload_path() {
+        return $this->aalb_get_uploads_dir_path() . AALB_TEMPLATE_UPLOADS_FOLDER;
     }
 
     /**
-     * Creates the Uploads Directory where custom templates are stored
+     * Gets the uploads dir name of AALB plugin.
      *
-     * @since 1.3
-     * @return TRUE on successful creation of the dir; FALSE otherwise
+     * @since 1.4.6
+     * @return full path of the uploads directory of AALB
      */
-    public function create_template_upload_dir( $aalb_template_upload_dir ) {
+    public function aalb_get_uploads_dir_path() {
         global $wp_filesystem;
-        if ( ! wp_mkdir_p( $aalb_template_upload_dir ) ) {
-            error_log( "Error Creating Dir . " . $aalb_template_upload_dir . ". Please set the folder permissions correctly." );
+        $upload_dir = wp_upload_dir();
+        //TODO: Reason for not using directly use $upload_dir['basedir'] instead of calling find_folder
+        return $wp_filesystem->find_folder( $upload_dir['basedir'] );
+    }
 
+    /**
+     * Creates the Directory
+     *
+     * @param $dir_path  path of directory
+     *
+     * @since 1.4.6
+     * @return boolean true on successful creation of the dir; false otherwise
+     */
+    public function aalb_create_dir( $dir_path ) {
+        if ( ! wp_mkdir_p( $dir_path ) ) {
+            error_log( "Error Creating Dir " . $dir_path . ". Please set the folder permissions correctly." );
             return false;
         }
-
         return true;
     }
 

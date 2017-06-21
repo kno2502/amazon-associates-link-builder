@@ -23,6 +23,9 @@ $config_loader = new Aalb_Config_Loader();
 $aalb_marketplace_names = $config_loader->fetch_marketplaces();
 $helper = new Aalb_Helper();
 $aalb_store_id_names = $helper->get_store_ids_array();
+$aalb_admin = new Aalb_Admin();
+$aalb_admin->aalb_enqueue_styles();
+$aalb_admin->aalb_enqueue_scripts();
 ?>
 <!-- keeping css inline as css file does not load at plugin initialization  -->
 <div id="aalb-admin-popup-container" style="display:none;">

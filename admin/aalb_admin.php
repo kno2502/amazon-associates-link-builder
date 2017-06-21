@@ -49,16 +49,12 @@ class Aalb_Admin {
     }
 
     /**
-     * Adding CSS for post and post-new pages
+     * Enqueue CSS classes
      *
-     * @since 1.0.0
+     * @since 1.4.6
      *
-     * @param string $hook The name of the WordPress action that is being registered.
      */
-    public function enqueue_styles( $hook ) {
-        if ( WP_POST != $hook && WP_POST_NEW != $hook ) {
-            return;
-        }
+    public function aalb_enqueue_styles() {
         wp_enqueue_style( 'aalb_basics_css', AALB_BASICS_CSS, array(), AALB_PLUGIN_CURRENT_VERSION );
         wp_enqueue_style( 'aalb_admin_css', AALB_ADMIN_CSS, array(), AALB_PLUGIN_CURRENT_VERSION );
         wp_enqueue_style( 'font_awesome_css', FONT_AWESOME_CSS );
@@ -66,23 +62,16 @@ class Aalb_Admin {
     }
 
     /**
-     * Adding JS for post and post-new pages
+     * Enqueue JS files
      *
-     * @since 1.0.0
+     * @since 1.4.6
      *
-     * @param string $hook The name of the WordPress action that is being registered.
      */
-    public function enqueue_scripts( $hook ) {
-        if ( WP_POST != $hook && WP_POST_NEW != $hook ) {
-            return;
-        }
-        wp_enqueue_style( 'thickbox' );
+    public function aalb_enqueue_scripts() {
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'handlebars_js', HANDLEBARS_JS );
         wp_enqueue_script( 'aalb_sha2_js', AALB_SHA2_JS, array(), AALB_PLUGIN_CURRENT_VERSION );
-
         wp_enqueue_script( 'aalb_admin_js', AALB_ADMIN_JS, array( 'handlebars_js', 'jquery', 'aalb_sha2_js' ), AALB_PLUGIN_CURRENT_VERSION );
-        wp_enqueue_style( 'thickbox' );
         wp_localize_script( 'aalb_admin_js', 'api_pref', $this->get_paapi_pref() );
         wp_localize_script( 'aalb_admin_js', 'aalb_strings', $this->get_aalb_strings() );
     }

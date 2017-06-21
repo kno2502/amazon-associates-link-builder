@@ -13,6 +13,9 @@ and limitations under the License.
 
 <?php
 $aalb_settings_page_url = admin_url( 'admin.php?page=associates-link-builder-settings' ) ;
+$aalb_admin = new Aalb_Admin();
+$aalb_admin->aalb_enqueue_styles();
+$aalb_admin->aalb_enqueue_scripts();
 ?>
 
 <!--

@@ -42,8 +42,6 @@ class Aalb_Manager {
      */
     private function add_admin_hooks() {
         $aalb_admin = new Aalb_Admin();
-        $this->hook_loader->add_action( 'admin_enqueue_scripts', $aalb_admin, 'enqueue_styles' );
-        $this->hook_loader->add_action( 'admin_enqueue_scripts', $aalb_admin, 'enqueue_scripts' );
         $this->hook_loader->add_action( 'admin_print_footer_scripts', $aalb_admin, 'add_quicktags' );
         $this->hook_loader->add_action( 'wp_ajax_get_item_search_result', $aalb_admin, 'get_item_search_result' );
         $this->hook_loader->add_action( 'wp_ajax_get_link_code', $aalb_admin, 'get_link_code' );

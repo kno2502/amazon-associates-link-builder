@@ -127,7 +127,7 @@ if ( ! empty( $_POST["submit"] ) ) {
                 aalb_error_notice( "Save Failed. Only alphanumeric characters allowed for template name." );
             } else {
                 if ( ! is_dir( $aalb_template_upload_dir ) or ! is_writable( $aalb_template_upload_dir ) ) {
-                    aalb_error_notice( $aalb_template_upload_dir . " doesn't exist or is not writable. Please set up Read-Write permissions for <ApacheHomeFolder>/wordpress/wp-content/uploads/amazon-associates-link-builder/template/" );
+                    aalb_error_notice( "Failed to create custom template. Please set up recursive Read-Write permissions for " . $helper->aalb_get_uploads_dir_path() );
                 } else {
                     //Check if template of that name already exists
                     if ( in_array( $aalb_template_name, $aalb_template_names ) ) {
