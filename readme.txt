@@ -3,7 +3,7 @@ Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
 Tested up to: 4.8.0
-Stable tag: 1.4.5
+Stable tag: 1.4.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,11 @@ Amazon Product Advertising API credentials are not required to use the feature t
 
 == Changelog ==
 
+= 1.4.6 - June 21, 2017 =
+* Fix: Amazon logo appears too big in some editors.
+* Fix: Plugin doesn't work in some editors.
+* Fix: Custom template creation error message not correct.
+
 = 1.4.5 - June 13, 2017 =
 * Prime branding changes.
 * UI Change: Settings page revamped.
@@ -159,6 +164,10 @@ Amazon Product Advertising API credentials are not required to use the feature t
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.4.6 =
+Fix for the issue of big Amazon logo and plugin unusable in some editors.
+
 = 1.4.5 =
 Prime branding changes, feature to remove rel="noreferrer" from Amazon Affiliate links.
 
