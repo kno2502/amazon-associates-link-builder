@@ -3,7 +3,7 @@ Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
 Tested up to: 4.8.0
-Stable tag: 1.4.6
+Stable tag: 1.4.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,12 @@ Amazon Product Advertising API credentials are not required to use the feature t
 
 == Changelog ==
 
+= 1.4.7 - July 27, 2017 =
+* Fix: `Warning: DOMDocument::loadHTML(): Empty string supplied as input.`
+* Fix: Ad would not be rendered even if one ASIN has expired for any multi-ASIN shortcode.
+* Fix: Trailing and leading spaces in ProductLink & PriceLink Templates. This fix applies to the default templates only, and you may have to re-create any custom template based off the ProductLink and PriceLink templates to benefit from this change.
+* Fix: No Timeout for Product Search.
+
 = 1.4.6 - June 21, 2017 =
 * Fix: Amazon logo appears too big in some editors.
 * Fix: Plugin doesn't work in some editors.
@@ -164,6 +170,9 @@ Amazon Product Advertising API credentials are not required to use the feature t
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.4.7 =
+Fix for the issue of trailing spaces in a few deafult templates, failed rendering due to expired ASIN and other minor bug fixes.
 
 = 1.4.6 =
 Fix for the issue of big Amazon logo and plugin unusable in some editors.
