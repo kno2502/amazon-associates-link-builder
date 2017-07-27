@@ -94,7 +94,8 @@ class Aalb_Admin {
             'item_search_nonce' => wp_create_nonce( 'aalb-item-search-nonce' ),
             'AALB_SHORTCODE_AMAZON_LINK' => AALB_SHORTCODE_AMAZON_LINK,
             'AALB_SHORTCODE_AMAZON_TEXT' => AALB_SHORTCODE_AMAZON_TEXT,
-            'IS_PAAPI_CREDENTIALS_SET' =>  $this->aalb_is_paapi_credentials_set()
+            'IS_PAAPI_CREDENTIALS_SET' =>  $this->aalb_is_paapi_credentials_set(),
+            'WORDPRESS_REQUEST_TIMEOUT' => AALB_WORDPRESS_REQUEST_TIMEOUT
         );
     }
 
@@ -107,10 +108,11 @@ class Aalb_Admin {
      */
     private function get_aalb_strings() {
         return array(
-            "template_asin_error"       => "Only one product can be selected for template",
-            "no_asin_selected_error"    => "Please select at least one product for display",
-            "empty_product_search_bar"  => "Please Enter a Product Name ",
-            "short_code_create_failure" => "Failed to create Text Link shortcode. Editor has some text selected. Only one item can be selected while adding text links"
+            "template_asin_error"         => "Only one product can be selected for template",
+            "no_asin_selected_error"      => "Please select at least one product for display",
+            "empty_product_search_bar"    => "Please Enter a Product Name ",
+            "short_code_create_failure"   => "Failed to create Text Link shortcode. Editor has some text selected. Only one item can be selected while adding text links",
+            "paapi_request_timeout_error" => HTTP_TIME_OUT_MESSAGE
         );
     }
 

@@ -13,7 +13,7 @@ and limitations under the License.
 */
 
 //version
-define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.6' );
+define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.7' );
 
 //PHP version compatible for AALB plugin
 define('AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION','5.3.0');
@@ -180,6 +180,11 @@ define( 'PAAPI_SERVICE', 'AWSECommerceService' );
 define( 'PAAPI_VERSION', '2013-08-01' );
 define( 'PAAPI_URL_REGEX', '^https:\\/\\/(.*)\\/onca\\/xml\\?(.*)$' );
 
+define('PAAPI_INVALID_PARAMETER_VALUE_ERROR', 'AWS.InvalidParameterValue');
+
+// PAAPI Request Timeout in seconds
+define("PAAPI_REQUEST_TIMEOUT", 35);
+
 //HTTP Status Codes
 define( 'HTTP_SUCCESS', '200' );
 define( 'HTTP_SUCCESS_MESSAGE', '<h4>Request Successful</h4>' );
@@ -193,6 +198,8 @@ define( 'HTTP_INTERNAL_SERVER_ERROR', '500' );
 define( 'HTTP_INTERNAL_SERVER_ERROR_MESSAGE', '<h4>Internal server error</h4>' );
 define( 'HTTP_THROTTLE', '503' );
 define( 'HTTP_THROTTLE_MESSAGE', '<h4>You are submitting requests too quickly. Please retry your requests at a slower rate. For more information, see <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/TroubleshootingApplications.html#efficiency-guidelines" target="_blank">Efficiency Guidelines</a>.</h4>' );
+define( 'HTTP_TIME_OUT', '504' );
+define( 'HTTP_TIME_OUT_MESSAGE', '<h4>Request timed out. Try again after some time. Please check you network and firewall settings. If the error still persists, write to us at link-builder@amazon.com.</h4>' );
 
 /**
  * Cipher
@@ -240,19 +247,24 @@ define( 'UK', 'UK' );
 
 //Amazon URLs To be used in Aalb_Content_Filter.
 $AALB_AMAZON_DOMAINS = array(
-	'amazon\.com',
-	'amazon\.fr',
-	'amazon\.it',
-	'amazon\.de',
-	'amazon\.es',
-	'amazon\.com\.br',
-	'amazon\.ca',
-	'amazon\.cn',
-	'amazon\.in',
-	'amazon\.co\.jp',
-	'amazon\.com\.mx',
-	'amazon\.co\.uk',
-	'amzn\.to'
+    'amazon\.com',
+    'amazon\.fr',
+    'amazon\.it',
+    'amazon\.de',
+    'amazon\.es',
+    'amazon\.com\.br',
+    'amazon\.ca',
+    'amazon\.cn',
+    'amazon\.in',
+    'amazon\.co\.jp',
+    'amazon\.com\.mx',
+    'amazon\.co\.uk',
+    'amzn\.to'
 );
 
+//Wordpress Server Timeout in milliseconds
+define("AALB_WORDPRESS_REQUEST_TIMEOUT", 40000);
+
+//Curl Timeout Error String
+define('CURL_ERROR_TIMEOUT_STRING','cURL error 28');
 ?>

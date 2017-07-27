@@ -46,6 +46,13 @@ class Aalb_Content_Filter {
      */
 
     function filter( $content ) {
+        /**
+         *  To avoid "Warning: DOMDocument::loadHTML(): Empty string supplied as input".
+         *  Warning is not shown if content contains only whitespaces or/and newlines.
+        */
+        if( is_null( $content) || $content === "" ) {
+            return $content;
+        }
 
         $document = new DomDocument();
 

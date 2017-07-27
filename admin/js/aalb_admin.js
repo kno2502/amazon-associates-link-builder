@@ -185,68 +185,81 @@ function aalb_admin_popup_search_items() {
 function aalb_admin_get_item_search_items( keywords ) {
     marketplace = aalb_get_selected_marketplace();
     marketplace = marketplace ? marketplace : api_pref.marketplace;
-    jQuery.get( api_pref.ajax_url, {
-        "action": api_pref.action,
-        "item_search_nonce": api_pref.item_search_nonce,
-        "keywords": keywords,
-        "marketplace": marketplace,
-        "store_id": api_pref.store_id
-    }, function( xml ) {
-        var items_xml = jQuery( xml ).find( "Item" );
-        if ( items_xml.length > 0 ) {
-            var items = [];
-            var i = 0;
-            items_xml.each( function() {
-                //selecting maximum of max_search_result_items elements
-                if ( i < api_pref.max_search_result_items ) {
-                    var item = {};
-                    item.asin = jQuery( this ).find( "ASIN" ).text();
-                    item.title = jQuery( this ).find( "Title" ).text();
-                    item.image = jQuery( this ).find( "LargeImage" ).first().find( "URL" ).text();
-                    item.price = jQuery( this ).find( "LowestNewPrice" ).find( "FormattedPrice" ).text();
-                    items.push( item );
-                }
-                i++;
-            } );
-
-            var html = template( items );
-            jQuery( ".aalb-admin-item-search-items" ).append( html );
-            jQuery( "#aalb-admin-popup-more-results" ).attr( 'href', jQuery( xml ).find( "MoreSearchResultsUrl" ).text() );
-            jQuery( ".aalb-admin-item-search-loading" ).slideUp( "slow" );
-            jQuery( ".aalb-admin-item-search" ).fadeIn( "slow" );
-            jQuery( ".aalb-admin-item-search-items-item" ).on( "click", function() {
-
-                var data_asin = jQuery( this ).attr( "data-asin" );
-                //return on duplicate asin selected
-                if( !aalb_validate_asins( data_asin, 'add' ) ) {
-                    return;
-                }
-                var productImage = jQuery( this ).find( "img" ).attr( "src" );
-                var productTitle = jQuery( this ).find( "div.aalb-admin-item-search-items-item-title" ).text();
-                var productPrice = jQuery( this ).find( "div.aalb-admin-item-search-items-item-price" ).text();
-
-                var selectedAsinHTML = '<div class="aalb-selected-item" onclick="aalb_remove_asin(this)"';
-                selectedAsinHTML += ' data-asin="' + data_asin + '">';
-                selectedAsinHTML += '<div class="aalb-selected-item-img-wrap"><span class="aalb-selected-item-close">&times;</span>';
-                selectedAsinHTML += '<img class="aalb-selected-item-img" src="' + productImage + '"></img></div>';
-                selectedAsinHTML += '<div class="aalb-selected-item-title"><h3>' + productTitle + '</h3>';
-                selectedAsinHTML += '<p class="aalb-selected-item-price">' + productPrice + '<br></p></div>';
-
-                jQuery( ".aalb-selected" ).append( selectedAsinHTML );
-            } );
-        } else {
-            errors_xml = jQuery( xml ).find( "Error" );
-            if ( errors_xml.length > 0 ) {
-                var htmlerror = "";
-                errors_xml.each( function() {
-                    htmlerror += jQuery( this ).find( "Message" ).text() + "<br>";
+    jQuery.ajax({
+        url: api_pref.ajax_url,
+        type: 'GET',
+        data: {
+            "action": api_pref.action,
+            "item_search_nonce": api_pref.item_search_nonce,
+            "keywords": keywords,
+            "marketplace": marketplace,
+            "store_id": api_pref.store_id
+        },
+        success: function( xml ) {
+            var items_xml = jQuery( xml ).find( "Item" );
+            if ( items_xml.length > 0 ) {
+                var items = [];
+                var i = 0;
+                items_xml.each( function() {
+                    //selecting maximum of max_search_result_items elements
+                    if ( i < api_pref.max_search_result_items ) {
+                        var item = {};
+                        item.asin = jQuery( this ).find( "ASIN" ).text();
+                        item.title = jQuery( this ).find( "Title" ).text();
+                        item.image = jQuery( this ).find( "LargeImage" ).first().find( "URL" ).text();
+                        item.price = jQuery( this ).find( "LowestNewPrice" ).find( "FormattedPrice" ).text();
+                        items.push( item );
+                    }
+                    i++;
                 } );
-                jQuery( ".aalb-admin-item-search-loading" ).html( htmlerror );
+
+                var html = template( items );
+                jQuery( ".aalb-admin-item-search-items" ).append( html );
+                jQuery( "#aalb-admin-popup-more-results" ).attr( 'href', jQuery( xml ).find( "MoreSearchResultsUrl" ).text() );
+                jQuery( ".aalb-admin-item-search-loading" ).slideUp( "slow" );
+                jQuery( ".aalb-admin-item-search" ).fadeIn( "slow" );
+                jQuery( ".aalb-admin-item-search-items-item" ).on( "click", function() {
+
+                    var data_asin = jQuery( this ).attr( "data-asin" );
+                    //return on duplicate asin selected
+                    if( !aalb_validate_asins( data_asin, 'add' ) ) {
+                        return;
+                    }
+                    var productImage = jQuery( this ).find( "img" ).attr( "src" );
+                    var productTitle = jQuery( this ).find( "div.aalb-admin-item-search-items-item-title" ).text();
+                    var productPrice = jQuery( this ).find( "div.aalb-admin-item-search-items-item-price" ).text();
+
+                    var selectedAsinHTML = '<div class="aalb-selected-item" onclick="aalb_remove_asin(this)"';
+                    selectedAsinHTML += ' data-asin="' + data_asin + '">';
+                    selectedAsinHTML += '<div class="aalb-selected-item-img-wrap"><span class="aalb-selected-item-close">&times;</span>';
+                    selectedAsinHTML += '<img class="aalb-selected-item-img" src="' + productImage + '"></img></div>';
+                    selectedAsinHTML += '<div class="aalb-selected-item-title"><h3>' + productTitle + '</h3>';
+                    selectedAsinHTML += '<p class="aalb-selected-item-price">' + productPrice + '<br></p></div>';
+
+                    jQuery( ".aalb-selected" ).append( selectedAsinHTML );
+                } );
             } else {
-                jQuery( ".aalb-admin-item-search-loading" ).html( xml );
+                errors_xml = jQuery( xml ).find( "Error" );
+                if ( errors_xml.length > 0 ) {
+                    var htmlerror = "";
+                    errors_xml.each( function() {
+                        htmlerror += jQuery( this ).find( "Message" ).text() + "<br>";
+                    } );
+                    jQuery( ".aalb-admin-item-search-loading" ).html( htmlerror );
+                } else {
+                    jQuery( ".aalb-admin-item-search-loading" ).html( xml );
+                }
             }
-        }
-    } );
+        },
+        error: function( request, status ) {
+            if( status === "timeout" ) {
+                jQuery( ".aalb-admin-item-search-loading" ).html( aalb_strings.paapi_request_timeout_error );
+            } else {
+                jQuery( ".aalb-admin-item-search-loading" ).html( "An Error Occurred : " + status );
+            }
+        },
+        timeout: api_pref.WORDPRESS_REQUEST_TIMEOUT
+    });
     jQuery( "#aalb-add-shortcode-button" ).unbind().click( function() {
         var selectedAsins = aalb_get_selected_asins();
         var selected = aalb_get_selected_text_from_editor();

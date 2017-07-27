@@ -48,7 +48,7 @@ class Aalb_Remote_Loader {
      * @return string GET Response.
      */
     private function fetch( $url ) {
-        return wp_remote_get( $url );
+        return wp_remote_get( $url, array( 'timeout' => PAAPI_REQUEST_TIMEOUT ) );
     }
 
     /**
@@ -64,6 +64,9 @@ class Aalb_Remote_Loader {
     private function verify( $response ) {
         if ( is_wp_error( $response ) ) {
             $error_message = $response->get_error_message();
+            if( strpos ( $error_message, CURL_ERROR_TIMEOUT_STRING ) !== false ) {
+                throw new Exception( HTTP_TIME_OUT );
+            }
             throw new Exception( 'HTTP Request failed! ' . $error_message );
         }
         $code = $response['response']['code'];

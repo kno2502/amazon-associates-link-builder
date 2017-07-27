@@ -119,6 +119,8 @@ class Aalb_Paapi_Helper {
                 return HTTP_INTERNAL_SERVER_ERROR_MESSAGE;
             case HTTP_THROTTLE:
                 return HTTP_THROTTLE_MESSAGE;
+            case HTTP_TIME_OUT:
+                return HTTP_TIME_OUT_MESSAGE;
             default:
                 return $error;
         }

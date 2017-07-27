@@ -97,11 +97,24 @@ class Aalb_Template_Engine {
             throw new Exception( 'Failed Loading XML' );
         }
 
-        if ( isset( $xml->Items->Request->Errors->Error ) ) {
+        if ( $this->should_not_render_xml( $xml ) ) {
             throw new Exception( $xml->Items->Request->Errors->Error->Code );
         }
 
         return $xml;
+    }
+
+    /**
+     * Whether to allow xml to be rendered
+     *
+     * @since 1.4.7
+     *
+     * @param SimpleXMLElement $xml Well-formed XML string
+     *
+     * @return boolean
+     */
+    private function should_not_render_xml( $xml ) {
+        return isset( $xml->Items->Request->Errors->Error )  && !( $xml->Items->Request->Errors->Error->Code == PAAPI_INVALID_PARAMETER_VALUE_ERROR && isset( $xml->Items->Item ) );
     }
 
     /**
