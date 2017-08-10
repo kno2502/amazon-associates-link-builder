@@ -1,6 +1,6 @@
 <!-- Ad Template with Carousel Layout-->
 {{#Items}} <!--Section tag for iterating through the list of items-->
-<div class="aalb-pc-ad-unit" id="{{ID}}">
+<div class="aalb-product-carousel-unit" id="{{ID}}">
   <h2 class="aalb-pc-ad-header">{{#AalbHeader}}{{#MarketplaceUS}}Products from Amazon.com{{/MarketplaceUS}}{{#MarketplaceFR}}Produits disponibles sur Amazon.fr  {{/MarketplaceFR}}{{#MarketplaceIT}}Acquista su Amazon.it{{/MarketplaceIT}}{{#MarketplaceDE}}Produkte von Amazon.de{{/MarketplaceDE}}{{#MarketplaceES}}Producto disponible en Amazon.es{{/MarketplaceES}}{{#MarketplaceBR}}Products from Amazon.com.br{{/MarketplaceBR}}{{#MarketplaceCA}}Products from Amazon.ca{{/MarketplaceCA}}{{#MarketplaceCN}}Products from Amazon.cn{{/MarketplaceCN}}{{#MarketplaceIN}}Products from Amazon.in{{/MarketplaceIN}}{{#MarketplaceJP}}Products from Amazon.co.jp{{/MarketplaceJP}}{{#MarketplaceMX}}Products from Amazon.com.mx{{/MarketplaceMX}}{{#MarketplaceUK}}Products from Amazon.co.uk{{/MarketplaceUK}}{{/AalbHeader}}</h2> <!-- Title of the ad localized according to the marketplace picked from the AalbHeader tag-->
     <div class="aalb-pc-wrapper">
       <div class="aalb-pc-product-container">
@@ -61,7 +61,7 @@
         productMargin   : 20
     };
 
-    var $adUnits = jQuery('.aalb-pc-ad-unit');
+    var $adUnits = jQuery('.aalb-product-carousel-unit');
     $adUnits.each(function() {
         var $adUnit           = jQuery(this),
             $wrapper          = $adUnit.find('.aalb-pc-wrapper'),

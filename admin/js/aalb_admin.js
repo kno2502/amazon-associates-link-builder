@@ -30,9 +30,8 @@ jQuery( document ).ready( function() {
     jQuery( "#aalb-admin-popup-content" ).data( 'old-state', jQuery( "#aalb-admin-popup-content" ).html() );
 
     //Load the search result template
-    jQuery.get( api_pref.template_url, function( data ) {
-        template = Handlebars.compile( data );
-    } );
+    var aalb_hbs_admin_items_search_source  = jQuery( "#aalb-hbs-admin-items-search" ).html();
+    template = Handlebars.compile( aalb_hbs_admin_items_search_source );
 
     //Resize thickbox on window resize
     jQuery( window ).on( 'resize', resize_thickbox );

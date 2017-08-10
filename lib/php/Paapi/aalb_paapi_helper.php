@@ -122,7 +122,12 @@ class Aalb_Paapi_Helper {
             case HTTP_TIME_OUT:
                 return HTTP_TIME_OUT_MESSAGE;
             default:
-                return $error;
+                /**
+                 * <h4> tag ensures that the message is treated as HTML element in jQuery.find in aalb_admin.js.
+                 * Otherwise due to the error message string's characters like "!,:,etc", string is parsed as
+                 * if it contains partial css classes and later given syntax error
+                */
+                return '<h4>'.$error.'</h4>';
         }
     }
 

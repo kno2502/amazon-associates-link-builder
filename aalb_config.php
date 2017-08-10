@@ -13,7 +13,7 @@ and limitations under the License.
 */
 
 //version
-define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.7' );
+define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.8' );
 
 //PHP version compatible for AALB plugin
 define('AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION','5.3.0');
@@ -109,7 +109,7 @@ define( 'AALB_TEMPLATE_JS', AALB_PLUGIN_URL . 'admin/sidebar/js/aalb_template.js
 define( 'AALB_CREDENTIALS_JS', AALB_PLUGIN_URL . 'admin/sidebar/js/aalb_credentials.js' );
 
 //Templates
-define( 'AALB_ADMIN_ITEM_SEARCH_ITEMS_URL', AALB_PLUGIN_URL . 'aalb_admin_item_search_items.hbs?ver=' . AALB_PLUGIN_CURRENT_VERSION );
+define( 'AALB_ADMIN_ITEM_SEARCH_ITEMS_PATH', AALB_PLUGIN_DIR . 'aalb_admin_item_search_items.php' );
 
 //External Scripts
 define( 'HANDLEBARS_JS', 'https://d8fd03967nrad.cloudfront.net/libs/handlebars.js/4.0.5/handlebars.min.js' );

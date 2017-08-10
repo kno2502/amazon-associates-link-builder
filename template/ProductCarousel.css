@@ -1,17 +1,17 @@
-.aalb-pc-ad-unit {
+.aalb-product-carousel-unit {
     /*Enable this border property to have a border around the ad unit*/
     /*border: 1px solid #d4d4c4;*/
     background: #ffffff;
 }
 
 /* Actual styles start below */
-.aalb-pc-ad-unit {
+.aalb-product-carousel-unit {
     position: relative;
     overflow: hidden;
     padding: 22px 40px;
 }
 
-.aalb-pc-ad-unit * {
+.aalb-product-carousel-unit * {
     box-sizing: content-box;
     box-shadow: none;
     font-family: Arial, Helvetica, sans-serif;
@@ -28,27 +28,27 @@
     padding-top: 0;
 }
 
-.aalb-pc-ad-unit.pull-left {
+.aalb-product-carousel-unit.pull-left {
     float: left;
 }
 
-.aalb-pc-ad-unit.pull-right {
+.aalb-product-carousel-unit.pull-right {
     float: right;
 }
 
-.aalb-pc-ad-unit.pull-left .aalb-pc-product, .aalb-pc-ad-unit.pull-right .aalb-pc-product {
+.aalb-product-carousel-unit.pull-left .aalb-pc-product, .aalb-product-carousel-unit.pull-right .aalb-pc-product {
     width: 185px !important;
 }
 
-.aalb-pc-ad-unit a {
+.aalb-product-carousel-unit a {
     box-shadow: none !important;
 }
 
-.aalb-pc-ad-unit a:hover {
+.aalb-product-carousel-unit a:hover {
     color: #c45500;
 }
 
-.aalb-pc-ad-unit .aalb-pc-ad-header {
+.aalb-product-carousel-unit .aalb-pc-ad-header {
     padding-left: 3px;
     padding-bottom: 9px;
     font-size: 17px;
@@ -56,13 +56,13 @@
     color: #111111;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-list {
+.aalb-product-carousel-unit .aalb-pc-product-list {
     /* Remove the border-top to remove the horizontal line after the Ad Header*/
     border-top: 2px solid #f7f7f7;
     overflow: hidden;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product {
+.aalb-product-carousel-unit .aalb-pc-product {
     min-width: 185px;
     max-width: 385px;
     height: auto !important;
@@ -75,7 +75,7 @@
     text-align: center;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-image {
+.aalb-product-carousel-unit .aalb-pc-product-image {
     display: table;
     width: 150px;
     height: 150px;
@@ -83,24 +83,24 @@
     text-align: center;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-image-wrapper {
+.aalb-product-carousel-unit .aalb-pc-product-image-wrapper {
     display: table-cell;
     vertical-align: middle;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-image a {
+.aalb-product-carousel-unit .aalb-pc-product-image a {
     position: relative;
     display: inline-block;
     vertical-align: middle;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-image img {
+.aalb-product-carousel-unit .aalb-pc-product-image img {
     max-width: 150px;
     max-height: 150px;
     vertical-align: bottom;
 }
 
-.aalb-pc-ad-unit .aalb-pc-percent-off {
+.aalb-product-carousel-unit .aalb-pc-percent-off {
     display: block;
     width: 32px;
     height: 27px;
@@ -120,18 +120,18 @@
     background-image: linear-gradient(to bottom, #cb0400, #a50200);
 }
 
-.aalb-pc-ad-unit.hide-percent-off-badge .aalb-pc-percent-off {
+.aalb-product-carousel-unit.hide-percent-off-badge .aalb-pc-percent-off {
     display: none;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-details {
+.aalb-product-carousel-unit .aalb-pc-product-details {
     display: inline-block;
     max-width: 100%;
     margin-top: 11px;
     text-align: left;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-title a {
+.aalb-product-carousel-unit .aalb-pc-product-title a {
     display: block;
     width: 100%;
     overflow: hidden;
@@ -142,31 +142,31 @@
     text-decoration: none;
 }
 
-.aalb-pc-ad-unit.no-truncate .aalb-pc-product-title a {
+.aalb-product-carousel-unit.no-truncate .aalb-pc-product-title a {
     text-overflow: initial;
     white-space: initial;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-offer-price {
+.aalb-product-carousel-unit .aalb-pc-product-offer-price {
     font-size: 13px;
     color: #111111;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-offer-price-value {
+.aalb-product-carousel-unit .aalb-pc-product-offer-price-value {
     color: #AB1700;
     font-weight: bold;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-list-price {
+.aalb-product-carousel-unit .aalb-pc-product-list-price {
     font-size: 13px;
     color: #565656;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-list-price-value {
+.aalb-product-carousel-unit .aalb-pc-product-list-price-value {
     text-decoration: line-through;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-prime-icon .icon-prime-all {
+.aalb-product-carousel-unit .aalb-pc-product-prime-icon .icon-prime-all {
     background: url("https://images-na.ssl-images-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-sprite_2x_weblab_AUI_100106_T1-4e9f4ae74b1b576e5f55de370aae7aedaedf390d._V2_.png") no-repeat;
     display: inline-block;
     margin-top: -1px;
@@ -177,15 +177,15 @@
     height: 15px;
 }
 
-.aalb-pc-ad-unit .aalb-pc-product-offer-price,
-.aalb-pc-ad-unit .aalb-pc-product-list-price,
-.aalb-pc-ad-unit .aalb-pc-product-prime-icon {
+.aalb-product-carousel-unit .aalb-pc-product-offer-price,
+.aalb-product-carousel-unit .aalb-pc-product-list-price,
+.aalb-product-carousel-unit .aalb-pc-product-prime-icon {
     display: inline-block;
     margin-right: 2px;
 }
 
-.aalb-pc-ad-unit .aalb-pc-btn-prev,
-.aalb-pc-ad-unit .aalb-pc-btn-next {
+.aalb-product-carousel-unit .aalb-pc-btn-prev,
+.aalb-product-carousel-unit .aalb-pc-btn-next {
     position: absolute;
     top: 50%;
     margin-top: -52px;
@@ -205,24 +205,24 @@
     box-shadow: 0 0 4px #e9e9e9;
 }
 
-.aalb-pc-ad-unit .aalb-pc-btn-prev:hover,
-.aalb-pc-ad-unit .aalb-pc-btn-next:hover {
+.aalb-product-carousel-unit .aalb-pc-btn-prev:hover,
+.aalb-product-carousel-unit .aalb-pc-btn-next:hover {
     color: #999999;
 }
 
-.aalb-pc-ad-unit .aalb-pc-btn-prev:focus,
-.aalb-pc-ad-unit .aalb-pc-btn-next:focus {
+.aalb-product-carousel-unit .aalb-pc-btn-prev:focus,
+.aalb-product-carousel-unit .aalb-pc-btn-next:focus {
     outline: none;
 }
 
-.aalb-pc-ad-unit .aalb-pc-btn-prev {
+.aalb-product-carousel-unit .aalb-pc-btn-prev {
     left: 0;
     border-left: 0;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
 }
 
-.aalb-pc-ad-unit .aalb-pc-btn-next {
+.aalb-product-carousel-unit .aalb-pc-btn-next {
     right: 0;
     border-right: 0;
     border-top-left-radius: 20px;
@@ -230,7 +230,7 @@
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .aalb-pc-ad-unit .aalb-pc-product-prime-icon .icon-prime-all {
+    .aalb-product-carousel-unit .aalb-pc-product-prime-icon .icon-prime-all {
         background: url("https://images-na.ssl-images-amazon.com/images/G/01/AUIClients/AmazonUIBaseCSS-sprite_2x_weblab_AUI_100106_T1-4e9f4ae74b1b576e5f55de370aae7aedaedf390d._V2_.png") no-repeat;
         display: inline-block;
         margin-top: -1px;

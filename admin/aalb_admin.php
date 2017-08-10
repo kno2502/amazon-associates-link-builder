@@ -85,7 +85,6 @@ class Aalb_Admin {
      */
     private function get_paapi_pref() {
         return array(
-            'template_url' => AALB_ADMIN_ITEM_SEARCH_ITEMS_URL,
             'max_search_result_items' => AALB_MAX_SEARCH_RESULT_ITEMS,
             'store_id' => get_option( AALB_DEFAULT_STORE_ID ),
             'marketplace' => get_option( AALB_DEFAULT_MARKETPLACE ),

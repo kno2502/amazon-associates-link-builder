@@ -18,6 +18,9 @@ and limitations under the License.
  * details selected by plugin user short code is generated.
  */
 
+// HandleBar template
+include AALB_ADMIN_ITEM_SEARCH_ITEMS_PATH;
+
 $aalb_template_names = get_option( AALB_TEMPLATE_NAMES );
 $config_loader = new Aalb_Config_Loader();
 $aalb_marketplace_names = $config_loader->fetch_marketplaces();
