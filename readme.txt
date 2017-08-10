@@ -2,8 +2,8 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.8.0
-Stable tag: 1.4.7
+Tested up to: 4.8.1
+Stable tag: 1.4.8
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,11 @@ Amazon Product Advertising API credentials are not required to use the feature t
 
 == Changelog ==
 
+= 1.4.8 - August 10, 2017 =
+* Improvement in error display message on product search.
+* Fix: HandleBar template not being loaded for a few users on product search.
+
+
 = 1.4.7 - July 27, 2017 =
 * Fix: `Warning: DOMDocument::loadHTML(): Empty string supplied as input.`
 * Fix: Ad would not be rendered even if one ASIN has expired for any multi-ASIN shortcode.
@@ -170,6 +175,9 @@ Amazon Product Advertising API credentials are not required to use the feature t
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.4.8 =
+Improvement in error display message on product search, fix for the issue of handleBar template not being loaded for a few users on product search and other minor bug fixes.
 
 = 1.4.7 =
 Fix for the issue of trailing spaces in a few deafult templates, failed rendering due to expired ASIN and other minor bug fixes.
