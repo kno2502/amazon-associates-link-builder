@@ -107,11 +107,13 @@ class Aalb_Admin {
      */
     private function get_aalb_strings() {
         return array(
-            "template_asin_error"         => "Only one product can be selected for template",
-            "no_asin_selected_error"      => "Please select at least one product for display",
-            "empty_product_search_bar"    => "Please Enter a Product Name ",
-            "short_code_create_failure"   => "Failed to create Text Link shortcode. Editor has some text selected. Only one item can be selected while adding text links",
-            "paapi_request_timeout_error" => HTTP_TIME_OUT_MESSAGE
+            "template_asin_error"         => esc_html__( "Only one product can be selected for this template", 'amazon-associates-link-builder' ),
+            "no_asin_selected_error"      => esc_html__( "Please select at least one product for display", 'amazon-associates-link-builder' ),
+            "empty_product_search_bar"    => esc_html__( "Please Enter a Product Name ", 'amazon-associates-link-builder' ),
+            "short_code_create_failure"   => esc_html__( "Failed to create Text Link shortcode. Editor has some text selected. Only one item can be selected while adding text links", 'amazon-associates-link-builder' ),
+            /* translators: %s: Email-id of the support */
+            "paapi_request_timeout_error" => sprintf( esc_html__( "Request timed out. Try again after some time. Please check your network and firewall settings. If the error still persists, write to us at %s.", 'amazon-associates-link-builder' ), AALB_SUPPORT_EMAIL_ID ),
+            "add_aalb_shortcode"          => esc_html__( "Add Amazon Associates Link Builder Shortcode", 'amazon-associates-link-builder' )
         );
     }
 
@@ -240,7 +242,7 @@ class Aalb_Admin {
             $real_mustache_file = realpath( $mustache_file );
             if ( $real_css_file === false || $real_mustache_file === false || strpos( $real_css_file, $base_path ) !== 0 || strpos( $real_mustache_file, $base_path ) !== 0 ) {
                 //If base path is not a prefix of the realpath, this means that a directry traversal was attempted
-                die( 'Not authorised to make request template content or Directory Traversal Attempted.' );
+                die( esc_html__( "Not authorised to make request template content or Directory Traversal Attempted.", 'amazon-associates-link-builder' ) );
             } else {
                 //No vulnerability. Get file contents.
                 $css_file_content = $wp_filesystem->get_contents( $css_file );
@@ -250,7 +252,7 @@ class Aalb_Admin {
                 echo json_encode( $response );
             }
         } else {
-            die( 'Not authorised to make request' );
+            die( esc_html__( 'Not authorised to make request', 'amazon-associates-link-builder' ) );
         }
         wp_die();
     }

@@ -7,7 +7,7 @@
 /*
 Plugin Name: Amazon Associates Link Builder
 Description: Amazon Associates Link Builder is the official free Amazon Associates Program plugin for WordPress. The plugin enables you to search for products in the Amazon catalog, access real-time price and availability information, and easily create links in your posts to products on Amazon.com. You will be able to generate text links, create custom ad units, or take advantage of out-of-the-box widgets that we’ve designed and included with the plugin.
-Version: 1.4.8
+Version: 1.4.9
 Author: Amazon Associates Program
 Author URI: https://affiliate-program.amazon.com/
 License: GPLv2
@@ -36,9 +36,9 @@ require_once( plugin_dir_path( __FILE__ ) . 'aalb_config.php' );
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'aalb_add_action_links' );
 function aalb_add_action_links( $links ) {
     $mylinks = array(
-        '<a href="' . admin_url( 'admin.php?page=associates-link-builder-about' ) . '">About</a>',
-        '<a href="' . admin_url( 'admin.php?page=associates-link-builder-settings' ) . '">Settings</a>',
-        '<a href="' . admin_url( 'admin.php?page=associates-link-builder-templates' ) . '">Templates</a>',
+        '<a href="' . admin_url( 'admin.php?page=associates-link-builder-about' ) . '">' . esc_html__( "About", 'amazon-associates-link-builder' ) . '</a>',
+        '<a href="' . admin_url( 'admin.php?page=associates-link-builder-settings' ) . '">' . esc_html__( "Settings", 'amazon-associates-link-builder' ) . '</a>',
+        '<a href="' . admin_url( 'admin.php?page=associates-link-builder-templates' ) . '">' . esc_html__( "Templates", 'amazon-associates-link-builder' ) . '</a>',
     );
 
     return array_merge( $links, $mylinks );

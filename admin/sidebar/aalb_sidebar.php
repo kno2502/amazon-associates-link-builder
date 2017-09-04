@@ -28,11 +28,15 @@ class Aalb_Sidebar {
      * @since 1.0.0
      */
     public function register_sidebar_config_page() {
+        $plugin_title_string = esc_html__( "Associates Link Builder", 'amazon-associates-link-builder' );
         // Create new top-level menu
-        add_menu_page( AALB_PROJECT_TITLE, AALB_PROJECT_TITLE, 'manage_options', 'associates-link-builder-about', array( $this, 'about_callback' ), AALB_ICON );
-        add_submenu_page( 'associates-link-builder-about', 'Configure ' . AALB_PROJECT_TITLE . ' About', 'About', 'manage_options', 'associates-link-builder-about', array( $this, 'about_callback' ) );
-        add_submenu_page( 'associates-link-builder-about', 'Configure ' . AALB_PROJECT_TITLE . ' Settings', 'Settings', 'manage_options', 'associates-link-builder-settings', array( $this, 'settings_callback' ) );
-        add_submenu_page( 'associates-link-builder-about', 'Configure ' . AALB_PROJECT_TITLE . ' Templates', 'Templates', 'manage_options', 'associates-link-builder-templates', array( $this, 'templates_callback' ) );
+        add_menu_page( $plugin_title_string, $plugin_title_string, 'manage_options', 'associates-link-builder-about', array( $this, 'about_callback' ), AALB_ICON );
+        /* translators: %s: Name of plugin */
+        add_submenu_page( 'associates-link-builder-about', sprintf( esc_html__( "Configure %s About", 'amazon-associates-link-builder' ), $plugin_title_string ), esc_html__( "About", 'amazon-associates-link-builder' ), 'manage_options', 'associates-link-builder-about', array( $this, 'about_callback' ) );
+        /* translators: %s: Name of plugin */
+        add_submenu_page( 'associates-link-builder-about', sprintf( esc_html__( "Configure %s Settings", 'amazon-associates-link-builder' ), $plugin_title_string ), esc_html__( "Settings", 'amazon-associates-link-builder' ), 'manage_options', 'associates-link-builder-settings', array( $this, 'settings_callback' ) );
+        /* translators: %s: Name of plugin */
+        add_submenu_page( 'associates-link-builder-about', sprintf( esc_html__( "Configure %s Templates", 'amazon-associates-link-builder' ), $plugin_title_string ), esc_html__( "Templates", 'amazon-associates-link-builder' ), 'manage_options', 'associates-link-builder-templates', array( $this, 'templates_callback' ) );
     }
 
     /**

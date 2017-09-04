@@ -140,7 +140,8 @@ class Aalb_Shortcode_Helper {
                 //Drop Invalid ASIN out of list of asins
                 $asins_array = array_diff( $asins_array, array( $asin ) );
                 //Show error message regarding incorrect asin in preview mode only
-                $this->helper->show_error_in_preview( "The ASIN: '" . $asin . "' is invalid." );
+                /* translators: %s: Invalid ASIN name */
+                $this->helper->show_error_in_preview( sprintf( esc_html__( "The ASIN: %s is invalid.", 'amazon-associates-link-builder' ), $asin ) );
             }
         }
 
@@ -163,7 +164,8 @@ class Aalb_Shortcode_Helper {
             //Return Default template in case of invalid template name
             $validated_template = get_option( AALB_DEFAULT_TEMPLATE );
             //Show error message regarding incorrect asin in preview mode only
-            $this->helper->show_error_in_preview( "The template: '" . $template . "' is invalid. Using default template '" . $validated_template . "'." );
+            /* translators: 1: Invalid template name 2: Valid template name */
+            $this->helper->show_error_in_preview( sprintf( esc_html__( "The template: %1s is invalid. Using default template %2s.", 'amazon-associates-link-builder' ), $template, $validated_template ) );
         }
 
         return $validated_template;
@@ -185,7 +187,8 @@ class Aalb_Shortcode_Helper {
             //Return Default store id in case of invalid store id
             $validated_store_id = get_option( AALB_DEFAULT_STORE_ID, AALB_DEFAULT_STORE_ID_NAME );
             //Show error message regarding incorrect asin in preview mode only
-            $this->helper->show_error_in_preview( "The Associate tag '" . $store_id . "' is not present in the list of valid tags. Associate tag has been updated to '" . $validated_store_id . "'. Please check your Associate tag selection or contact the administrator to add a new tag." );
+            /* translators: 1: Invalid associate id 2: Valid associate id */
+            $this->helper->show_error_in_preview( sprintf( esc_html__( "The Associate tag %1s is not present in the list of valid tags. Associate tag has been updated to %2s. Please check your Associate tag selection or contact the administrator to add a new tag.", 'amazon-associates-link-builder' ), $store_id, $validated_store_id ) );
         }
 
         return $validated_store_id;

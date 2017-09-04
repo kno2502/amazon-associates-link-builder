@@ -15,19 +15,23 @@ and limitations under the License.
 //some commonly used UI functionality
 
 function aalb_info_notice( $message ) {
-    echo "<div class=\"notice notice-info is-dismissible\"><p>INFO - " . $message . "</p></div>";
+    /* translators: %s: Information message */
+    echo "<div class=\"notice notice-info is-dismissible\"><p>" . sprintf( esc_html__( "INFO - %s", 'amazon-associates-link-builder' ), $message ) . "</p></div>";
 }
 
 function aalb_warning_notice( $message ) {
-    echo "<div class=\"notice notice-warning\"><p>WARNING - " . $message . "</p></div>";
+    /* translators: %s: Warning message */
+    echo "<div class=\"notice notice-warning\"><p>" . sprintf( esc_html__( "WARNING - %s", 'amazon-associates-link-builder' ), $message ) . "</p></div>";
 }
 
 function aalb_error_notice( $message ) {
-    echo "<div class=\"notice notice-error\"><p>ERROR - " . $message . "</p></div>";
+    /* translators: %s: Error message */
+    echo "<div class=\"notice notice-error\"><p>" . sprintf( esc_html__( "ERROR - %s", 'amazon-associates-link-builder' ), $message ) . "</p></div>";
 }
 
 function aalb_success_notice( $message ) {
-    echo "<div class=\"notice notice-success is-dismissible\"><p>SUCCESS - " . $message . "</p></div>";
+    /* translators: %s: Success message */
+    echo "<div class=\"notice notice-success\"><p>" . sprintf( esc_html__( "SUCCESS - %s", 'amazon-associates-link-builder' ), $message ) . "</p></div>";
 }
 
 ?>

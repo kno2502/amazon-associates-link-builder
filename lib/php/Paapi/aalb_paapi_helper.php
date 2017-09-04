@@ -110,17 +110,21 @@ class Aalb_Paapi_Helper {
     function get_error_message( $error ) {
         switch ( $error ) {
             case HTTP_BAD_REQUEST:
-                return HTTP_BAD_REQUEST_MESSAGE;
+                /* translators: 1: URL of Associate sign-up page  2: _blank  3:URL of adding secondary user page  4: _blank */
+                return '<h4>' . sprintf( __( "Your AWS Access Key Id is not registered as an Amazon Associate. Please verify that you are <a href=%1s target=%2s>registered as an Amazon Associate</a> in respective locale and you added the email address registered for the Product Advertising API as a <a href=%3s target=%4s>secondary email address in your Amazon Associates account</a>.", 'amazon-associates-link-builder' ), AALB_ASSOCIATE_SIGN_UP_URL, AALB_NEW_PAGE_TARGET, AALB_ADDING_SECONDARY_USER_AC_URL, AALB_NEW_PAGE_TARGET ) . '</h4>';
             case HTTP_FORBIDDEN:
-                return HTTP_FORBIDDEN_MESSAGE;
+                /* translators: 1: URL of PA-API sign-up page  2: _blank */
+                return '<h4>' . sprintf( __( "Your AccessKey Id is not registered for Product Advertising API. Please sign up for Product Advertising API by <a href=%1s target=%2s>following these guidelines</a>.", 'amazon-associates-link-builder' ), AALB_PAAPI_SIGN_UP_URL, AALB_NEW_PAGE_TARGET ) . '</h4>';
             case HTTP_REQUEST_URI_TOO_LONG:
-                return HTTP_REQUEST_URI_TOO_LONG_MESSAGE;
+                return '<h4>' . sprintf( __( "Your AccessKey Id is not registered for Product Advertising API. Please sign up for Product Advertising API by <a href=%1s target=%2s>following these guidelines</a>.", 'amazon-associates-link-builder' ), AALB_PAAPI_SIGN_UP_URL, AALB_NEW_PAGE_TARGET ) . '</h4>';
             case HTTP_INTERNAL_SERVER_ERROR:
-                return HTTP_INTERNAL_SERVER_ERROR_MESSAGE;
+                return '<h4>' . esc_html__( "Internal server error", 'amazon-associates-link-builder' ) . '</h4>';
             case HTTP_THROTTLE:
-                return HTTP_THROTTLE_MESSAGE;
+                /* translators: 1: URL of PA-API efficiency guidelines page  2: _blank */
+                return '<h4>' . sprintf( __( "You are submitting requests too quickly. Please retry your requests at a slower rate. For more information, see <a href=%1s target=%2s>Efficiency Guidelines</a>.", 'amazon-associates-link-builder' ), AALB_PAAPI_EFFICIENCY_GUIDELINES_URL, AALB_NEW_PAGE_TARGET ) . '</h4>';
             case HTTP_TIME_OUT:
-                return HTTP_TIME_OUT_MESSAGE;
+                /* translators: %s: Email-id of the support */
+                return '<h4>' . sprintf( __( "Request timed out. Try again after some time. Please check you network and firewall settings. If the error still persists, write to us at %s.", 'amazon-associates-link-builder' ), AALB_SUPPORT_EMAIL_ID ) . '</h4>';
             default:
                 /**
                  * <h4> tag ensures that the message is treated as HTML element in jQuery.find in aalb_admin.js.

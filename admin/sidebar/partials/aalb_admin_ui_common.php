@@ -24,7 +24,7 @@ if ( ! is_ssl() ) {
     //action when page is NOT using SSL
     if ( ! get_option( AALB_SHOW_HTTP_WARNING_ONCE ) ) {
         // This info message is showed only once.
-        aalb_info_notice( 'We <b>recommend</b> using HTTPs connection for improved security.' );
+        aalb_info_notice( __( "We <b>recommend</b> using HTTPs connection for improved security.", 'amazon-associates-link-builder' ) );
         update_option( AALB_SHOW_HTTP_WARNING_ONCE, true );
     }
 }

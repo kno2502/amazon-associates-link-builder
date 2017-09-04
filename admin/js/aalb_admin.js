@@ -61,7 +61,7 @@ jQuery( document ).ready( function() {
         var aalb_add_short_code_button = jQuery( '#aalb-add-shortcode-button' );
         //checking for user selected template and number of products selected by user
         if( ( selected_products > 1 ) && SINGLE_ASIN_TEMPLATE[ user_selected_template ] ) {
-            jQuery( '#aalb-add-template-asin-error' ).text( aalb_strings.template_asin_error + ' ' + user_selected_template );
+            jQuery( '#aalb-add-template-asin-error' ).text( aalb_strings.template_asin_error );
             aalb_add_short_code_button.prop( 'disabled', true );
 
         } else {
@@ -141,7 +141,7 @@ function aalb_admin_show_create_shortcode_popup( search_button ) {
     var search_keywords = editor_selected_text || editor_search_box_input.val();
     if ( search_keywords ) {
 
-        tb_show( 'Add Amazon Associates Link Builder Shortcode', '#TB_inline?inlineId=aalb-admin-popup-container', false );
+        tb_show( aalb_strings.add_aalb_shortcode, '#TB_inline?inlineId=aalb-admin-popup-container', false );
         resize_thickbox();
 
         // Getting the ItemSearch results
@@ -489,7 +489,7 @@ function aalb_validate_asins( asin, action ) {
     if( ( !template_asin_error ) ) {
         aalb_reset_add_short_button_and_error_warnings();
     } else {
-        jQuery( '#aalb-add-template-asin-error' ).text( aalb_strings.template_asin_error + ' ' + selected_template );
+        jQuery( '#aalb-add-template-asin-error' ).text( aalb_strings.template_asin_error );
         aalb_add_short_code_button.prop( 'disabled', true );
     }
     return true;

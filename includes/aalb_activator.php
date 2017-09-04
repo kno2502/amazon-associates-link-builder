@@ -63,6 +63,9 @@ class Aalb_Activator {
      * @since 1.4.3
      */
     private function halt_activation() {
+        /* This string runs when plugin is not activated & so translation function will not translate it.
+        ** So skipping it to put under translator function.
+        */
         exit(sprintf('<span style="color:red;">%s plugin requires PHP Version %s or higher. You’re still on %s.</span>', AALB_PLUGIN_NAME, AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION, phpversion()));
     }
 

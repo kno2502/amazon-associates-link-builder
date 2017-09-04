@@ -12,7 +12,7 @@ and limitations under the License.
 -->
 
 <?php
-$aalb_settings_page_url = admin_url( 'admin.php?page=associates-link-builder-settings' ) ;
+$aalb_settings_page_url = admin_url( 'admin.php?page=associates-link-builder-settings' );
 $aalb_admin = new Aalb_Admin();
 $aalb_admin->aalb_enqueue_styles();
 $aalb_admin->aalb_enqueue_scripts();
@@ -25,14 +25,16 @@ $aalb_admin->aalb_enqueue_scripts();
 -->
 
 <div class="aalb-admin-inline aalb-admin-searchbox">
-    <span class="aalb-admin-searchbox-tooltip-disabled">Please configure your PA-API credentials in the <a href= <?php echo $aalb_settings_page_url ?> >Settings Page</a> to use the Link Builder features.
+    <span class="aalb-admin-searchbox-tooltip-disabled"><?php
+        /* translators: %s: URL of settings page */
+        printf( __( "Please configure your PA-API credentials in the  <a href=%s>Settings Page</a> to use the Link Builder features.", 'amazon-associates-link-builder' ), $aalb_settings_page_url ); ?>
     </span>
     <img src=<?= AALB_ADMIN_ICON ?> class="aalb-admin-searchbox-amzlogo">
     <input type="text" class="aalb-admin-input-search"
         name="aalb-admin-input-search"
-        placeholder="Enter keyword(s)"
-        onkeypress='aalb_submit_event(event,"aalb-admin-button-create-amazon-shortcode",this)'/>
-    <a class="button aalb-admin-button-create-amazon-shortcode" title="Add Amazon Associates Link Builder Shortcode"
-        onclick="aalb_admin_show_create_shortcode_popup(this)">Search
+        placeholder="<?php esc_attr_e( "Enter keyword(s)", 'amazon-associates-link-builder' ) ?>"
+        onkeypress='aalb_submit_event(event,"aalb-admin-button-create-amazon-shortcode",this)' />
+    <a class="button aalb-admin-button-create-amazon-shortcode" title="<?php esc_attr_e( "Add Amazon Associates Link Builder Shortcode", 'amazon-associates-link-builder' ) ?>"
+        onclick="aalb_admin_show_create_shortcode_popup(this)"><?php esc_html_e( "Search", 'amazon-associates-link-builder' ) ?>
     </a>
 </div>

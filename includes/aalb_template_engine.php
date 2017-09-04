@@ -94,6 +94,7 @@ class Aalb_Template_Engine {
         $xml = simplexml_load_string( $xml_string );
 
         if ( $xml === false ) {
+            //Don't translate as this is also dumped in error logs and will facilitate AALB team to debug
             throw new Exception( 'Failed Loading XML' );
         }
 

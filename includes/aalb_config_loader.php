@@ -61,6 +61,7 @@ class Aalb_Config_Loader {
     private function parse_json( $json_body ) {
         $body = json_decode( $json_body, true );
         if ( json_last_error() !== JSON_ERROR_NONE ) {
+            //Don't translate as this is also dumped in error logs and will facilitate AALB team to debug
             throw new Exception( 'Invalid Json returned by server' . json_last_error() );
         }
         $marketplaces_info = $body['Local']['Marketplace'];

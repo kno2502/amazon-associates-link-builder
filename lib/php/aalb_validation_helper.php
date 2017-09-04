@@ -99,8 +99,7 @@ class Aalb_Validation_Helper {
         $aalb_store_id_names = explode( "\r\n", get_option( AALB_STORE_ID_NAMES ) );
         //If the store id used is "not-specified".
         if ( $store_id === AALB_DEFAULT_STORE_ID_NAME ) {
-            $this->helper->show_error_in_preview( "Associate Tag was not found. The sales will not be attributed to any store and you will not earn the associate fees for it. Please provide a valid Associate Tag if you wish to earn the referral fees. Assocaite Tags can be configured from the 'Settings' tab in the WordPress administration panel" );
-
+            $this->helper->show_error_in_preview( esc_html__( "Associate Tag was not found. The sales will not be attributed to any store and you will not earn the associate fees for it. Please provide a valid Associate Tag if you wish to earn the referral fees. Assocaite Tags can be configured from the 'Settings' tab in the WordPress administration panel", 'amazon-associates-link-builder' ) );
             return true;
         }
 

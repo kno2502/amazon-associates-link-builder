@@ -13,13 +13,13 @@ and limitations under the License.
 */
 
 //version
-define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.8' );
+define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.9' );
 
 //PHP version compatible for AALB plugin
-define('AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION','5.3.0');
+define( 'AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION', '5.3.0' );
 
 //Plugin Name
-define('AALB_PLUGIN_NAME','Amazon Associates Link Builder');
+define( 'AALB_PLUGIN_NAME', 'Amazon Associates Link Builder' );
 //paths
 define( 'AALB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AALB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -180,26 +180,19 @@ define( 'PAAPI_SERVICE', 'AWSECommerceService' );
 define( 'PAAPI_VERSION', '2013-08-01' );
 define( 'PAAPI_URL_REGEX', '^https:\\/\\/(.*)\\/onca\\/xml\\?(.*)$' );
 
-define('PAAPI_INVALID_PARAMETER_VALUE_ERROR', 'AWS.InvalidParameterValue');
+define( 'PAAPI_INVALID_PARAMETER_VALUE_ERROR', 'AWS.InvalidParameterValue' );
 
 // PAAPI Request Timeout in seconds
-define("PAAPI_REQUEST_TIMEOUT", 35);
+define( "PAAPI_REQUEST_TIMEOUT", 35 );
 
 //HTTP Status Codes
 define( 'HTTP_SUCCESS', '200' );
-define( 'HTTP_SUCCESS_MESSAGE', '<h4>Request Successful</h4>' );
 define( 'HTTP_BAD_REQUEST', '400' );
-define( 'HTTP_BAD_REQUEST_MESSAGE', '<h4>Your AWS Access Key Id is not registered as an Amazon Associate. Please verify that you are <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingAssociate.html" target="_blank">registered as an Amazon Associate</a> in respective locale and you added the email address registered for the Product Advertising API as a <a href="https://affiliate-program.amazon.com/help/node/topic/202049770" target="_blank">secondary email address in your Amazon Associates account</a>.</h4>' );
 define( 'HTTP_REQUEST_URI_TOO_LONG', '414' );
-define( 'HTTP_REQUEST_URI_TOO_LONG_MESSAGE', '<h4>Your AccessKey Id is not registered for Product Advertising API. Please sign up for Product Advertising API by <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingDev.html" target="_blank">following these guidelines</a>.</h4>' );
 define( 'HTTP_FORBIDDEN', '403' );
-define( 'HTTP_FORBIDDEN_MESSAGE', '<h4>Your AccessKey Id is not registered for Product Advertising API. Please sign up for Product Advertising API by <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingDev.html" target="_blank">following these guidelines</a>.</h4>' );
 define( 'HTTP_INTERNAL_SERVER_ERROR', '500' );
-define( 'HTTP_INTERNAL_SERVER_ERROR_MESSAGE', '<h4>Internal server error</h4>' );
 define( 'HTTP_THROTTLE', '503' );
-define( 'HTTP_THROTTLE_MESSAGE', '<h4>You are submitting requests too quickly. Please retry your requests at a slower rate. For more information, see <a href="http://docs.aws.amazon.com/AWSECommerceService/latest/DG/TroubleshootingApplications.html#efficiency-guidelines" target="_blank">Efficiency Guidelines</a>.</h4>' );
 define( 'HTTP_TIME_OUT', '504' );
-define( 'HTTP_TIME_OUT_MESSAGE', '<h4>Request timed out. Try again after some time. Please check you network and firewall settings. If the error still persists, write to us at link-builder@amazon.com.</h4>' );
 
 /**
  * Cipher
@@ -263,8 +256,30 @@ $AALB_AMAZON_DOMAINS = array(
 );
 
 //Wordpress Server Timeout in milliseconds
-define("AALB_WORDPRESS_REQUEST_TIMEOUT", 40000);
+define( "AALB_WORDPRESS_REQUEST_TIMEOUT", 40000 );
 
 //Curl Timeout Error String
-define('CURL_ERROR_TIMEOUT_STRING','cURL error 28');
+define( 'CURL_ERROR_TIMEOUT_STRING', 'cURL error 28' );
+
+//Support Email-Id
+define( 'AALB_SUPPORT_EMAIL_ID', 'link-builder@amazon.com' );
+
+//Plugin Specific URLs
+define( 'AALB_CONDITIONS_OF_USE_URL', 'https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-ConditionsOfUse-2017-01-17.pdf' );
+define( 'AALB_USER_GUIDE_URL', 'https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-UserGuide.pdf' );
+define( 'AALB_SUPPORT_FORUM_URL', 'https://wordpress.org/support/plugin/amazon-associates-link-builder' );
+
+//Associate URLs
+define( 'AALB_GETTING_STARTED_URL', 'http://docs.aws.amazon.com/AWSECommerceService/latest/DG/CHAP_GettingStarted.html' );
+define( 'AALB_AFFILIATE_WEBSITE_URL', 'https://affiliate-program.amazon.com' );
+define( 'AALB_ADDING_SECONDARY_USER_AC_URL', 'https://affiliate-program.amazon.com/help/node/topic/202049770' );
+define( 'AALB_ASSOCIATE_SIGN_UP_URL', 'http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingAssociate.html' );
+
+//PAAPI URLs
+define( 'AALB_PAAPI_SIGN_UP_URL', 'http://docs.aws.amazon.com/AWSECommerceService/latest/DG/becomingDev.html' );
+define( 'AALB_MANAGE_PAAPI_US_ACCOUNT_URL', 'https://affiliate-program.amazon.com/gp/advertising/api/detail/your-account.html' );
+define( 'AALB_PAAPI_EFFICIENCY_GUIDELINES_URL', 'http://docs.aws.amazon.com/AWSECommerceService/latest/DG/TroubleshootingApplications.html#efficiency-guidelines' );
+
+define( 'AALB_NEW_PAGE_TARGET', "_blank" );
+
 ?>

@@ -1,9 +1,7 @@
 <!-- A 2x5 Grid Template Layout. It can be configured by the two input fields below -->
 {{#Items}} <!--Section tag for iterating through the list of items-->
 <div class="aalb-pg-ad-unit" id="{{ID}}">
-  <input type="hidden" name="columns" value="2" />
-  <input type="hidden" name="rows" value="5" />
-  <h2 class="aalb-pg-ad-header">{{#AalbHeader}}{{#MarketplaceUS}}Products from Amazon.com{{/MarketplaceUS}}{{#MarketplaceFR}}Produits disponibles sur Amazon.fr  {{/MarketplaceFR}}{{#MarketplaceIT}}Acquista su Amazon.it{{/MarketplaceIT}}{{#MarketplaceDE}}Produkte von Amazon.de{{/MarketplaceDE}}{{#MarketplaceES}}Producto disponible en Amazon.es{{/MarketplaceES}}{{#MarketplaceBR}}Products from Amazon.com.br{{/MarketplaceBR}}{{#MarketplaceCA}}Products from Amazon.ca{{/MarketplaceCA}}{{#MarketplaceCN}}Products from Amazon.cn{{/MarketplaceCN}}{{#MarketplaceIN}}Products from Amazon.in{{/MarketplaceIN}}{{#MarketplaceJP}}Products from Amazon.co.jp{{/MarketplaceJP}}{{#MarketplaceMX}}Products from Amazon.com.mx{{/MarketplaceMX}}{{#MarketplaceUK}}Products from Amazon.co.uk{{/MarketplaceUK}}{{/AalbHeader}}</h2> <!-- Title of the ad localized according to the marketplace picked from the AalbHeader tag -->
+    <h2 class="aalb-pg-ad-header">{{#AalbHeader}}{{#MarketplaceUS}}Products from Amazon.com{{/MarketplaceUS}}{{#MarketplaceFR}}Produits disponibles sur Amazon.fr  {{/MarketplaceFR}}{{#MarketplaceIT}}Acquista su Amazon.it{{/MarketplaceIT}}{{#MarketplaceDE}}Produkte von Amazon.de{{/MarketplaceDE}}{{#MarketplaceES}}Producto disponible en Amazon.es{{/MarketplaceES}}{{#MarketplaceBR}}Products from Amazon.com.br{{/MarketplaceBR}}{{#MarketplaceCA}}Products from Amazon.ca{{/MarketplaceCA}}{{#MarketplaceCN}}Products from Amazon.cn{{/MarketplaceCN}}{{#MarketplaceIN}}Products from Amazon.in{{/MarketplaceIN}}{{#MarketplaceJP}}Products from Amazon.co.jp{{/MarketplaceJP}}{{#MarketplaceMX}}Products from Amazon.com.mx{{/MarketplaceMX}}{{#MarketplaceUK}}Products from Amazon.co.uk{{/MarketplaceUK}}{{/AalbHeader}}</h2> <!-- Title of the ad localized according to the marketplace picked from the AalbHeader tag -->
     <div class="aalb-pg-wrapper">
       <div class="aalb-pg-product-container">
         <ul class="aalb-pg-product-list">
@@ -50,114 +48,5 @@
         </ul>
       </div>
     </div>
-    <a href="javascript:void(0);" class="aalb-pg-btn-prev">‹</a>
-    <a href="javascript:void(0);" class="aalb-pg-btn-next">›</a>
   </div>
 {{/Items}}
-
-<script>
-  jQuery(document).ready(function() {
-
-    var CONSTANTS = {
-        productMinWidth : 185,
-        productMargin   : 20
-    };
-
-    var $adUnits = jQuery('.aalb-pg-ad-unit');
-    $adUnits.each(function() {
-        var $adUnit           = jQuery(this),
-            $wrapper          = $adUnit.find('.aalb-pg-wrapper'),
-            $productContainer = $adUnit.find('.aalb-pg-product-container'),
-            $btnNext          = $adUnit.find('.aalb-pg-btn-next'),
-            $btnPrev          = $adUnit.find('.aalb-pg-btn-prev'),
-            $productList      = $productContainer.find('.aalb-pg-product-list'),
-            $products         = $productList.find('.aalb-pg-product'),
-            productCount      = $products.length;
-
-        if (!productCount) {
-            return true;
-        }
-
-        var rows = $adUnit.find( 'input[name=rows]' ).length && parseInt( $adUnit.find( 'input[name=rows]' ).val(), 10 );
-        var columns = $adUnit.find( 'input[name=columns]' ).length && parseInt( $adUnit.find( 'input[name=columns]' ).val(), 10 );
-        var disableCarousel = $adUnit.find( 'input[name=disable-carousel]' ).length || rows || columns;
-
-        if( columns ) {
-            var productContainerMinWidth = columns * (CONSTANTS.productMinWidth + CONSTANTS.productMargin) + 'px';
-            $adUnit.css( 'min-width', productContainerMinWidth );
-            $productContainer.css( 'min-width', productContainerMinWidth );
-            $products.filter( ':nth-child(' + columns + 'n + 1)' ).css( 'clear', 'both' );
-        }
-
-        if( rows && columns ) {
-            var cutOffIndex = (rows * columns) - 1;
-            $products.filter( ':gt(' + cutOffIndex + ')' ).remove();
-        }
-
-        function updateLayout() {
-            //removing residual styles on screen resize
-            $products.removeAttr("style");
-            var wrapperWidth = $wrapper.width();
-
-            var possibleColumns = parseInt( wrapperWidth / (CONSTANTS.productMinWidth + CONSTANTS.productMargin), 10 ) || columns;
-            var actualColumns = possibleColumns < productCount ? possibleColumns : productCount || columns;
-            var productWidth = parseInt( wrapperWidth / actualColumns, 10 ) - CONSTANTS.productMargin;
-
-            /**
-             * calculating productContainerMinWidth and assigning it as min-width to adUnit ,ProductContainer and
-             * products of ADUnit displayed on updateLayout as to override the values coming from closure.Becuase of
-             * closure the wrapper width was having values generated when the screen was rendered at first time.
-             */
-            var productContainerMinWidth = actualColumns * (CONSTANTS.productMinWidth + CONSTANTS.productMargin) + 'px';
-            $adUnit.css( 'min-width', productContainerMinWidth );
-            $productContainer.css( 'min-width', productContainerMinWidth );
-            $products.filter( ':nth-child(' + actualColumns + 'n + 1)' ).css( 'clear', 'both' );
-
-            /**
-             * When actualColumns is 1 ,the images tend to move towards right of wrapper area.Therefore assigning the
-             * productContainerMinWidth to product when actualColumns is 1
-             **/
-            if( actualColumns == 1 ) {
-                $products.css( 'width', productContainerMinWidth + 'px' );
-                var productImage = jQuery('.aalb-pg-product-image');
-                productImage.css('margin-left','0px');
-            }
-            else {
-                $products.css( 'width', productWidth + 'px' );
-            }
-
-            if (!disableCarousel) {
-                if ((productCount * productWidth > wrapperWidth) && actualColumns !== 1) {
-                    $btnNext.css('visibility', 'visible').removeClass('disabled').unbind('click');
-                    $btnPrev.css('visibility', 'visible').removeClass('disabled').unbind('click');
-                    $productContainer.jCarouselLite({
-                        btnNext  : '#' + $adUnit.attr('id') + ' .aalb-pg-btn-next',
-                        btnPrev  : '#' + $adUnit.attr('id') + ' .aalb-pg-btn-prev',
-                        visible  : actualColumns,
-                        circular : false
-                    });
-                } else {
-                    $productContainer.css('width', 'auto');
-                    $productList.css('width', 'auto');
-                    $btnNext.css('visibility', 'hidden').unbind('click');
-                    $btnPrev.css('visibility', 'hidden').unbind('click');
-                }
-            }
-        }
-
-        updateLayout();
-        jQuery(window).resize(updateLayout);
-    });
-});
-
-/*!
- * jCarouselLite - v1.1 - 2014-09-28
- * http://www.gmarwaha.com/jquery/jcarousellite/
- * Copyright (c) 2014 Ganeshji Marwaha
- * Licensed MIT (https://github.com/ganeshmax/jcarousellite/blob/master/LICENSE)
-*/
-
-!function(a){a.jCarouselLite={version:"1.1"},a.fn.jCarouselLite=function(b){return b=a.extend({},a.fn.jCarouselLite.options,b||{}),this.each(function(){function c(a){return n||(clearTimeout(A),z=a,b.beforeStart&&b.beforeStart.call(this,i()),b.circular?j(a):k(a),m({start:function(){n=!0},done:function(){b.afterEnd&&b.afterEnd.call(this,i()),b.auto&&h(),n=!1}}),b.circular||l()),!1}function d(){if(n=!1,o=b.vertical?"top":"left",p=b.vertical?"height":"width",q=B.find(">ul"),r=q.find(">li"),x=r.size(),w=x<b.visible?x:b.visible,b.circular){var c=r.slice(x-w).clone(),d=r.slice(0,w).clone();q.prepend(c).append(d),b.start+=w}s=a("li",q),y=s.size(),z=b.start}function e(){B.css("visibility","visible"),s.css({overflow:"hidden","float":b.vertical?"none":"left"}),q.css({margin:"0",padding:"0",position:"relative","list-style":"none","z-index":"1"}),B.css({overflow:"hidden",position:"relative","z-index":"2",left:"0px"}),!b.circular&&b.btnPrev&&0==b.start&&a(b.btnPrev).addClass("disabled")}function f(){t=b.vertical?s.outerHeight(!0):s.outerWidth(!0),u=t*y,v=t*w,s.css({width:s.width(),height:s.height()}),q.css(p,u+"px").css(o,-(z*t)),B.css(p,v+"px")}function g(){b.btnPrev&&a(b.btnPrev).click(function(){return c(z-b.scroll)}),b.btnNext&&a(b.btnNext).click(function(){return c(z+b.scroll)}),b.btnGo&&a.each(b.btnGo,function(d,e){a(e).click(function(){return c(b.circular?w+d:d)})}),b.mouseWheel&&B.mousewheel&&B.mousewheel(function(a,d){return c(d>0?z-b.scroll:z+b.scroll)}),b.auto&&h()}function h(){A=setTimeout(function(){c(z+b.scroll)},b.auto)}function i(){return s.slice(z).slice(0,w)}function j(a){var c;a<=b.start-w-1?(c=a+x+b.scroll,q.css(o,-(c*t)+"px"),z=c-b.scroll):a>=y-w+1&&(c=a-x-b.scroll,q.css(o,-(c*t)+"px"),z=c+b.scroll)}function k(a){0>a?z=0:a>y-w&&(z=y-w)}function l(){a(b.btnPrev+","+b.btnNext).removeClass("disabled"),a(z-b.scroll<0&&b.btnPrev||z+b.scroll>y-w&&b.btnNext||[]).addClass("disabled")}function m(c){n=!0,q.animate("left"==o?{left:-(z*t)}:{top:-(z*t)},a.extend({duration:b.speed,easing:b.easing},c))}var n,o,p,q,r,s,t,u,v,w,x,y,z,A,B=a(this);d(),e(),f(),g()})},a.fn.jCarouselLite.options={btnPrev:null,btnNext:null,btnGo:null,mouseWheel:!1,auto:null,speed:200,easing:null,vertical:!1,circular:!0,visible:3,start:0,scroll:1,beforeStart:null,afterEnd:null}}(jQuery);
-
-
-</script>

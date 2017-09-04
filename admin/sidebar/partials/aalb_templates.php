@@ -27,7 +27,8 @@ $helper->aalb_initialize_wp_filesystem_api();
  */
 function aalb_verify_file_is_writable( $file ) {
     if ( is_file( $file ) and ! is_writable( $file ) ) {
-        throw new Exception( "Save Failed. The existing file " . $file . " is not writable." );
+        /* translators: %s for fileName */
+        throw new Exception( sprintf( esc_html__( "Save Failed. The existing file %s is not writable.", 'amazon-associates-link-builder' ), $file ) );
     }
 
     return true;
@@ -46,7 +47,8 @@ function aalb_verify_file_is_writable( $file ) {
 function aalb_write_to_file( $file, $content ) {
     global $wp_filesystem;
     if ( $wp_filesystem->put_contents( $file, $content ) === false ) {
-        throw new Exception( "Save Failed. Error writing contents to file: " . $file );
+        /* translators: %s for fileName */
+        throw new Exception( sprintf( esc_html__( "Save Failed. Error writing contents to file: %s", 'amazon-associates-link-builder' ), $file ) );
     }
 
     return true;
@@ -72,7 +74,7 @@ function aalb_save_template( $file, $content_html, $content_css ) {
                 //Both files were saved successfully
                 //Else case never occurs as an exception is thrown in false case
                 $saveFailed = false;
-                aalb_success_notice( "Template Saved Successfully" );
+                aalb_success_notice( esc_html__( "Template Saved Successfully", 'amazon-associates-link-builder' ) );
             }
         }
     } catch ( Exception $e ) {
@@ -93,10 +95,12 @@ function aalb_find_template_change( $aalb_current_template_names, $aalb_template
     $templates_added = array_diff( $aalb_template_names, $aalb_current_template_names );
     $templates_deleted = array_diff( $aalb_current_template_names, $aalb_template_names );
     if ( sizeof( $templates_added ) > 0 ) {
-        aalb_info_notice( sizeof( $templates_added ) . " template(s) added: " . implode( ', ', $templates_added ) );
+        /* translators: 1: Number of templates 2: Name of added templates */
+        aalb_info_notice( sprintf( esc_html__( "%1s template(s) added: %2s", 'amazon-associates-link-builder' ), sizeof( $templates_added ), implode( ', ', $templates_added ) ) );
     }
     if ( sizeof( $templates_deleted ) > 0 ) {
-        aalb_info_notice( sizeof( $templates_deleted ) . " template(s) deleted: " . implode( ', ', $templates_deleted ) );
+        /* translators: 1: Number of templates 2: Name of deleted templates */
+        aalb_info_notice( sprintf( esc_html__( "%1s template(s) deleted: %2s", 'amazon-associates-link-builder' ), sizeof( $templates_deleted ), implode( ', ', $templates_deleted ) ) );
     }
 }
 
@@ -112,26 +116,29 @@ $helper->refresh_template_list();
 $aalb_template_names = get_option( AALB_TEMPLATE_NAMES );
 aalb_find_template_change( $aalb_current_template_names, $aalb_template_names );
 
-if ( ! empty( $_POST["submit"] ) ) {
+//ToDO: Make single submit button & move logic for save & remove to separate controllers for HTTP verbs instead of putting along with view
+if ( isset ( $_POST["save"] ) || isset ( $_POST["remove"] ) ) {
     $aalb_template_name = stripslashes( $_POST["aalb_template_name"] );
     $aalb_template_template_html_box = stripslashes( $_POST["aalb_template_template_html_box"] );
     $aalb_template_template_css_box = stripslashes( $_POST["aalb_template_template_css_box"] );
     $dir = AALB_TEMPLATE_DIR;
     $aalb_template_upload_dir = $helper->get_template_upload_directory();
-    if ( $_POST["submit"] == "Save" ) {
+    if ( isset ( $_POST["save"] ) ) {
         if ( $_POST["aalb_template_list"] == "new" ) {
             if ( empty( $aalb_template_name ) ) {
-                aalb_error_notice( "Please define the template name for the new template" );
+                aalb_error_notice( esc_html__( "Please define the template name for the new template", 'amazon-associates-link-builder' ) );
             } elseif ( ! ctype_alnum( str_replace( array( '-', '_' ), '', $aalb_template_name ) ) ) {
                 //The template name can only be alphanumeric characters plus hyphens (-) and underscores (_)
-                aalb_error_notice( "Save Failed. Only alphanumeric characters allowed for template name." );
+                aalb_error_notice( esc_html__( "Save Failed. Only alphanumeric characters allowed for template name.", 'amazon-associates-link-builder' ) );
             } else {
                 if ( ! is_dir( $aalb_template_upload_dir ) or ! is_writable( $aalb_template_upload_dir ) ) {
-                    aalb_error_notice( "Failed to create custom template. Please set up recursive Read-Write permissions for " . $helper->aalb_get_uploads_dir_path() );
+                    /* translators: %s: Path of upload directory */
+                    aalb_error_notice( sprintf( esc_html__( "Failed to create custom template. Please set up recursive Read-Write permissions for %s", 'amazon-associates-link-builder' ), $helper->aalb_get_uploads_dir_path() ) );
                 } else {
                     //Check if template of that name already exists
                     if ( in_array( $aalb_template_name, $aalb_template_names ) ) {
-                        aalb_error_notice( "Save Failed. A template with the name \"" . $aalb_template_name . "\" already exists. Please specify some other name for the template" );
+                        /* translators: %s: Name of the template */
+                        aalb_error_notice( sprintf( esc_html__( "Save Failed. A template with the name %s already exists. Please specify some other name for the template", 'amazon-associates-link-builder' ), $aalb_template_name ) );
                         //Ensures state is saved even on save failures
                         $saveFailed = true;
                     } else {
@@ -159,32 +166,35 @@ if ( ! empty( $_POST["submit"] ) ) {
                 aalb_error_notice( $e->getMessage() );
             }
         }
-    } elseif ( $_POST["submit"] == "Remove" ) {
-        if ( $_POST["aalb_template_list"] == "new" ) {
-            aalb_error_notice( "Cannot remove new template. Please select a valid template to remove." );
-        } else {
-            $aalb_template_names = array_diff( $aalb_template_names, array( $aalb_template_name ) );
-            update_option( 'aalb_template_names', $aalb_template_names );
-            if ( in_array( $aalb_template_name, $aalb_default_templates ) ) {
-                //If Default Amazon Template is Removed
-                aalb_error_notice( "Couldn't remove Default Template" );
-            } else {
+    } elseif ( isset( $_POST["remove"] ) ) {
+        if ( !($_POST["aalb_template_list"] == "new") ) {
+            if ( !in_array( $aalb_template_name, $aalb_default_templates ) ) {
+                $aalb_template_names = array_diff( $aalb_template_names, array( $aalb_template_name ) );
+                update_option( 'aalb_template_names', $aalb_template_names );
+
                 if ( unlink( $aalb_template_upload_dir . $aalb_template_name . ".mustache" ) ) {
-                    aalb_success_notice( "Successfully removed Template HTML" );
+                    aalb_success_notice( esc_html__( "Successfully removed Template HTML", 'amazon-associates-link-builder' ) );
                 } else {
-                    aalb_error_notice( "Couldn't remove Template HTML. Please manually remove " . $dir . $aalb_template_name . ".mustache" );
+                    /* translators: %s: Name of the template along with absolute file path */
+                    aalb_error_notice( sprintf( esc_html__( "Couldn't remove Template HTML. Please manually remove %s", 'amazon-associates-link-builder' ), $dir . $aalb_template_name . '.mustache' ) );
                 }
                 if ( unlink( $aalb_template_upload_dir . $aalb_template_name . ".css" ) ) {
-                    aalb_success_notice( "Successfully removed Template CSS" );
+                    aalb_success_notice( esc_html__( "Successfully removed Template CSS", 'amazon-associates-link-builder' ) );
                 } else {
-                    aalb_error_notice( "Couldn't remove Template CSS. Please manually remove " . $dir . $aalb_template_name . ".css" );
+                    /* translators: %s: Name of the template along with complete path */
+                    aalb_error_notice( sprintf( esc_html__( "Couldn't remove Template CSS. Please manually remove %s", 'amazon-associates-link-builder' ), $dir . $aalb_template_name . '.css' ) );
                 }
+                $aalb_template_name = "";
+                $aalb_template_template_html_box = "";
+                $aalb_template_template_css_box = "";
+            } else {
+                aalb_error_notice( esc_html__( "Couldn't remove Default Template", 'amazon-associates-link-builder' ) );
             }
-
-            $aalb_template_name = "";
-            $aalb_template_template_html_box = "";
-            $aalb_template_template_css_box = "";
+        } else {
+            aalb_error_notice( esc_html__( "Cannot remove new template. Please select a valid template to remove.", 'amazon-associates-link-builder' ) );
         }
+    } else {
+        error_log( "Error! Neither save nor remove is set on form submit" );
     }
 }
 
@@ -199,16 +209,16 @@ wp_localize_script( 'aalb_template_js', 'wp_opt', array( 'ajax_url' => admin_url
 
 ?>
 <div class="wrap">
-    <h2>Templates for <?= AALB_PROJECT_TITLE ?></h2>
+    <h2><?php esc_html_e( "Templates for Associates Link Builder", 'amazon-associates-link-builder' ) ?></h2>
     <br>
     <form method="post">
         <table class="widefat fixed">
             <tr>
-                <th scope="row" style="width:15%;">Select Template</th>
+                <th scope="row" style="width:15%;"><?php esc_html_e( "Select Template", 'amazon-associates-link-builder' ) ?></th>
                 <td>
                     <select id="aalb_template_list_select" name="aalb_template_list" style="width:50%"
                             onchange="aalb_template_select_template_onchange(this)">
-                        <option value="new">Create new template</option>
+                        <option value="new"><?php esc_html_e( "Create new template", 'amazon-associates-link-builder' ) ?></option>
                         <?php
                         foreach ( $aalb_template_names as $aalb_template ) {
                             ?>
@@ -217,36 +227,36 @@ wp_localize_script( 'aalb_template_js', 'wp_opt', array( 'ajax_url' => admin_url
                         }
                         ?>
                     </select>
-                    <input type="button" name="clone" id="clone_template" class="button button-secondary" value="Clone"
+                    <input type="button" name="clone" id="clone_template" class="button button-secondary" value="<?php esc_attr_e( "Clone", 'amazon-associates-link-builder' ) ?>"
                             onclick="clone_existing_template()" disabled>
                 </td>
             </tr>
             <tr>
-                <th scope="row" style="width:15%;">Set a name for your template</th>
+                <th scope="row" style="width:15%;"><?php esc_html_e( "Set a name for your template", 'amazon-associates-link-builder' ) ?></th>
                 <td>
                     <input type="text" id="aalb_template_name" name="aalb_template_name" style="width:50%"
                             value="<?= ( isset( $aalb_template_name ) ) ? $aalb_template_name : '' ?>"/>
                     <span style="font-size:0.9em;">[<a
                                 href="https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-Guide-HowToCreateCustomTemplates.pdf"
-                                target="_blank">Guide for creating custom templates</a>]</span>
+                            target="_blank"><?php esc_html_e( "Guide for creating custom templates", 'amazon-associates-link-builder' ) ?></a>]</span>
                 </td>
             </tr>
             <tr>
-                <th scope="row" style="width:15%;">Add HTML for your template</th>
+                <th scope="row" style="width:15%;"><?php esc_html_e( "Add HTML for your template", 'amazon-associates-link-builder' ) ?></th>
                 <td><textarea id="aalb_template_template_html_box"
                             name="aalb_template_template_html_box"><?= ( isset( $aalb_template_template_html_box ) ) ? $aalb_template_template_html_box : '' ?></textarea>
                 </td>
             </tr>
             <tr>
-                <th scope="row" style="width:15%;">Add CSS for your template</th>
+                <th scope="row" style="width:15%;"><?php esc_html_e( "Add CSS for your template", 'amazon-associates-link-builder' ) ?></th>
                 <td><textarea id="aalb_template_template_css_box"
                             name="aalb_template_template_css_box"><?= ( isset( $aalb_template_template_css_box ) ) ? $aalb_template_template_css_box : '' ?></textarea>
                 </td>
             </tr>
         </table>
         <p class="submit">
-            <input name="submit" id="submit_save" class="button button-primary" value="Save" type="submit">
-            <input name="submit" id="submit_remove" class="button button-secondary" value="Remove" type="submit" disabled>
+            <input name="save" id="submit_save" class="button button-primary" value="<?php esc_attr_e( "Save", 'amazon-associates-link-builder' ) ?>" type="submit">
+            <input name="remove" id="submit_remove" class="button button-secondary" value="<?php esc_attr_e( "Remove", 'amazon-associates-link-builder' ) ?>" type="submit" disabled>
         </p>
     </form>
 </div>

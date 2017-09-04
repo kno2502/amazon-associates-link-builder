@@ -34,16 +34,16 @@ $aalb_admin->aalb_enqueue_scripts();
 <div id="aalb-admin-popup-container" style="display:none;">
 <div class="aalb-admin-searchbox aalb-admin-popup-options">
         <input type="text" id="aalb-admin-popup-input-search" name="aalb-admin-popup-input-search"
-            placeholder="Enter keyword(s)" onkeypress='aalb_submit_event(event,"aalb-btn-primary",this)'/>
+               placeholder="<?php esc_attr_e( "Enter keyword(s)", 'amazon-associates-link-builder' ) ?>" onkeypress='aalb_submit_event(event,"aalb-btn-primary",this)'/>
         <button class="aalb-btn aalb-btn-primary" id="aalb-admin-popup-search-button" type="button"
-            onclick="aalb_admin_popup_search_items()" style="margin-top:1%">Search
+            onclick="aalb_admin_popup_search_items()" style="margin-top:1%"><?php esc_html_e( "Search", 'amazon-associates-link-builder' ) ?>
         </button>
     </div><!--end .aalb-admin-popup-options-->
     <!-- start:  aalb-admin-popup-shortcode-options-->
     <div class="aalb-admin-popup-shortocde-wrapper">
         <div class="aalb-admin-popup-shortcode-options">
             <div class="aalb-admin-item-search-templates">
-                <label>Ad Template</label>
+                <label><?php esc_html_e( "Ad Template", 'amazon-associates-link-builder' ) ?></label>
                 <?php $aalb_default_template = get_option( AALB_DEFAULT_TEMPLATE, AALB_DEFAULT_TEMPLATE_NAME ); ?>
                 <select id="aalb_template_names_list" name="aalb_template_names_list" >
                     <?php foreach ( $aalb_template_names as $aalb_template_name ) { ?>
@@ -52,7 +52,7 @@ $aalb_admin->aalb_enqueue_scripts();
                 </select>
             </div>
             <div class="aalb-admin-popup-store">
-                <label>Associate ID</label>
+                <label><?php esc_html_e( "Associate ID", 'amazon-associates-link-builder' ) ?></label>
                 <?php $aalb_default_store_id = get_option( AALB_DEFAULT_STORE_ID, AALB_DEFAULT_STORE_ID_NAME ); ?>
                 <select id="aalb-admin-popup-store-id" name="aalb-admin-popup-store-id" >
                     <?php foreach ( $aalb_store_id_names as $aalb_store_id ) { ?>
@@ -61,7 +61,7 @@ $aalb_admin->aalb_enqueue_scripts();
                 </select>
             </div>
             <div class="aalb-admin-item-search-marketplaces">
-                <label>Marketplace</label>
+                <label><?php esc_html_e( "Marketplace", 'amazon-associates-link-builder' ) ?></label>
                 <?php $aalb_default_marketplace = get_option( AALB_DEFAULT_MARKETPLACE, AALB_DEFAULT_MARKETPLACE_NAME ); ?>
                 <select id="aalb_marketplace_names_list" name="aalb_marketplace_names_list" >
                     <?php foreach ( $aalb_marketplace_names as $aalb_marketplace => $aalb_marketplace_abbr ) { ?>
@@ -74,24 +74,23 @@ $aalb_admin->aalb_enqueue_scripts();
     <div id="aalb-admin-popup-content">
         <div class="aalb-admin-alert aalb-admin-alert-info aalb-admin-item-search-loading">
             <div class="aalb-admin-icon"><i class="fa fa-spinner fa-pulse"></i></div>
-            Searching relevant products from Amazon
+            <?php esc_html_e( "Searching relevant products from Amazon", 'amazon-associates-link-builder' ) ?>
         </div><!--end .aalb-admin-item-search-loading-->
         <div class="aalb-admin-item-search">
-            Click to select product(s) to advertise
+            <?php esc_html_e( "Click to select product(s) to advertise", 'amazon-associates-link-builder' ) ?>
             <div class="aalb-admin-item-search-items"></div>
-            <a href="#" target="_blank" id="aalb-admin-popup-more-results" class="pull-right">Check more search results
-                on Amazon</a>
+            <a href="#" target="_blank" id="aalb-admin-popup-more-results" class="pull-right"><?php esc_html_e( "Check more search results on Amazon", 'amazon-associates-link-builder' ) ?></a>
         </div><!--end .aalb-admin-item-serch-->
     </div><!--end .aalb-admin-popup-content-->
     <div class="aalb-selected">
-        <label>List of Selected Products</label>
+        <label><?php esc_html_e( "List of Selected Products", 'amazon-associates-link-builder' ) ?></label>
     </div>
 
     <div class="aalb-add-shortcode-button">
-        <button class="aalb-btn aalb-btn-primary" id="aalb-add-shortcode-button" type="button">Add Shortcode</button>
+        <button class="aalb-btn aalb-btn-primary" id="aalb-add-shortcode-button" type="button"><?php esc_html_e( "Add Shortcode", 'amazon-associates-link-builder' ) ?></button>
         <div id="aalb-add-shortcode-alert">
             <div class="aalb-admin-icon"><i class="fa fa-spinner fa-pulse"></i></div>
-            Creating shortcode. Please wait....
+            <?php esc_html_e( "Creating shortcode. Please wait....", 'amazon-associates-link-builder' ) ?>
         </div>
         <div id="aalb-add-asin-error">
             <div id="aalb-add-template-asin-error"></div>
