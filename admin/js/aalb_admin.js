@@ -31,7 +31,10 @@ jQuery( document ).ready( function() {
 
     //Load the search result template
     var aalb_hbs_admin_items_search_source  = jQuery( "#aalb-hbs-admin-items-search" ).html();
-    template = Handlebars.compile( aalb_hbs_admin_items_search_source );
+    if( aalb_hbs_admin_items_search_source != null ) {
+        template = Handlebars.compile( aalb_hbs_admin_items_search_source );
+    }
+
 
     //Resize thickbox on window resize
     jQuery( window ).on( 'resize', resize_thickbox );
