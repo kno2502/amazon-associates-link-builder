@@ -3,7 +3,8 @@ Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
 Tested up to: 4.8.1
-Stable tag: 1.4.8
+Stable tag: 1.4.10
+Requires PHP: 5.3.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +101,15 @@ Amazon Product Advertising API credentials are not required to use the feature t
 
 == Changelog ==
 
+= 1.4.10 - Septmeber 13, 2017 =
+* Fix: Customize theme option is not working for few users after v1.4.8.
+* Fix: Page alignment distorted for some users after v1.4.9.
+
+= 1.4.9 - Septmeber 4, 2017 =
+* Putting strings under translation function for Internationalization.
+* Fix: Product Grid not aligned properly on iOS devices.
+* Fix: Product Ad breaks the text on the right side on few mobile devices.
+
 = 1.4.8 - August 10, 2017 =
 * Improvement in error display message on product search.
 * Fix: HandleBar template not being loaded for a few users on product search.
@@ -175,6 +185,12 @@ Amazon Product Advertising API credentials are not required to use the feature t
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.4.10 =
+Fix for customize theme issue and distorted page alignment for few users.
+
+= 1.4.9 =
+Putting strings under translation function for Internationalization & fix for mobile compatibility issues with few default templates.
 
 = 1.4.8 =
 Improvement in error display message on product search, fix for the issue of handleBar template not being loaded for a few users on product search and other minor bug fixes.
