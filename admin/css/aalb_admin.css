@@ -20,6 +20,8 @@ input.aalb-admin-input-search {
     margin-right: 3px;
     height: 28px;
     border: 1px solid #F0C14B;
+    /* Below width is hardcoded so that placeholder string fits input box for different languages. */
+    width: 190px;
 }
 
  .aalb-admin-searchbox a.aalb-admin-button-create-amazon-shortcode {

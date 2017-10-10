@@ -13,7 +13,7 @@ and limitations under the License.
 */
 
 //version
-define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.10' );
+define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.11RC1' );
 
 //PHP version compatible for AALB plugin
 define( 'AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION', '5.3.0' );

@@ -103,7 +103,7 @@ wp_enqueue_style( 'aalb_credentials_css', AALB_CREDENTIALS_CSS, array(), AALB_PL
                     </td>
                 </tr>
                 <tr>
-                    <td scope="row" colspan="2" class="aalb-settings-no-referrer-column">
+                    <td scope="row" colspan="2" class="aalb-settings-input-column">
                         <input id=<?php echo AALB_NO_REFERRER_DISABLED ?> type="checkbox" name=<?php echo AALB_NO_REFERRER_DISABLED ?> value="true"<?php if (get_option( AALB_NO_REFERRER_DISABLED )) echo "checked='checked'"; ?> />
                         <label class="aalb-settings-no-referrer-text" for="aalb_no_referrer_disabled">
                             <?php /* translators: %s: rel="noreferrer" attribute */

@@ -1,2 +1,0 @@
-#Remove this file once translator files are available to upload.
-[PlaceHolder file]This is an empty file created to add directory.
