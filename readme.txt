@@ -3,7 +3,7 @@ Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
 Tested up to: 4.8.1
-Stable tag: 1.4.10
+Stable tag: 1.4.11
 Requires PHP: 5.3.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -101,6 +101,9 @@ Amazon Product Advertising API credentials are not required to use the feature t
 
 == Changelog ==
 
+= 1.4.11 - October 16, 2017 =
+* Plugin is now available in Spanish, French and Italian languages.
+
 = 1.4.10 - Septmeber 13, 2017 =
 * Fix: Customize theme option is not working for few users after v1.4.8.
 * Fix: Page alignment distorted for some users after v1.4.9.
@@ -185,6 +188,9 @@ Amazon Product Advertising API credentials are not required to use the feature t
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.4.11 =
+Plugin is now available in Spanish, French and Italian languages.
 
 = 1.4.10 =
 Fix for customize theme issue and distorted page alignment for few users.
