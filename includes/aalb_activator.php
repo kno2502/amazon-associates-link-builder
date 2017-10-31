@@ -55,6 +55,9 @@ class Aalb_Activator {
         if ( ! get_option( AALB_AWS_SECRET_KEY ) ) {
             update_option( AALB_AWS_SECRET_KEY, '' );
         }
+        if ( ! get_option( AALB_STORE_IDS ) ) {
+            update_option( AALB_STORE_IDS, '' );
+        }
     }
 
     /**

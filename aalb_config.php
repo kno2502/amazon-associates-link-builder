@@ -13,7 +13,10 @@ and limitations under the License.
 */
 
 //version
-define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.11' );
+define( 'AALB_PLUGIN_CURRENT_VERSION', '1.4.12' );
+
+//Version no. with multi locale settings page
+define( 'AALB_MULTI_LOCALE_SETTINGS_PLUGIN_VERSION', '1.4.12' );
 
 //PHP version compatible for AALB plugin
 define( 'AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION', '5.3.0' );
@@ -63,6 +66,7 @@ define( 'AALB_INCLUDES_DIR', AALB_PLUGIN_DIR . 'includes/' );
 define( 'AALB_PAAPI_DIR', AALB_PLUGIN_DIR . 'lib/php/Paapi/' );
 define( 'AALB_SHORTCODE_DIR', AALB_PLUGIN_DIR . 'shortcode/' );
 define( 'AALB_LIBRARY_DIR', AALB_PLUGIN_DIR . 'lib/php/' );
+define( 'AALB_SIDEBAR_HELPER_DIR', AALB_PLUGIN_DIR . 'admin/sidebar/partials/helper/' );
 
 //Includes
 define( 'AALB_ACTIVATOR_PHP', AALB_PLUGIN_DIR . 'includes/aalb_activator.php' );
@@ -156,6 +160,7 @@ define( 'AALB_AWS_ACCESS_KEY', 'aalb_aws_access_key' );
 define( 'AALB_AWS_SECRET_KEY', 'aalb_aws_secret_key' );
 define( 'AALB_CRED_CONFIG_GROUP', 'aalb_cred_config_group' );
 define( 'AALB_STORE_ID_NAMES', 'aalb_store_id_names' );
+define( 'AALB_STORE_IDS', 'aalb_store_ids' );
 define( 'AALB_SHOW_HTTP_WARNING_ONCE', 'aalb_show_http_warning_once' );
 define( 'AALB_PLUGIN_VERSION', 'aalb_plugin_version' );
 define( 'AALB_NO_REFERRER_DISABLED', 'aalb_no_referrer_disabled' );
@@ -280,6 +285,11 @@ define( 'AALB_PAAPI_SIGN_UP_URL', 'http://docs.aws.amazon.com/AWSECommerceServic
 define( 'AALB_MANAGE_PAAPI_US_ACCOUNT_URL', 'https://affiliate-program.amazon.com/gp/advertising/api/detail/your-account.html' );
 define( 'AALB_PAAPI_EFFICIENCY_GUIDELINES_URL', 'http://docs.aws.amazon.com/AWSECommerceService/latest/DG/TroubleshootingApplications.html#efficiency-guidelines' );
 
+//Plugin specific URLS
+define( 'AALB_SETTINGS_PAGE_URL', admin_url( 'admin.php?page=associates-link-builder-settings' ) );
+
 define( 'AALB_NEW_PAGE_TARGET', "_blank" );
+
+define( 'AALB_NEWLINE_SEPARATOR', "\r\n" );
 
 ?>

@@ -21,81 +21,116 @@ and limitations under the License.
 // HandleBar template
 include AALB_ADMIN_ITEM_SEARCH_ITEMS_PATH;
 
-$aalb_template_names = get_option( AALB_TEMPLATE_NAMES );
-$config_loader = new Aalb_Config_Loader();
-$aalb_marketplace_names = $config_loader->fetch_marketplaces();
-$helper = new Aalb_Helper();
-$aalb_store_id_names = $helper->get_store_ids_array();
 $aalb_admin = new Aalb_Admin();
 $aalb_admin->aalb_enqueue_styles();
 $aalb_admin->aalb_enqueue_scripts();
-?>
-<!-- keeping css inline as css file does not load at plugin initialization  -->
-<div id="aalb-admin-popup-container" style="display:none;">
-<div class="aalb-admin-searchbox aalb-admin-popup-options">
-        <input type="text" id="aalb-admin-popup-input-search" name="aalb-admin-popup-input-search"
-               placeholder="<?php esc_attr_e( "Enter keyword(s)", 'amazon-associates-link-builder' ) ?>" onkeypress='aalb_submit_event(event,"aalb-btn-primary",this)'/>
-        <button class="aalb-btn aalb-btn-primary" id="aalb-admin-popup-search-button" type="button"
-            onclick="aalb_admin_popup_search_items()" style="margin-top:1%"><?php esc_html_e( "Search", 'amazon-associates-link-builder' ) ?>
-        </button>
-    </div><!--end .aalb-admin-popup-options-->
-    <!-- start:  aalb-admin-popup-shortcode-options-->
-    <div class="aalb-admin-popup-shortocde-wrapper">
-        <div class="aalb-admin-popup-shortcode-options">
-            <div class="aalb-admin-item-search-templates">
-                <label><?php esc_html_e( "Ad Template", 'amazon-associates-link-builder' ) ?></label>
-                <?php $aalb_default_template = get_option( AALB_DEFAULT_TEMPLATE, AALB_DEFAULT_TEMPLATE_NAME ); ?>
-                <select id="aalb_template_names_list" name="aalb_template_names_list" >
-                    <?php foreach ( $aalb_template_names as $aalb_template_name ) { ?>
-                        <option value="<?= $aalb_template_name ?>" <?php selected( $aalb_default_template, $aalb_template_name ); ?>><?= $aalb_template_name ?></option>
-                    <?php } ?>
-                </select>
-            </div>
-            <div class="aalb-admin-popup-store">
-                <label><?php esc_html_e( "Associate ID", 'amazon-associates-link-builder' ) ?></label>
-                <?php $aalb_default_store_id = get_option( AALB_DEFAULT_STORE_ID, AALB_DEFAULT_STORE_ID_NAME ); ?>
-                <select id="aalb-admin-popup-store-id" name="aalb-admin-popup-store-id" >
-                    <?php foreach ( $aalb_store_id_names as $aalb_store_id ) { ?>
-                        <option value="<?= $aalb_store_id ?>" <?php selected( $aalb_default_store_id, $aalb_store_id ); ?>> <?= $aalb_store_id ?> </option>
-                    <?php } ?>
-                </select>
-            </div>
-            <div class="aalb-admin-item-search-marketplaces">
-                <label><?php esc_html_e( "Marketplace", 'amazon-associates-link-builder' ) ?></label>
-                <?php $aalb_default_marketplace = get_option( AALB_DEFAULT_MARKETPLACE, AALB_DEFAULT_MARKETPLACE_NAME ); ?>
-                <select id="aalb_marketplace_names_list" name="aalb_marketplace_names_list" >
-                    <?php foreach ( $aalb_marketplace_names as $aalb_marketplace => $aalb_marketplace_abbr ) { ?>
-                        <option value="<?= $aalb_marketplace ?>" <?php selected( $aalb_default_marketplace, $aalb_marketplace_abbr ); ?>><?= $aalb_marketplace_abbr ?></option>
-                    <?php } ?>
-                </select>
-            </div>
-        </div>
-    </div><!--end .aalb-admin-popup-shortcode-options-->
-    <div id="aalb-admin-popup-content">
-        <div class="aalb-admin-alert aalb-admin-alert-info aalb-admin-item-search-loading">
-            <div class="aalb-admin-icon"><i class="fa fa-spinner fa-pulse"></i></div>
-            <?php esc_html_e( "Searching relevant products from Amazon", 'amazon-associates-link-builder' ) ?>
-        </div><!--end .aalb-admin-item-search-loading-->
-        <div class="aalb-admin-item-search">
-            <?php esc_html_e( "Click to select product(s) to advertise", 'amazon-associates-link-builder' ) ?>
-            <div class="aalb-admin-item-search-items"></div>
-            <a href="#" target="_blank" id="aalb-admin-popup-more-results" class="pull-right"><?php esc_html_e( "Check more search results on Amazon", 'amazon-associates-link-builder' ) ?></a>
-        </div><!--end .aalb-admin-item-serch-->
-    </div><!--end .aalb-admin-popup-content-->
-    <div class="aalb-selected">
-        <label><?php esc_html_e( "List of Selected Products", 'amazon-associates-link-builder' ) ?></label>
-    </div>
 
-    <div class="aalb-add-shortcode-button">
-        <button class="aalb-btn aalb-btn-primary" id="aalb-add-shortcode-button" type="button"><?php esc_html_e( "Add Shortcode", 'amazon-associates-link-builder' ) ?></button>
-        <div id="aalb-add-shortcode-alert">
-            <div class="aalb-admin-icon"><i class="fa fa-spinner fa-pulse"></i></div>
-            <?php esc_html_e( "Creating shortcode. Please wait....", 'amazon-associates-link-builder' ) ?>
-        </div>
-        <div id="aalb-add-asin-error">
-            <div id="aalb-add-template-asin-error"></div>
-        </div>
-    </div><!--end .aalb-add-shortcode-button-->
-</div><!--end .aalb-admin-popup-container-->
+/*
+ * Below is an example of context to be passed to the below template
+ *
+{
+   "ad_template_label":"Ad Template",
+   "searchbox_placeholder":"Enter keyword(s)",
+   "search_button_label":"Search",
+   "associate_id_label":"Associate ID",
+   "marketplace_label":"Marketplace",
+   "text_shown_during_search":"Searching relevant products from Amazon",
+   "click_to_select_products_label":"Click to select product(s) to advertise",
+   "check_more_on_amazon_text":"Check more search results on Amazon",
+   "selected_products_list_label":"List of Selected Products",
+   "text_shown_during_shortcode_creation":"Creating shortcode. Please wait....",
+   "add_shortcode_button_label":"Add Shortcode",
+   "templates_list":[
+      "PriceLink",
+      "ProductAd",
+      "ProductCarousel",
+      "ProductGrid",
+      "ProductLink"
+   ],
+   "default_template":"ProductAd",
+   "marketplace_list":[
+      "IN",
+      "UK"
+   ],
+   "default_marketplace":"IN",
+   "default_store_id_list":[
+      "store-1",
+      "store-2"
+   ],
+   "default_store_id":"store-1"
+}
+ */
+
+?>
+    <!--ToDO: Remove inline & event binding & styling(except the one for aalb-admin-popup-container)-->
+    <!-- keeping css inline as css file does not load at plugin initialization  -->
+    <div id="aalb-admin-popup-container" style="display:none;">
+        <script id="aalb-search-pop-up-hbs" type="text/x-handlebars-template">
+            <div class="aalb-admin-searchbox aalb-admin-popup-options">
+                <input type="text" id="aalb-admin-popup-input-search" name="aalb-admin-popup-input-search"
+                    placeholder="{{searchbox_placeholder}}" onkeypress='aalb_submit_event(event,"aalb-btn-primary",this)' />
+                <button class="aalb-btn aalb-btn-primary" id="aalb-admin-popup-search-button" type="button"
+                    onclick="aalb_admin_popup_search_items()" style="margin-top:1%">{{search_button_label}}
+                </button>
+            </div><!--end .aalb-admin-popup-options-->
+            <!-- start:  aalb-admin-popup-shortcode-options-->
+            <div class="aalb-admin-popup-shortocde-wrapper">
+                <div class="aalb-admin-popup-shortcode-options">
+                    <div class="aalb-admin-item-search-templates">
+                        <label title="{{templates_help_content}}">{{ad_template_label}}<i class="fa fa-info-circle aalb-info-icon" aria-hidden="true"></i></label>
+                        <select id="aalb_template_names_list" name="aalb_template_names_list">
+                            {{#each templates_list}}
+                            <option value="{{this}}" {{selected this ..
+                            /default_template}} {{this}}>{{this}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="aalb-admin-item-search-marketplaces">
+                        <label title="{{marketplace_help_content}}">{{marketplace_label}}<i class="fa fa-info-circle aalb-info-icon" aria-hidden="true"></i></label>
+                        <select id="aalb_marketplace_names_list" name="aalb_marketplace_names_list">
+                            {{#each marketplace_list}}
+                            <option value="{{this}}" {{selected this ..
+                            /default_marketplace}}>{{this}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="aalb-admin-popup-store">
+                        <label title="{{tracking_id_help_content}}">{{associate_id_label}}<i class="fa fa-info-circle aalb-info-icon" aria-hidden="true"></i></label>
+                        <select id="aalb-admin-popup-store-id" name="aalb-admin-popup-store-id">
+                            {{#each default_store_id_list}}
+                            <option value="{{this}}" {{selected this ..
+                            /default_store_id}}>{{this}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+            </div><!--end .aalb-admin-popup-shortcode-options-->
+            <div id="aalb-admin-popup-content">
+                <div class="aalb-admin-alert aalb-admin-alert-info aalb-admin-item-search-loading">
+                    <div class="aalb-admin-icon"><i class="fa fa-spinner fa-pulse"></i></div>
+                    {{text_shown_during_search}}
+                </div><!--end .aalb-admin-item-search-loading-->
+                <div class="aalb-admin-item-search">
+                    {{click_to_select_products_label}}
+                    <div class="aalb-admin-item-search-items"></div>
+                    <a href="#" target="_blank" id="aalb-admin-popup-more-results" class="pull-right">{{check_more_on_amazon_text}}</a>
+                </div><!--end .aalb-admin-item-serch-->
+            </div><!--end .aalb-admin-popup-content-->
+            <div class="aalb-selected">
+                <label>{{selected_products_list_label}}</label>
+            </div>
+
+            <div class="aalb-add-shortcode-button">
+                <button class="aalb-btn aalb-btn-primary" id="aalb-add-shortcode-button" type="button">{{add_shortcode_button_label}}</button>
+                <div id="aalb-add-shortcode-alert">
+                    <div class="aalb-admin-icon"><i class="fa fa-spinner fa-pulse"></i></div>
+                    {{text_shown_during_shortcode_creation}}
+                </div>
+                <div id="aalb-add-asin-error">
+                    <div id="aalb-add-template-asin-error"></div>
+                </div>
+            </div><!--end .aalb-add-shortcode-button-->
+        </script>
+    </div><!--end .aalb-admin-popup-container-->
 <?php
 ?>

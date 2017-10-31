@@ -13,77 +13,60 @@ and limitations under the License.
 */
 
 include 'aalb_admin_ui_common.php';
-$helper = new Aalb_Helper();
-$aalb_store_id_names = $helper->get_store_ids_array();
-wp_enqueue_script( 'jquery' );
-wp_enqueue_script( 'aalb_credentials_js', AALB_CREDENTIALS_JS, array( 'jquery' ), AALB_PLUGIN_CURRENT_VERSION );
-wp_localize_script( 'aalb_credentials_js', 'wp_opt', array( 'plugin_url' => AALB_PLUGIN_URL ) );
-wp_enqueue_style( 'aalb_credentials_css', AALB_CREDENTIALS_CSS, array(), AALB_PLUGIN_CURRENT_VERSION );
+include 'aalb_credentials_locale_row.php'
 ?>
+<!-- ToDO: 1. Convert table to div. 2. Put complete code under handlebars as currently store-id settings loads 1 second after page load-->
+<!-- ToDO: 3. Include JSHint 4. See how can we leverage any of the libraries from Angular,React or VueJS -->
 
-<div class="wrap">
+<!--start: confirmation modal for Remove marketplace-->
+<div id="aalb-remove-marketplace-confirmation-container">
+    <div><?php esc_html_e( "Are you sure you want to remove this marketplace?", 'amazon-associates-link-builder' ) ?></div>
+    <br />
+    <div>
+        <button id="aalb-remove-yes-button" class="aalb-btn aalb-btn-primary"><?php esc_html_e( "YES", 'amazon-associates-link-builder' ) ?></button>
+        <button id="aalb-remove-no-button" class="aalb-btn aalb-btn-primary"><?php esc_html_e( "NO", 'amazon-associates-link-builder' ) ?></button>
+    </div>
+    <input type="hidden" id="aalb-marketplace-to-remove" />
+</div> <!--end: confirmation modal for Remove marketplace-->
+
+<div class="wrap aalb-settings-page">
     <h2><?php esc_html_e( "Settings for Associates Link Builder", 'amazon-associates-link-builder' ) ?></h2>
     <br>
-    <form method="post" action="options.php">
+    <form id="aalb-credentials-form" method="post" action="options.php">
         <?php settings_fields( AALB_CRED_CONFIG_GROUP );
         do_settings_sections( AALB_CRED_CONFIG_GROUP ); ?>
-        <fieldset class="aalb-settings-fieldset">
-            <legend class="aalb-settings-legend"> <?php esc_html_e( "Tracking Id(s)", 'amazon-associates-link-builder' ) ?> </legend>
-            <table class ="widefat fixed aalb-settings-table">
-                <tr>
-                    <th scope="row" class="aalb-settings-identifier"><?php esc_html_e( "Associate ID", 'amazon-associates-link-builder' ) ?></th>
-                    <td class="aalb-settings-input-column">
-                    <textarea type="text" id=<?php echo AALB_STORE_ID_NAMES ?> name=<?php echo AALB_STORE_ID_NAMES ?> class="aalb-settings-input-field"
-                        value="<?php echo esc_attr( get_option( AALB_STORE_ID_NAMES ) ); ?>"
-                        onchange="aalb_credentials_store_ids_onchange(this)"><?php echo esc_attr( get_option( AALB_STORE_ID_NAMES ) ); ?>
-                    </textarea>
-                    </td>
-                    <td><?php esc_html_e( "Associate ID is used to monitor traffic and sales from your links to Amazon. You can add one store id or tracking id per row. You are recommended to create a new tracking ID in your Amazon Associates account for using it as Associate ID in the plugin.", 'amazon-associates-link-builder' ) ?>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-        <br>
 
+        <script id="aalb-hbs-store-id-settings" type="text/x-handlebars-template">
+            <fieldset class="aalb-settings-fieldset">
+                <legend class="aalb-settings-legend"> {{tracking_id_fieldset_label}}</legend>
+                <table id="aalb-store-ids-settings" class="widefat aalb-settings-table">
+                    <tr>
+                        <td colspan="4">
+                            {{marketplace_settings_info_message}}
+                            <br>
+                            {{tracking_id_settings_info_message}}
+                        </td>
+                    </tr>
+                    {{#each store_ids_for_marketplaces}}
+                    {{> aalb-marketplace-row-hbs ../marketplace_row_context marketplace=this.marketplace tracking_ids=this.tracking_ids }}
+                    {{/each}}
+                    <tr class="aalb-add-new-marketplace">
+                        <td colspan="4">
+                            <a href="#" id="aalb-add-new-marketplace">{{add_a_marketplace_label}}</a>
+                        </td>
+                    </tr>
+                </table>
+                <!--Below fields needs to saved on form submission but don't require any user action so hidden-->
+                <input type="hidden" id={{old_store_id_db_key}} name={{old_store_id_db_key}}>
+                <input type="hidden" id={{new_store_id_db_key}} name={{new_store_id_db_key}}>
+                <input type="hidden" id={{default_store_id_db_key}} name={{default_store_id_db_key}}>
+                <input type="hidden" id={{default_marketplace_db_key}} name={{default_marketplace_db_key}}>
+            </fieldset>
+        </script>
+        <br>
         <fieldset class="aalb-settings-fieldset">
             <legend class="aalb-settings-legend"><?php esc_html_e( "Site Wide Settings", 'amazon-associates-link-builder' ) ?></legend>
-            <table class ="widefat fixed aalb-settings-table">
-                <tr>
-                    <th scope="row" class="aalb-settings-identifier"><?php esc_html_e( "Default Associate ID", 'amazon-associates-link-builder' ) ?></th>
-                    <td class="aalb-settings-input-column">
-                        <?php $default_store_id = get_option( AALB_DEFAULT_STORE_ID, AALB_DEFAULT_STORE_ID_NAME ); ?>
-                        <select id=<?php echo AALB_DEFAULT_STORE_ID ?> name=<?php echo AALB_DEFAULT_STORE_ID ?> class="aalb-settings-input-field">
-                            <?php
-                            foreach ( $aalb_store_id_names as $store_id ) {
-                                echo '<option value="' . $store_id . '"';
-                                selected( $default_store_id, $store_id );
-                                echo '>' . $store_id . '</option>\n';
-                            }
-                            ?>
-                        </select>
-                    </td>
-                    <td><?php esc_html_e( "The Associate ID that will be used for tagging the affiliate links generated by the plugin if no tag is specified in the short code.", 'amazon-associates-link-builder' ) ?>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="aalb-settings-identifier"><?php esc_html_e( "Default Marketplace", 'amazon-associates-link-builder' ) ?></th>
-                    <td class="aalb-settings-input-column">
-                        <?php $default_marketplace = get_option( AALB_DEFAULT_MARKETPLACE, AALB_DEFAULT_MARKETPLACE_NAME ); ?>
-                        <select name=<?php echo AALB_DEFAULT_MARKETPLACE ?> class="aalb-settings-input-field">
-                            <?php
-                            $config_loader = new Aalb_Config_Loader();
-                            $aalb_marketplace_names = $config_loader->fetch_marketplaces();
-                            foreach ( $aalb_marketplace_names as $marketplace ) {
-                                echo '<option value="' . $marketplace . '"';
-                                selected( $default_marketplace, $marketplace );
-                                echo '>' . $marketplace . '</option>\n';
-                            }
-                            ?>
-                        </select>
-                    </td>
-                    <td><?php esc_html_e( "Set the default Amazon marketplace based on the Amazon website that is identified in your Associates Account (for instance, if you have signed up for Amazon.co.uk site, then your default marketplace selection should be UK).", 'amazon-associates-link-builder' ) ?>
-                    </td>
-                </tr>
+            <table class="widefat fixed aalb-settings-table">
                 <tr>
                     <th scope="row" class="aalb-settings-identifier"><?php esc_html_e( "Default Template", 'amazon-associates-link-builder' ) ?></th>
                     <td class="aalb-settings-input-column">
@@ -104,7 +87,8 @@ wp_enqueue_style( 'aalb_credentials_css', AALB_CREDENTIALS_CSS, array(), AALB_PL
                 </tr>
                 <tr>
                     <td scope="row" colspan="2" class="aalb-settings-input-column">
-                        <input id=<?php echo AALB_NO_REFERRER_DISABLED ?> type="checkbox" name=<?php echo AALB_NO_REFERRER_DISABLED ?> value="true"<?php if (get_option( AALB_NO_REFERRER_DISABLED )) echo "checked='checked'"; ?> />
+                        <input id=<?php echo AALB_NO_REFERRER_DISABLED ?> type="checkbox" name=<?php echo AALB_NO_REFERRER_DISABLED ?> value="true"<?php if ( get_option( AALB_NO_REFERRER_DISABLED ) )
+                            echo "checked='checked'"; ?> />
                         <label class="aalb-settings-no-referrer-text" for="aalb_no_referrer_disabled">
                             <?php /* translators: %s: rel="noreferrer" attribute */
                             printf( esc_html__( "Remove %s for Amazon Affiliate Links from all posts", 'amazon-associates-link-builder' ), "rel=\"noreferrer\"" ); ?></label>
@@ -120,12 +104,12 @@ wp_enqueue_style( 'aalb_credentials_css', AALB_CREDENTIALS_CSS, array(), AALB_PL
 
         <fieldset class="aalb-settings-fieldset">
             <legend class="aalb-settings-legend"><?php esc_html_e( "PA-API Credentials", 'amazon-associates-link-builder' ) ?></legend>
-            <table class ="widefat fixed aalb-settings-table">
+            <table class="widefat fixed aalb-settings-table">
                 <tr>
                     <th scope="row" class="aalb-settings-identifier"><?php esc_html_e( "Access Key ID", 'amazon-associates-link-builder' ) ?></th>
                     <td class="aalb-settings-input-column">
                         <input type="text" name=<?php echo AALB_AWS_ACCESS_KEY ?> class="aalb-settings-input-field"
-                            value="<?php echo esc_attr( openssl_decrypt( base64_decode( get_option( AALB_AWS_ACCESS_KEY ) ), AALB_ENCRYPTION_ALGORITHM, AALB_ENCRYPTION_KEY, 0, AALB_ENCRYPTION_IV ) ); ?>"/>
+                            value="<?php echo esc_attr( openssl_decrypt( base64_decode( get_option( AALB_AWS_ACCESS_KEY ) ), AALB_ENCRYPTION_ALGORITHM, AALB_ENCRYPTION_KEY, 0, AALB_ENCRYPTION_IV ) ); ?>" />
                     </td>
                     <td>
                         <?php /* translators: 1: URL of Getting Started page 2: _blank */
@@ -140,8 +124,7 @@ wp_enqueue_style( 'aalb_credentials_css', AALB_CREDENTIALS_CSS, array(), AALB_PL
                     }
                     ?>
                     <td class="aalb-settings-input-column"><input type="password" name=<?php echo AALB_AWS_SECRET_KEY ?>
-                            class="aalb-settings-input-field" value="<?php echo esc_attr( $secret_key ); ?>"
-                            autocomplete="off"/>
+                        class="aalb-settings-input-field" value="<?php echo esc_attr( $secret_key ); ?>" autocomplete="off" />
                     </td>
                     <td>
                         <?php /* translators: 1: URL of managing PA-API acccount page  2: _blank */
@@ -152,12 +135,12 @@ wp_enqueue_style( 'aalb_credentials_css', AALB_CREDENTIALS_CSS, array(), AALB_PL
         </fieldset>
 
         <div class="aalb-terms-conditions">
-            <input id="aalb-terms-checkbox" type="checkbox" name="demo-checkbox" value="1"/>
+            <input id="aalb-terms-checkbox" type="checkbox" name="demo-checkbox" value="1" />
             <label for="aalb-terms-checkbox">
                 <?php /* translators: 1: URL of Condition of Use page 2: _blank */
                 printf( __( "Check here to indicate that you have read and agree to the Amazon Associates Link Builder <a href=%1s target=%2s>Conditions of Use</a>.", 'amazon-associates-link-builder' ), AALB_CONDITIONS_OF_USE_URL, AALB_NEW_PAGE_TARGET ) ?></label>
         </div>
         <?php $aalb_submit_button_text = esc_html__( "Save Changes", 'amazon-associates-link-builder' );
-             submit_button( $aalb_submit_button_text, 'primary', 'submit', true, array( 'disabled' => 'disabled' ) ); ?>
+        submit_button( $aalb_submit_button_text, 'primary', 'submit', true, array( 'disabled' => 'disabled' ) ); ?>
     </form>
 </div>

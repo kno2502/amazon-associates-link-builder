@@ -10,13 +10,22 @@
  and limitations under the License.
  */
 
+
+/*
+List of tasks to be done in this file for improving code quality and to ease development and reduce chances of bugs.
+ToDo: Put everything under closure to avoid name conflicts(remove aalb prefix from methods & variables after this) and making internal functionality private
+ToDO: The variables under documet.ready by default(without closures) can create conflicts with same named varaibles from other files like "old_tb_remove"
+ToDO: Add mustache templating in the meta_box and remove html code from this js to separate business logic & html
+ */
+
 var template;
 var TB_WIDTH, TB_HEIGHT;
 var tb_remove;
 var link_id = "";
 var AALB_SHORTCODE_AMAZON_LINK = api_pref.AALB_SHORTCODE_AMAZON_LINK; //constant value from server side is reused here
 var AALB_SHORTCODE_AMAZON_TEXT = api_pref.AALB_SHORTCODE_AMAZON_TEXT;
-var IS_PAAPI_CREDENTIALS_SET = api_pref.IS_PAAPI_CREDENTIALS_SET;
+var IS_PAAPI_CREDENTIALS_NOT_SET = api_pref.IS_PAAPI_CREDENTIALS_NOT_SET;
+var IS_STORE_ID_CREDENTIALS_NOT_SET = api_pref.IS_STORE_ID_CREDENTIALS_NOT_SET;
 //object used as map to check duplicate asin selected by admin
 var asin_map = {};
 var SINGLE_ASIN_TEMPLATE = {
@@ -25,12 +34,39 @@ var SINGLE_ASIN_TEMPLATE = {
     ProductLink: 'true'
 };
 
+var aalb_marketplace_store_id_mapping = jQuery.parseJSON( api_pref.marketplace_store_id_map );
+var aalb_default_marketplace = api_pref.default_marketplace;
+var aalb_default_store_id_list = aalb_marketplace_store_id_mapping ? aalb_marketplace_store_id_mapping[ aalb_default_marketplace ] : [];
+var aalb_search_pop_up_context = {
+    "ad_template_label"                   : aalb_strings.ad_template_label,
+    "searchbox_placeholder"               : aalb_strings.searchbox_placeholder,
+    "search_button_label"                 : aalb_strings.search_button_label,
+    "associate_id_label"                  : aalb_strings.associate_id_label,
+    "marketplace_label"                   : aalb_strings.marketplace_label,
+    "text_shown_during_search"            : aalb_strings.text_shown_during_search,
+    "click_to_select_products_label"      : aalb_strings.click_to_select_products_label,
+    "check_more_on_amazon_text"           : aalb_strings.check_more_on_amazon_text,
+    "selected_products_list_label"        : aalb_strings.selected_products_list_label,
+    "text_shown_during_shortcode_creation": aalb_strings.text_shown_during_shortcode_creation,
+    "add_shortcode_button_label"          : aalb_strings.add_shortcode_button_label,
+    "templates_help_content"              : aalb_strings.templates_help_content,
+    "marketplace_help_content"            : aalb_strings.marketplace_help_content,
+    "tracking_id_help_content"            : aalb_strings.tracking_id_help_content,
+    "templates_list"                      : jQuery.parseJSON( api_pref.templates_list ),
+    "default_template"                    : api_pref.default_template,
+    "marketplace_list"                    : aalb_marketplace_store_id_mapping ? Object.keys( aalb_marketplace_store_id_mapping ) : "",
+    "default_marketplace"                 : aalb_default_marketplace,
+    "default_store_id_list"               : aalb_default_store_id_list,
+    "default_store_id"                    : aalb_default_store_id_list ? aalb_default_store_id_list[ 0 ] : ""
+};
+
 jQuery( document ).ready( function() {
+    aalb_load_search_pop_up();
     // http://stackoverflow.com/questions/5557641/how-can-i-reset-div-to-its-original-state-after-it-has-been-modified-by-java
     jQuery( "#aalb-admin-popup-content" ).data( 'old-state', jQuery( "#aalb-admin-popup-content" ).html() );
 
     //Load the search result template
-    var aalb_hbs_admin_items_search_source  = jQuery( "#aalb-hbs-admin-items-search" ).html();
+    var aalb_hbs_admin_items_search_source = jQuery( "#aalb-hbs-admin-items-search" ).html();
     if( aalb_hbs_admin_items_search_source != null ) {
         template = Handlebars.compile( aalb_hbs_admin_items_search_source );
     }
@@ -73,10 +109,39 @@ jQuery( document ).ready( function() {
         }
     } );
 
-    if(!IS_PAAPI_CREDENTIALS_SET){
-        aalb_disable_editor_search();
+    /**
+     * To fill the store-ids as per markeplace in Associate Id section on changing marketplace
+     **/
+    jQuery( '#aalb_marketplace_names_list' ).on( 'change', function() {
+        jQuery( '#aalb-admin-popup-store-id' ).empty();
+		jQuery.each( aalb_marketplace_store_id_mapping[ jQuery( this ).val() ], function( key, store_id ) {
+			jQuery( '#aalb-admin-popup-store-id' ).append( '<option>' + store_id + '</option>' );
+		} );
+    } );
+
+    if( IS_PAAPI_CREDENTIALS_NOT_SET ) {
+        aalb_disable_editor_search( aalb_strings.paapi_credentials_not_set );
+    } else if( IS_STORE_ID_CREDENTIALS_NOT_SET ) {
+        aalb_disable_editor_search( aalb_strings.store_id_credentials_not_set );
     }
 } );
+
+/**
+ * Load search pop-up box
+ *
+ * @since 1.4.12
+ */
+function aalb_load_search_pop_up() {
+    Handlebars.registerHelper( 'selected', function( current_option, selected_option ) {
+        return (current_option === selected_option) ? 'selected' : '';
+    } );
+    var aalb_search_pop_up_hbs = jQuery( "#aalb-search-pop-up-hbs" ).html();
+    if( aalb_search_pop_up_hbs != null ) {
+        var aalb_search_pop_up_template = Handlebars.compile( aalb_search_pop_up_hbs );
+        var aalb_search_pop_up_html = aalb_search_pop_up_template( aalb_search_pop_up_context );
+        jQuery( "#aalb-admin-popup-container" ).prepend( aalb_search_pop_up_html );
+    }
+}
 
 /**
  * Resizing thickbox on change in window dimensions
@@ -185,8 +250,6 @@ function aalb_admin_popup_search_items() {
  * @param String keywords Items to search for.
  */
 function aalb_admin_get_item_search_items( keywords ) {
-    marketplace = aalb_get_selected_marketplace();
-    marketplace = marketplace ? marketplace : api_pref.marketplace;
     jQuery.ajax({
         url: api_pref.ajax_url,
         type: 'GET',
@@ -194,8 +257,8 @@ function aalb_admin_get_item_search_items( keywords ) {
             "action": api_pref.action,
             "item_search_nonce": api_pref.item_search_nonce,
             "keywords": keywords,
-            "marketplace": marketplace,
-            "store_id": api_pref.store_id
+            "marketplace": aalb_get_selected_marketplace(),
+            "store_id": aalb_get_selected_store()
         },
         success: function( xml ) {
             var items_xml = jQuery( xml ).find( "Item" );
@@ -230,7 +293,8 @@ function aalb_admin_get_item_search_items( keywords ) {
                     var productImage = jQuery( this ).find( "img" ).attr( "src" );
                     var productTitle = jQuery( this ).find( "div.aalb-admin-item-search-items-item-title" ).text();
                     var productPrice = jQuery( this ).find( "div.aalb-admin-item-search-items-item-price" ).text();
-
+                    //ToDO: 1. See if handlebars can be leveraged here like in credentials.js
+                    //ToDO: 2. Remove inline event handler 'onClick'
                     var selectedAsinHTML = '<div class="aalb-selected-item" onclick="aalb_remove_asin(this)"';
                     selectedAsinHTML += ' data-asin="' + data_asin + '">';
                     selectedAsinHTML += '<div class="aalb-selected-item-img-wrap"><span class="aalb-selected-item-close">&times;</span>';
@@ -295,7 +359,7 @@ function aalb_add_shortcode( shortcodeName ) {
     var selectedAsins = aalb_get_selected_asins();
     var selectedTemplate = aalb_get_selected_template();
     var selectedStore = aalb_get_selected_store();
-    var selectedMarketplace = aalb_get_selected_marketplace_abbreviation();
+    var selectedMarketplace = aalb_get_selected_marketplace();
 
     if ( shortcodeName == AALB_SHORTCODE_AMAZON_LINK ) {
         shortcodeJson = {
@@ -425,26 +489,7 @@ function aalb_get_selected_store() {
  * @return String Selected Marketplace to search the product
  */
 function aalb_get_selected_marketplace() {
-    var selectedMarketplace = "";
-    var $selectedMarketplace = jQuery( "#aalb_marketplace_names_list option:selected" );
-    if ( $selectedMarketplace.length > 0 ) {
-        selectedMarketplace = $selectedMarketplace.val();
-    }
-    return selectedMarketplace;
-}
-
-/**
- * Get the selected marketplace abbreviation
- *
- * @return String Selected Marketplace abbreviation for the shortcode
- */
-function aalb_get_selected_marketplace_abbreviation() {
-    var selectedMarketplace = "";
-    var $selectedMarketplace = jQuery( "#aalb_marketplace_names_list option:selected" );
-    if ( $selectedMarketplace.length > 0 ) {
-        selectedMarketplace = $selectedMarketplace.text();
-    }
-    return selectedMarketplace;
+    return jQuery( "#aalb_marketplace_names_list" ).val();
 }
 
 /**
@@ -519,12 +564,18 @@ function aalb_reset_add_short_button_and_error_warnings() {
 }
 
 /**
- * To disable editor search for AALB plugin
+ * To disable editor search for AALB plugin along with message
+ *
+ * @param String error_msg Error message
+ *
+ * @since 1.4.12
+ *
  **/
-function aalb_disable_editor_search() {
-    jQuery(".aalb-admin-button-create-amazon-shortcode").addClass('aalb-admin-button-create-amazon-shortcode-disabled');
+function aalb_disable_editor_search( error_msg ) {
+    jQuery( ".aalb-admin-button-create-amazon-shortcode" ).addClass( 'aalb-admin-button-create-amazon-shortcode-disabled' );
     jQuery( ".aalb-admin-input-search" ).prop( 'disabled', true );
-    var aalb_admin_searchbox_tooltip = jQuery('.aalb-admin-searchbox-tooltip-disabled');
-    aalb_admin_searchbox_tooltip.addClass('aalb-admin-searchbox-tooltip-text');
-    aalb_admin_searchbox_tooltip.removeClass('aalb-admin-searchbox-tooltip-disabled');
+    var aalb_admin_searchbox_tooltip = jQuery( '.aalb-admin-editor-tooltip' );
+    aalb_admin_searchbox_tooltip.html( error_msg );
+    aalb_admin_searchbox_tooltip.addClass( 'aalb-admin-searchbox-tooltip-text' );
+    aalb_admin_searchbox_tooltip.removeClass( 'aalb-admin-hide-display' );
 }

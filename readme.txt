@@ -2,7 +2,7 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.8.1
+Tested up to: 4.8.2
 Stable tag: 1.4.11
 Requires PHP: 5.3.0
 License: GPLv2
@@ -101,14 +101,18 @@ Amazon Product Advertising API credentials are not required to use the feature t
 
 == Changelog ==
 
+= 1.4.12 - October 31, 2017 =
+* **Revamped Settings Page:** Tracking IDs are now associated with Marketplaces in the new settings page. If you are upgrading from a previous version of the plugin, all existing tracking ids have been associated with your default marketplace. Please review and configure available marketplaces and tracking ids from the revamped settings page.
+* Add shortcode popup now respects available marketplaces and tracking id associations configured in the revamped settings page.
+
 = 1.4.11 - October 16, 2017 =
 * Plugin is now available in Spanish, French and Italian languages.
 
-= 1.4.10 - Septmeber 13, 2017 =
+= 1.4.10 - September 13, 2017 =
 * Fix: Customize theme option is not working for few users after v1.4.8.
 * Fix: Page alignment distorted for some users after v1.4.9.
 
-= 1.4.9 - Septmeber 4, 2017 =
+= 1.4.9 - September 4, 2017 =
 * Putting strings under translation function for Internationalization.
 * Fix: Product Grid not aligned properly on iOS devices.
 * Fix: Product Ad breaks the text on the right side on few mobile devices.
@@ -188,6 +192,9 @@ Amazon Product Advertising API credentials are not required to use the feature t
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.4.12 =
+Tracking IDs are associated with marketplaces in the revamped settings page and add shortcode popup.
 
 = 1.4.11 =
 Plugin is now available in Spanish, French and Italian languages.

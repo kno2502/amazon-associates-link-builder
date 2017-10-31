@@ -52,6 +52,7 @@ class Aalb_Sidebar {
         register_setting( AALB_CRED_CONFIG_GROUP, AALB_DEFAULT_MARKETPLACE );
         register_setting( AALB_CRED_CONFIG_GROUP, AALB_DEFAULT_TEMPLATE );
         register_setting( AALB_CRED_CONFIG_GROUP, AALB_STORE_ID_NAMES );
+        register_setting( AALB_CRED_CONFIG_GROUP, AALB_STORE_IDS );
         register_setting( AALB_CRED_CONFIG_GROUP, AALB_NO_REFERRER_DISABLED );
     }
 

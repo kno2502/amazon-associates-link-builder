@@ -52,6 +52,7 @@ class Aalb_Autoloader {
         new self( AALB_PAAPI_DIR );
         new self( AALB_SHORTCODE_DIR );
         new self( AALB_LIBRARY_DIR );
+        new self( AALB_SIDEBAR_HELPER_DIR );
     }
 
     /**

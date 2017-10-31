@@ -464,7 +464,7 @@ input.aalb-admin-input-search:disabled {
     font-size: 12px;
 }
 
-.aalb-admin-searchbox-tooltip-disabled {
+.aalb-admin-hide-display {
     display: none;
 }
 
@@ -472,4 +472,8 @@ input.aalb-admin-input-search:disabled {
     text-decoration: underline !important;
     color: #0073aa !important;
     font-weight: bold;
+}
+
+.aalb-info-icon::before {
+    margin-left: 5px;
 }

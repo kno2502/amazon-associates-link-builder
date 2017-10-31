@@ -33,6 +33,9 @@ class Aalb_Manager {
 
         //add the hooks for shortcode rendering.
         $this->register_shortcode_hooks();
+
+        //Add the hooks for the rendering Settings page of plugin
+        $this->add_credentials_hooks();
     }
 
     /**
@@ -65,6 +68,17 @@ class Aalb_Manager {
         $aalb_shortcode_text = $this->shortcode_loader->get_amazon_textlink_shortcode();
         $this->hook_loader->add_action( 'wp_enqueue_scripts', $aalb_shortcode, 'enqueue_styles' );
         $this->hook_loader->add_action( 'wp_enqueue_scripts', $aalb_shortcode_text, 'enqueue_styles' );
+    }
+
+    /**
+     * Add the hooks for the rendering Settings page of the plugin
+     *
+     * @since 1.4.12
+     */
+    private function add_credentials_hooks() {
+        $credentials_helper = new Aalb_Credentials_Helper();
+        $this->hook_loader->add_action( 'admin_enqueue_scripts', $credentials_helper, 'aalb_credentials_enqueue_style' );
+        $this->hook_loader->add_action( 'admin_enqueue_scripts', $credentials_helper, 'aalb_credentials_enqueue_script' );
     }
 
     /**

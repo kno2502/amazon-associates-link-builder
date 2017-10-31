@@ -25,10 +25,7 @@ $aalb_admin->aalb_enqueue_scripts();
 -->
 
 <div class="aalb-admin-inline aalb-admin-searchbox">
-    <span class="aalb-admin-searchbox-tooltip-disabled"><?php
-        /* translators: %s: URL of settings page */
-        printf( __( "Please configure your PA-API credentials in the  <a href=%s>Settings Page</a> to use the Link Builder features.", 'amazon-associates-link-builder' ), $aalb_settings_page_url ); ?>
-    </span>
+    <span class="aalb-admin-editor-tooltip aalb-admin-hide-display"></span>
     <img src=<?= AALB_ADMIN_ICON ?> class="aalb-admin-searchbox-amzlogo">
     <input type="text" class="aalb-admin-input-search"
         name="aalb-admin-input-search"

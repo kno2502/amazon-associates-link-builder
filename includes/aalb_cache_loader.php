@@ -80,7 +80,6 @@ class Aalb_Cache_Loader {
 
         $this->helper->clear_expired_transients_at_intervals();
         set_transient( $key, $info, AALB_CACHE_FOR_ASIN_RAWINFO_TTL );
-
         return $info;
     }
 }
