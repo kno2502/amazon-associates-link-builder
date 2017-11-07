@@ -58,7 +58,7 @@ var aalb_credentials_object = (function( $ ) {
         $( '#aalb-store-ids-settings' ).on( 'click', '.aalb-remove-marketplace', function() {
             marketplace_row_to_remove = $( this ).closest( '.aalb-marketplace-row' );
             if( is_marketplace_row_removal_allowed( marketplace_row_to_remove.find( 'select' ).val() ) ) {
-                <!--ToDO: Below modal box size is overriden by the amp.js provided by "Accelerated mobile pages" plugin  -->
+                //ToDO: Below modal box size is overriden by the amp.js provided by "Accelerated mobile pages" plugin
                 tb_show( aalb_cred_strings.remove_marketplace_confirmation, '#TB_inline?width=350&height=85&inlineId=aalb-remove-marketplace-confirmation-container', false );
             } else {
                 show_dismissable_error_message( aalb_cred_strings.remove_last_marketplace_error );
@@ -95,7 +95,7 @@ var aalb_credentials_object = (function( $ ) {
 
         //Bind click event with "Add marketplace" anchor tag
         $( '#aalb-add-new-marketplace' ).on( 'click', function() {
-            var locale_row_hbs = jQuery( "#aalb-marketplace-row-hbs" ).html();
+            var locale_row_hbs = $( "#aalb-marketplace-row-hbs" ).html();
             if( locale_row_hbs != null ) {
                 var locale_row_template = Handlebars.compile( locale_row_hbs );
                 var locale_row_html = locale_row_template( marketplace_row_context );
@@ -140,12 +140,12 @@ var aalb_credentials_object = (function( $ ) {
 
         //Sanitize store-id input on change
         $( "#aalb-store-ids-settings" ).on( 'change', '.aalb-marketplace-row input', function() {
-            store_ids_list = $( this ).val().trim().split( STORE_ID_SEPARATOR );
+            var store_ids_list = $( this ).val().trim().split( STORE_ID_SEPARATOR );
             //Removes empty store-id values from array
             var sanitized_store_ids_list = store_ids_list.map( function( store_id ) {
                 return store_id.trim();
             } ).filter( function( store_id ) {
-                return store_id != "";
+                return store_id !== "";
             } );
             $( this ).val( sanitized_store_ids_list.join( STORE_ID_SEPARATOR ) );
         } );
@@ -201,9 +201,9 @@ var aalb_credentials_object = (function( $ ) {
                 }
                 return options.inverse( this );
             } );
-            var hbs_store_id_settings = jQuery( "#aalb-hbs-store-id-settings" ).html();
+            var hbs_store_id_settings = $( "#aalb-hbs-store-id-settings" ).html();
             if( hbs_store_id_settings != null ) {
-                store_id_settings_template = Handlebars.compile( hbs_store_id_settings );
+                var store_id_settings_template = Handlebars.compile( hbs_store_id_settings );
                 var store_id_setings_html = store_id_settings_template( store_ids_settings_context );
                 $( "#aalb-credentials-form" ).prepend( store_id_setings_html );
             }
@@ -221,10 +221,12 @@ var aalb_credentials_object = (function( $ ) {
         var marketplace_store_id_obj = $.parseJSON( aalb_cred_data.new_store_ids );
         var marketplace_store_id_array = [];
         for( var marketplace in marketplace_store_id_obj ) {
-            marketplace_store_id_array.push( {
-                "marketplace" : marketplace,
-                "tracking_ids": marketplace_store_id_obj[ marketplace ].toString()
-            } );
+            if( marketplace_store_id_obj.hasOwnProperty( marketplace ) ) {
+                marketplace_store_id_array.push( {
+                    "marketplace" : marketplace,
+                    "tracking_ids": marketplace_store_id_obj[ marketplace ].toString()
+                } );
+            }
         }
         return marketplace_store_id_array;
     }
@@ -400,12 +402,13 @@ var aalb_credentials_object = (function( $ ) {
     function make_a_marketplace_default( new_default_marketplace ) {
         $( '.aalb-marketplace-row' ).each( function() {
             var marketplace = $( this ).find( 'select' ).val();
+            var element = "";
             if( marketplace === default_marketplace ) {
-                var element = $( this ).find( '.aalb-default-marketplace' );
+                element = $( this ).find( '.aalb-default-marketplace' );
                 element.find( 'span' ).remove();
                 element.append( '<a href="#">' + aalb_cred_strings.set_as_default_marketplace_label + '</a>' );
             } else if( marketplace === new_default_marketplace ) {
-                var element = $( this ).find( '.aalb-default-marketplace' );
+                element = $( this ).find( '.aalb-default-marketplace' );
                 element.find( 'a' ).remove();
                 element.append( '<span>' + aalb_cred_strings.default_marketplace_label + '</span>' );
             }

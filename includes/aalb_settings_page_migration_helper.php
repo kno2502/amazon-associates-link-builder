@@ -31,7 +31,7 @@ class Aalb_Settings_Page_Migration_Helper {
      * @since 1.4.12
      */
     public function run_migration_logic() {
-        if ( version_compare( AALB_MULTI_LOCALE_SETTINGS_PLUGIN_VERSION, get_option( AALB_PLUGIN_VERSION ) ) ) {
+        if ( version_compare( AALB_MULTI_LOCALE_SETTINGS_PLUGIN_VERSION, get_option( AALB_PLUGIN_VERSION ), ">" ) ) {
             delete_option( AALB_STORE_IDS );
             $this->migrate_storeids();
         }
