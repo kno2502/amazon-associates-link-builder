@@ -2,8 +2,8 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.8.2
-Stable tag: 1.4.12
+Tested up to: 4.8.3
+Stable tag: 1.4.13
 Requires PHP: 5.3.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -101,6 +101,10 @@ Amazon Product Advertising API credentials are not required to use the feature t
 
 == Changelog ==
 
+= 1.4.13 - November 10, 2017 =
+* Fix: Tracking Ids section is not visible on settings page for few associates.
+* Fix: Save Changes button on settings page remains disabled for few associates.
+
 = 1.4.12 - October 31, 2017 =
 * **Revamped Settings Page:** Tracking IDs are now associated with Marketplaces in the new settings page. If you are upgrading from a previous version of the plugin, all existing tracking ids have been associated with your default marketplace. Please review and configure available marketplaces and tracking ids from the revamped settings page.
 * Add shortcode popup now respects available marketplaces and tracking id associations configured in the revamped settings page.
@@ -192,6 +196,9 @@ Amazon Product Advertising API credentials are not required to use the feature t
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.4.13 =
+Fix for non working tracking-ids section and Save Changes button for few associates on settings page.
 
 = 1.4.12 =
 Tracking IDs are associated with marketplaces in the revamped settings page and add shortcode popup.
