@@ -2,7 +2,7 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.8.3
+Tested up to: 4.9
 Stable tag: 1.4.13
 Requires PHP: 5.3.0
 License: GPLv2
