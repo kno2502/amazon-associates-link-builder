@@ -21,17 +21,17 @@ function aalb_info_notice( $message ) {
 
 function aalb_warning_notice( $message ) {
     /* translators: %s: Warning message */
-    echo "<div class=\"notice notice-warning\"><p>" . sprintf( esc_html__( "WARNING - %s", 'amazon-associates-link-builder' ), $message ) . "</p></div>";
+    echo "<div class=\"notice notice-warning is-dismissible\"><p>" . sprintf( esc_html__( "WARNING - %s", 'amazon-associates-link-builder' ), $message ) . "</p></div>";
 }
 
 function aalb_error_notice( $message ) {
     /* translators: %s: Error message */
-    echo "<div class=\"notice notice-error\"><p>" . sprintf( esc_html__( "ERROR - %s", 'amazon-associates-link-builder' ), $message ) . "</p></div>";
+    echo "<div class=\"notice notice-error is-dismissible\"><p>" . sprintf( esc_html__( "ERROR - %s", 'amazon-associates-link-builder' ), $message ) . "</p></div>";
 }
 
 function aalb_success_notice( $message ) {
     /* translators: %s: Success message */
-    echo "<div class=\"notice notice-success\"><p>" . sprintf( esc_html__( "SUCCESS - %s", 'amazon-associates-link-builder' ), $message ) . "</p></div>";
+    echo "<div class=\"notice notice-success is-dismissible\"><p>" . sprintf( esc_html__( "SUCCESS - %s", 'amazon-associates-link-builder' ), $message ) . "</p></div>";
 }
 
 ?>

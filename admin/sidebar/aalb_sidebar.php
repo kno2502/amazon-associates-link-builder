@@ -54,6 +54,7 @@ class Aalb_Sidebar {
         register_setting( AALB_CRED_CONFIG_GROUP, AALB_STORE_ID_NAMES );
         register_setting( AALB_CRED_CONFIG_GROUP, AALB_STORE_IDS );
         register_setting( AALB_CRED_CONFIG_GROUP, AALB_NO_REFERRER_DISABLED );
+        register_setting( AALB_CRED_CONFIG_GROUP, AALB_CUSTOM_UPLOAD_PATH );
     }
 
     /**

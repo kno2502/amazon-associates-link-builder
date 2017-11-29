@@ -22,9 +22,7 @@ and limitations under the License.
  * @subpackage AmazonAssociatesLinkBuilder/shortcode
  */
 class Aalb_Shortcode_Loader {
-
-    public $shortcode_link = null;
-    public $shortcode_textlink = null;
+    public $shortcode_manager = null;
 
     /**
      * Register shortcode with Wordpress
@@ -34,16 +32,6 @@ class Aalb_Shortcode_Loader {
     public function add_shortcode() {
         add_shortcode( AALB_SHORTCODE_AMAZON_LINK, array( $this, 'amazon_link_shortcode_callback' ) );
         add_shortcode( AALB_SHORTCODE_AMAZON_TEXT, array( $this, 'amazon_textlink_shortcode_callback' ) );
-    }
-
-    /**
-     * Disable shortcode
-     *
-     * @since 1.0.0
-     */
-    public function remove_shortcode() {
-        remove_shortcode( AALB_SHORTCODE_AMAZON_LINK );
-        remove_shortcode( AALB_SHORTCODE_AMAZON_TEXT );
     }
 
     /**
@@ -57,22 +45,7 @@ class Aalb_Shortcode_Loader {
      * @return HTML HTML for displaying the templates.
      */
     public function amazon_link_shortcode_callback( $atts ) {
-        return $this->get_amazon_link_shortcode()->render( $atts );
-    }
-
-    /**
-     * Create only a single instance of the Aalb Shortcode.
-     * No need to create an instance for rendering each shortcode.
-     *
-     * @since 1.0.0
-     * @return Aalb_Shortcode The instance of Aalb_Shortcode.
-     */
-    public function get_amazon_link_shortcode() {
-        if ( is_null( $this->shortcode_link ) ) {
-            return new Aalb_Shortcode();
-        }
-
-        return $this->shortcode_link;
+        return $this->get_shortcode_manager_instance()->render( $atts );
     }
 
     /**
@@ -86,24 +59,23 @@ class Aalb_Shortcode_Loader {
      * @return HTML HTML for displaying the templates.
      */
     public function amazon_textlink_shortcode_callback( $atts ) {
-        return $this->get_amazon_textlink_shortcode()->render( $atts );
+        return $this->get_shortcode_manager_instance()->render( $atts );
     }
 
     /**
-     * Create only a single instance of the Aalb TextLink Shortcode.
+     * Create only a single instance of the Aalb Shortcode manager.
      * No need to create an instance for rendering each shortcode.
      *
-     * @since 1.4
-     * @return Aalb_Shortcode_Text The instance of Aalb_Shortcode_Text.
+     * @since 1.5.0
+     * @return Aalb_Shortcode The instance of Aalb_Shortcode.
      */
-    public function get_amazon_textlink_shortcode() {
-        if ( is_null( $this->shortcode_textlink ) ) {
-            return new Aalb_Shortcode_Text();
+    public function get_shortcode_manager_instance() {
+        if ( is_null( $this->shortcode_manager ) ) {
+            $this->shortcode_manager = new Aalb_Shortcode_Manager();
         }
 
-        return $this->shortcode_textlink;
+        return $this->shortcode_manager;
     }
-
 }
 
 ?>

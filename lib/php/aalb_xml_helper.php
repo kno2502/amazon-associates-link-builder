@@ -49,7 +49,7 @@ class Aalb_Xml_Helper {
             $aalb_node->DetailPageURL = isset( $item->DetailPageURL ) ? $item->DetailPageURL : null;
             $aalb_node->LargeImageURL = isset( $item->LargeImage->URL ) ? $item->LargeImage->URL : null;
             $aalb_node->MediumImageURL = isset( $item->MediumImage->URL ) ? $item->MediumImage->URL : null;
-            $aalb_node->SmallImageURL = isset( $item->MediumImage->URL ) ? $item->SmallImage->URL : null;
+            $aalb_node->SmallImageURL = isset( $item->SmallImageURL->URL ) ? $item->SmallImage->URL : null;
 
             //Marketplace
             $marketplace_node_name = $common_marketplace_node_name;

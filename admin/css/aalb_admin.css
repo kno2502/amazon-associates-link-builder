@@ -24,7 +24,7 @@ input.aalb-admin-input-search {
     width: 190px;
 }
 
- .aalb-admin-searchbox a.aalb-admin-button-create-amazon-shortcode {
+.aalb-admin-searchbox a.aalb-admin-button-create-amazon-shortcode {
     box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4) inset;
     background: transparent linear-gradient(to bottom, #F7DFA5, #F0C14B) repeat scroll 0% 0%;
     background-color: transparent;
@@ -65,7 +65,7 @@ html, body {
     display: none;
 }
 
-#aalb-admin-popup-content {
+.aalb-admin-popup-content {
     padding-top: 5px;
     height: 50%;
     width: 100%;
@@ -144,11 +144,10 @@ html, body {
     padding: 5px;
     margin: 0 0 5px;
     width: 100%;
-    height: 30%;
+    height: 80px;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    box-shadow: 2px 2px 4px 0 #ccc;
     border: 1px solid #CCC;
     border-radius: 4px;
     cursor: pointer;
@@ -226,24 +225,26 @@ and(-webkit-min-device-pixel-ratio: 0) {
         }
     }
 }
-/* fix for safari 10.1 */
-@media not all and (min-resolution:.001dpcm) {
-    @media {
-    .aalb-admin-item-search-items-item-title {
-        position: initial;
-        margin-left: 2em;
-        margin-right: 0em;
-        font-weight: bold;
-        word-break: break-all;
-        font-size: 1em;
-        overflow: hidden;
-        position: relative;
-        line-height: 1.2em;
-        max-height: 2.4em;
-        text-align: justify;
-    }
 
-}}
+/* fix for safari 10.1 */
+@media not all and (min-resolution: .001dpcm) {
+    @media {
+        .aalb-admin-item-search-items-item-title {
+            position: initial;
+            margin-left: 2em;
+            margin-right: 0;
+            font-weight: bold;
+            word-break: break-all;
+            font-size: 1em;
+            overflow: hidden;
+            position: relative;
+            line-height: 1.2em;
+            max-height: 2.4em;
+            text-align: justify;
+        }
+
+    }
+}
 
 .aalb-admin-item-search-items-item-price {
     font-size: 1em;
@@ -257,70 +258,39 @@ and(-webkit-min-device-pixel-ratio: 0) {
     border-color: #E77600;
 }
 
-.aalb-admin-popup-shortocde-wrapper {
-    display: block;
-    width: 100%;
-    margin-top: 10px;
-    padding-top: 5px;
-}
-
 .aalb-admin-popup-shortcode-options {
-    padding-top: 3%;
+    display: inline-block;
     width: 100%;
-    -moz-column-gap: 10px;
-    -webkit-column-gap: 10px;
-    column-gap: 10px;
-    -moz-column-count: 3;
-    -webkit-column-count: 3;
-    column-count: 3;
-}
-
-.aalb-admin-popup-shortcode-options label {
-    display: block;
-    text-align: left;
 }
 
 .aalb-admin-item-search-templates {
-    width: 100%;
+    display: inline-block;
 }
 
-.aalb-admin-popup-store {
-    width: 100%;
-}
-
-.aalb-admin-item-search-marketplaces {
-    width: 100%;
+.aalb-admin-item-search-templates {
+    margin-top: 2px;
+    margin-bottom: 3px;
 }
 
 .aalb-add-shortcode-button {
-    padding-top: 20px;
     bottom: 2px;
     position: absolute;
+    width: 97%;
+    margin-left: -1%;
+    background: #ffffff;
+    z-index: 1000;
 }
 
-.aalb-admin-popup-options {
-    position: relative;
-}
-
-#aalb-admin-popup-input-search {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    margin-top: 1%;
-    height: 33px;
-    vertical-align: middle;
+.aalb-admin-popup-input-search {
     border: 1px solid #F0C14B;
-}
-
-#aalb-admin-popup-search-button {
-    position: absolute;
-    right: 0;
+    width: 95%;
+    height: 28px;
 }
 
 .aalb-selected {
     height: auto;
     width: 100%;
-    padding-top: 10px;
+    margin-top: 20px;
     padding-bottom: 10px;
 }
 
@@ -328,6 +298,13 @@ and(-webkit-min-device-pixel-ratio: 0) {
     display: block;
     text-align: left;
     padding: 15px 0px;
+}
+
+.aalb-selected-placeholder {
+    color: #a9a9a9;
+    margin-left: 17px;
+    margin-top: 8px;
+    font-size: 18px;
 }
 
 .aalb-selected-item {
@@ -403,10 +380,6 @@ and(-webkit-min-device-pixel-ratio: 0) {
     display: none;
 }
 
-.aalb-admin-searchbox.aalb-admin-popup-options {
-    margin-bottom: 15px;
-}
-
 #aalb-add-asin-error {
     padding: 2px;
     display: inline;
@@ -420,8 +393,8 @@ and(-webkit-min-device-pixel-ratio: 0) {
     display: block;
 }
 
-#aalb_template_names_list , #aalb-admin-popup-store-id , #aalb_marketplace_names_list {
-    width: 100%;
+#aalb_template_names_list {
+    width: 200px;
 }
 
 input.aalb-admin-input-search:focus {
@@ -429,9 +402,9 @@ input.aalb-admin-input-search:focus {
 }
 
 #aalb-add-shortcode-button:disabled {
-    cursor : not-allowed;
-    background : transparent;
-    opacity : 0.2;
+    cursor: not-allowed;
+    background: transparent;
+    opacity: 0.2;
 }
 
 .aalb-admin-inline.aalb-admin-searchbox:hover .aalb-admin-searchbox-tooltip-text {
@@ -460,7 +433,7 @@ input.aalb-admin-input-search:disabled {
     bottom: 60%;
     width: 290px;
     box-shadow: 3px 3px 10px 0px rgba(44, 50, 50, 0.76);
-    border: 1px  black;
+    border: 1px #000000;
     font-size: 12px;
 }
 
@@ -476,4 +449,90 @@ input.aalb-admin-input-search:disabled {
 
 .aalb-info-icon::before {
     margin-left: 5px;
+}
+
+#aalb-tabs li .ui-icon-close {
+    float: left;
+    margin: 0.4em 0.2em 0 0;
+    cursor: pointer;
+}
+
+.aalb-pop-up-tabs {
+    width: 100%;
+    border: 1px solid #e78f08;
+}
+
+#aalb-tabs {
+    padding: 0;
+}
+
+.aalb-pop-up-tabs ul {
+    background: #ededed;
+    padding: 0;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+}
+
+.aalb-pop-up-tabs ul li {
+    background: #ededed;
+    border: 0.1px solid #ededed;
+}
+
+#aalb-tabs .ui-state-active {
+    background: #ffffff !important;
+    border-bottom: 0;
+}
+
+#aalb-add-marketplace-tab {
+    size: 70px;
+    cursor: pointer;
+}
+
+.aalb-templates-label {
+    vertical-align: middle;
+}
+
+.aalb-admin-popup-fieldset {
+    border: 1px solid #778899;
+    border-radius: 5px;
+    min-height: 150px;
+    padding-right: 4px;
+    padding-left: 4px;
+}
+
+.aalb-admin-popup-legend {
+    margin-left: 5px;
+}
+
+.aalb-admin-popup-placeholder {
+    margin-top: 15px;
+}
+
+.aalb-admin-popup-more-results {
+    margin-bottom: 3px;
+}
+
+.aalb-table-cell {
+    display: table-cell;
+}
+
+.aalb-table {
+    display: table;
+}
+
+.aalb-table-row {
+    display: table-row;
+}
+
+.aalb-width-25 {
+    width: 25%
+}
+
+.aalb-width-40 {
+    width: 40%
+}
+
+.aalb-width-10 {
+    width: 10%
 }

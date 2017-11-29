@@ -41,26 +41,6 @@ class Aalb_Activator {
     }
 
     /**
-     * Add the aws key options into the database on activation.
-     * This solves the problem of encryption as wordpress called an update option before calling
-     * add option while sanitizing.
-     * https://codex.wordpress.org/Function_Reference/register_setting
-     *
-     * @since 1.0.0
-     */
-    private function load_db_keys() {
-        if ( ! get_option( AALB_AWS_ACCESS_KEY ) ) {
-            update_option( AALB_AWS_ACCESS_KEY, '' );
-        }
-        if ( ! get_option( AALB_AWS_SECRET_KEY ) ) {
-            update_option( AALB_AWS_SECRET_KEY, '' );
-        }
-        if ( ! get_option( AALB_STORE_IDS ) ) {
-            update_option( AALB_STORE_IDS, '' );
-        }
-    }
-
-    /**
      * Halts activation process if the plugin is not compatible with the user environment
      *
      * @since 1.4.3
@@ -80,7 +60,6 @@ class Aalb_Activator {
     function activate() {
         if($this->aalb_compatibility_helper->is_plugin_compatible()) {
             $this->load_templates();
-            $this->load_db_keys();
         } else {
             $this->halt_activation();
         }

@@ -132,18 +132,8 @@ class Aalb_Helper {
     public function show_error_in_preview( $error_message ) {
         if ( is_preview() ) {
             //If it's preview mode
-            echo "<br><font color='red'><b>" . $error_message . "</b></font>";
+            echo '<div class="aalb-preview-message">' . $error_message . '</div>';
         }
-    }
-
-    /**
-     * Returns the Store IDs Array.
-     * Returns AALB_DEFAULT_STORE_ID_NAME if the nothing is specified.
-     *
-     * @since 1.0.0
-     */
-    public function get_store_ids_array() {
-        return explode( "\r\n", strlen( get_option( AALB_STORE_ID_NAMES ) ) ? get_option( AALB_STORE_ID_NAMES ) : AALB_DEFAULT_STORE_ID_NAME );
     }
 
     /**
@@ -297,6 +287,37 @@ class Aalb_Helper {
      */
     public function aalb_get_file_extension( $file_name ) {
         return substr( strrchr( $file_name, '.' ), 1 );
+    }
+
+    /**
+     * Add the aws key options into the database on activation.
+     * This solves the problem of encryption as wordpress called an update option before calling
+     * add option while sanitizing.
+     * https://codex.wordpress.org/Function_Reference/register_setting
+     *
+     * @since 1.0.0
+     */
+    public function load_db_keys() {
+        $this->init_option_if_empty( AALB_AWS_ACCESS_KEY, '' );
+        $this->init_option_if_empty( AALB_AWS_SECRET_KEY, '' );
+        $this->init_option_if_empty( AALB_STORE_IDS, '' );
+        $this->init_option_if_empty( AALB_CUSTOM_UPLOAD_PATH, '' );
+        $this->init_option_if_empty( AALB_GEOLITE_DB_EXPIRATION_TIME, 0 );
+        $this->init_option_if_empty( AALB_GEOLITE_DB_LAST_UPDATED_TIME, 0 );
+    }
+
+    /**
+     * Initialize db option with the value provided
+     *
+     * @param String db_key  Database key
+     * @param String db_value  Database Value
+     *
+     * @since 1.5.0
+     */
+    private function init_option_if_empty( $dbkey, $dbvalue ) {
+        if ( ! get_option( $dbkey ) ) {
+            update_option( $dbkey, $dbvalue );
+        }
     }
 }
 

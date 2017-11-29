@@ -56,7 +56,7 @@ class Aalb_Admin {
      * Checks if store-ids credentials are not set
      *
      * @since 1.4.12
-	 *
+     *
      * @return boolean true if store-id credentials are set
      */
     public function is_store_id_credentials_not_set() {
@@ -70,8 +70,10 @@ class Aalb_Admin {
      *
      */
     public function aalb_enqueue_styles() {
-        wp_enqueue_style( 'aalb_basics_css', AALB_BASICS_CSS, array(), AALB_PLUGIN_CURRENT_VERSION );
-        wp_enqueue_style( 'aalb_admin_css', AALB_ADMIN_CSS, array(), AALB_PLUGIN_CURRENT_VERSION );
+        wp_enqueue_style( 'jquery_ui_css', AALB_JQUERY_UI_CSS );
+        wp_enqueue_style( 'aalb_basics_css', AALB_BASICS_CSS, array( 'jquery_ui_css' ), AALB_PLUGIN_CURRENT_VERSION );
+        wp_enqueue_style( 'aalb_admin_css', AALB_ADMIN_CSS, array( 'jquery_ui_css' ), AALB_PLUGIN_CURRENT_VERSION );
+
         wp_enqueue_style( 'font_awesome_css', FONT_AWESOME_CSS );
         wp_enqueue_style( 'thickbox' );
     }
@@ -86,7 +88,8 @@ class Aalb_Admin {
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'handlebars_js', HANDLEBARS_JS );
         wp_enqueue_script( 'aalb_sha2_js', AALB_SHA2_JS, array(), AALB_PLUGIN_CURRENT_VERSION );
-        wp_enqueue_script( 'aalb_admin_js', AALB_ADMIN_JS, array( 'handlebars_js', 'jquery', 'aalb_sha2_js' ), AALB_PLUGIN_CURRENT_VERSION );
+        wp_enqueue_script( 'jquery_ui', AALB_JQUERY_UI_JS );
+        wp_enqueue_script( 'aalb_admin_js', AALB_ADMIN_JS, array( 'handlebars_js', 'jquery', 'jquery_ui', 'aalb_sha2_js' ), AALB_PLUGIN_CURRENT_VERSION );
         wp_localize_script( 'aalb_admin_js', 'api_pref', $this->get_paapi_pref() );
         wp_localize_script( 'aalb_admin_js', 'aalb_strings', $this->get_aalb_strings() );
     }
@@ -126,7 +129,7 @@ class Aalb_Admin {
     private function get_aalb_strings() {
         return array(
             "template_asin_error"                  => esc_html__( "Only one product can be selected for this template", 'amazon-associates-link-builder' ),
-            "no_asin_selected_error"               => esc_html__( "Please select at least one product for display", 'amazon-associates-link-builder' ),
+            "no_asin_selected_error"               => esc_html__( "Please select at least one product for these marketplaces:", 'amazon-associates-link-builder' ),
             "empty_product_search_bar"             => esc_html__( "Please Enter a Product Name ", 'amazon-associates-link-builder' ),
             "short_code_create_failure"            => esc_html__( "Failed to create Text Link shortcode. Editor has some text selected. Only one item can be selected while adding text links", 'amazon-associates-link-builder' ),
             /* translators: %s: Email-id of the support */
@@ -140,16 +143,22 @@ class Aalb_Admin {
             "searchbox_placeholder"                => esc_html__( "Enter keyword(s)", 'amazon-associates-link-builder' ),
             "search_button_label"                  => esc_html__( "Search", 'amazon-associates-link-builder' ),
             "associate_id_label"                   => esc_html__( "Tracking IDs", 'amazon-associates-link-builder' ),
+            "search_keyword_label"                 => esc_html__( "Search Phrase", 'amazon-associates-link-builder' ),
+            "select_associate_id_label"            => esc_html__( "Select Tracking Id", 'amazon-associates-link-builder' ),
             "marketplace_label"                    => esc_html__( "Marketplace", 'amazon-associates-link-builder' ),
+            "select_marketplace_label"             => esc_html__( "Select Marketplace", 'amazon-associates-link-builder' ),
             "text_shown_during_search"             => esc_html__( "Searching relevant products from Amazon", 'amazon-associates-link-builder' ),
             "click_to_select_products_label"       => esc_html__( "Click to select product(s) to advertise", 'amazon-associates-link-builder' ),
             "check_more_on_amazon_text"            => esc_html__( "Check more search results on Amazon", 'amazon-associates-link-builder' ),
-            "selected_products_list_label"         => esc_html__( "List of Selected Products", 'amazon-associates-link-builder' ),
+            "selected_products_list_label"         => esc_html__( "List of Selected Products(Maximum: 10)", 'amazon-associates-link-builder' ),
             "text_shown_during_shortcode_creation" => esc_html__( "Creating shortcode. Please wait....", 'amazon-associates-link-builder' ),
             "add_shortcode_button_label"           => esc_html__( "Add Shortcode", 'amazon-associates-link-builder' ),
             "templates_help_content"               => esc_html__( "To configure templates, go to Associates Link Builder plugin's Templates page", 'amazon-associates-link-builder' ),
             "marketplace_help_content"             => esc_html__( "To configure marketplaces, go to Associates Link Builder plugin's Settings page", 'amazon-associates-link-builder' ),
-            "tracking_id_help_content"             => esc_html__( "To configure tracking ids, go to Associates Link Builder plugin's Settings page", 'amazon-associates-link-builder' )
+            "tracking_id_help_content"             => esc_html__( "To configure tracking ids, go to Associates Link Builder plugin's Settings page", 'amazon-associates-link-builder' ),
+            "searched_products_box_placeholder"    => esc_html__( "Please select marketplace from above to show products.", 'amazon-associates-link-builder' ),
+            "selected_products_box_placeholder"    => esc_html__( "Please select some products from above.", 'amazon-associates-link-builder' ),
+            "pop_up_new_tab_label"                 => esc_html__( "Add ProductSet for Country", 'amazon-associates-link-builder' )
         );
     }
 
@@ -175,6 +184,7 @@ class Aalb_Admin {
             //Clear all transients for price changes to reflect
             $this->helper->clear_cache_for_substring( '' );
             $this->helper->clear_expired_transients();
+            $this->helper->load_db_keys();
 
             global $wp_filesystem;
             $this->helper->aalb_initialize_wp_filesystem_api();

@@ -47,12 +47,14 @@ class Aalb_Template_Engine {
      * @param string $products_key Key of the combined products.
      * @param string $template Template to render the display unit.
      * @param string $url Url to get the product from if not present in cache.
+     * @param string $marketplace Marketplace to which the product belongs.
+     * @param string $link_code Link Code to be entered in URLS for attribution purposes.
      *
      * @return string  HTML of the disply unit.
      */
-    public function render( $display_key, $products_key, $template, $url, $marketplace ) {
+    public function render( $display_key, $products_key, $template, $url, $marketplace, $link_code ) {
         if ( false === ( $display_unit = $this->cache_template_loader->get_display_unit( $display_key ) ) ) {
-            $products = $this->get_products( $products_key, $url );
+            $products = $this->get_products( $products_key, $url, $link_code );
             $xml = $this->parse( $products );
             $items = $this->get_items( $xml );
 
@@ -73,11 +75,12 @@ class Aalb_Template_Engine {
      *
      * @param string $key Unique identification of the product.
      * @param string $url Signed URL for the PAAPI request.
+     * @param string $link_code Link Code to be entered in URLS for attribution purposes.
      *
      * @return string Xml response from PAAPI.
      */
-    private function get_products( $key, $url ) {
-        return $this->xml_loader->load( $key, $url );
+    private function get_products( $key, $url, $link_code ) {
+        return $this->xml_loader->load( $key, $url, $link_code );
     }
 
     /**

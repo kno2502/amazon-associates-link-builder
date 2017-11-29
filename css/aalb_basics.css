@@ -81,3 +81,13 @@ and limitations under the License.
 .pull-left {
     float: left;
 }
+
+.aalb-preview-message {
+    color: #ff0000;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.aalb-bold {
+    font-weight: bold;
+}

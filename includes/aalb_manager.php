@@ -23,10 +23,12 @@ class Aalb_Manager {
 
     protected $hook_loader;
     protected $shortcode_loader;
+    protected $shortcode_manager;
 
     public function __construct() {
         $this->hook_loader = new Aalb_Hook_Loader();
         $this->shortcode_loader = new Aalb_Shortcode_Loader();
+        $this->shortcode_manager = new Aalb_Shortcode_Manager();
 
         //add the hooks specific to admin.
         $this->add_admin_hooks();
@@ -56,6 +58,9 @@ class Aalb_Manager {
         $aalb_sidebar = new Aalb_Sidebar();
         $this->hook_loader->add_action( 'admin_init', $aalb_sidebar, 'register_cred_config_group' );
         $this->hook_loader->add_action( 'admin_menu', $aalb_sidebar, 'register_sidebar_config_page' );
+
+        $maxmind_db_manager = new Aalb_Maxmind_Db_Manager();
+        $this->hook_loader->add_action( 'plugins_loaded', $maxmind_db_manager, 'update_db_if_required' );
     }
 
     /**
@@ -64,10 +69,7 @@ class Aalb_Manager {
      * @since 1.0.0
      */
     private function register_shortcode_hooks() {
-        $aalb_shortcode = $this->shortcode_loader->get_amazon_link_shortcode();
-        $aalb_shortcode_text = $this->shortcode_loader->get_amazon_textlink_shortcode();
-        $this->hook_loader->add_action( 'wp_enqueue_scripts', $aalb_shortcode, 'enqueue_styles' );
-        $this->hook_loader->add_action( 'wp_enqueue_scripts', $aalb_shortcode_text, 'enqueue_styles' );
+        $this->hook_loader->add_action( 'wp_enqueue_scripts', $this->shortcode_manager, 'enqueue_styles' );
     }
 
     /**

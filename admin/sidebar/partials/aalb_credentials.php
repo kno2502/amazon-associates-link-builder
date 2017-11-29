@@ -13,7 +13,10 @@ and limitations under the License.
 */
 
 include 'aalb_admin_ui_common.php';
-include 'aalb_credentials_locale_row.php'
+include 'aalb_credentials_locale_row.php';
+
+$cred_helper = new Aalb_Credentials_Helper();
+$cred_helper->handle_error_notices();
 ?>
 <!-- ToDO: 1. Convert table to div. 2. Put complete code under handlebars as currently store-id settings loads 1 second after page load-->
 <!-- ToDO: 3. Include JSHint 4. See how can we leverage any of the libraries from Angular,React or VueJS -->
@@ -35,7 +38,6 @@ include 'aalb_credentials_locale_row.php'
     <form id="aalb-credentials-form" method="post" action="options.php">
         <?php settings_fields( AALB_CRED_CONFIG_GROUP );
         do_settings_sections( AALB_CRED_CONFIG_GROUP ); ?>
-
         <script id="aalb-hbs-store-id-settings" type="text/x-handlebars-template">
             <fieldset class="aalb-settings-fieldset">
                 <legend class="aalb-settings-legend"> {{tracking_id_fieldset_label}}</legend>
@@ -86,10 +88,20 @@ include 'aalb_credentials_locale_row.php'
                     </td>
                 </tr>
                 <tr>
+                    <th scope="row" class="aalb-settings-identifier"><?php esc_html_e( "Downloads Folder", 'amazon-associates-link-builder' ) ?></th>
+                    <td class="aalb-settings-input-column">
+                        <input type="text" name=<?php echo AALB_CUSTOM_UPLOAD_PATH ?> class="aalb-settings-input-field"
+                            value="<?php echo get_option( AALB_CUSTOM_UPLOAD_PATH ) ?>" />
+                    </td>
+                    <td>
+                        <?php printf( __("This folder will be used to save files downloaded by the plugin (e.g. <a href=%1s target=%2s>The MaxMind IP2Country Database</a>) for local use. Absolute path required. <br><span class=\"aalb-bold\"> Default value:</span> *blank*, defaults to <code>wp_upload_dir()['basedir'] + '%3s'</code>", 'amazon-associates-link-builder' ), AALB_GEOLITE_COUNTRY_DB_DETAILS_URL, AALB_NEW_PAGE_TARGET, AALB_UPLOADS_FOLDER ); ?>
+                    </td>
+                </tr>
+                <tr>
                     <td scope="row" colspan="2" class="aalb-settings-input-column">
                         <input id=<?php echo AALB_NO_REFERRER_DISABLED ?> type="checkbox" name=<?php echo AALB_NO_REFERRER_DISABLED ?> value="true"<?php if ( get_option( AALB_NO_REFERRER_DISABLED ) )
                             echo "checked='checked'"; ?> />
-                        <label class="aalb-settings-no-referrer-text" for="aalb_no_referrer_disabled">
+                        <label class="aalb-font-size-110" for="aalb_no_referrer_disabled">
                             <?php /* translators: %s: rel="noreferrer" attribute */
                             printf( esc_html__( "Remove %s for Amazon Affiliate Links from all posts", 'amazon-associates-link-builder' ), "rel=\"noreferrer\"" ); ?></label>
                     </td>

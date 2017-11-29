@@ -38,15 +38,16 @@ class Aalb_Cache_Loader {
      *
      * @param string $key Unique identification of the information.
      * @param string $url URL for making a request.
+     * @param string $link_code Link Code to be entered in URLS for attribution purposes.
      *
      * @return string GET Response.
      */
-    public function load( $key, $url ) {
+    public function load( $key, $url, $link_code = AALB_DEFAULT_LINK_CODE ) {
         $info = $this->lookup( $key );
         if ( $info !== false ) {
             return $info;
         } else {
-            return $this->load_and_save( $key, $url );
+            return $this->load_and_save( $key, $url, $link_code );
         }
     }
 
@@ -68,15 +69,15 @@ class Aalb_Cache_Loader {
      *
      * @param string $key Unique identification of the information.
      * @param string $url URL for making a request.
+     * @param string $link_code Link Code to be entered in URLS for attribution purposes.
      *
      * @return string  GET Response.
      */
-    private function load_and_save( $key, $url ) {
+    private function load_and_save( $key, $url, $link_code ) {
         $info = $this->loader->load( $url );
 
         //use wordpress linkcode
-        $info = str_replace( 'linkCode%3Dxm2', 'linkCode%3Dalb', $info );
-        $info = str_replace( 'linkCode=xm2', 'linkCode=alb', $info );
+        $info = preg_replace( "/linkCode(%3D|=)\w{1,3}/", "linkCode$1" . $link_code, $info );
 
         $this->helper->clear_expired_transients_at_intervals();
         set_transient( $key, $info, AALB_CACHE_FOR_ASIN_RAWINFO_TTL );
