@@ -54,9 +54,8 @@ class Aalb_Customer_Country {
                 $country_code = $country_code === "GB" ? "UK" : $country_code;
             } catch ( Exception $e ) {
                 error_log( "Aalb_Customer_Country:get_country_iso_code failed." . $e->getMessage() );
-            } finally {
-                $reader->close();
             }
+            $reader->close();
         }
 
         return $country_code;
