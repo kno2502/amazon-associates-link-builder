@@ -2,9 +2,9 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.9
-Stable tag: 1.4.13
-Requires PHP: 5.3.0
+Tested up to: 4.9.1
+Stable tag: 1.5.2
+Requires PHP: 5.4.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,7 +24,7 @@ Link Builder is the official free Amazon Associates Program plugin for WordPress
 == Installation ==
 
 = Pre-requisites =
-__Requires PHP Version:__ 5.3 or higher
+__Requires PHP Version:__ 5.4.0 or higher
 <br />
 
 __Requires WordPress Version:__ 3.0.1 or higher
@@ -66,7 +66,7 @@ If you get stuck, or have any questions, you can ask for help in the [Amazon Ass
 1. Amazon Associates Link Builder settings console
 2. Search for products in Amazon catalog directly from the WordPress toolbar while creating a new post or a page
 3. Select the products you would like to advertise
-4. Associate a template and Associates Id to your links
+4. Add products from multiple marketplaces for geo targeting feature
 5. Product Carousel Template: Stylishly designed and responsive ad unit that automatically adapts for different device types and screen resolutions that can be placed within or at the end of your content
 6. Product Ad Template: A variation of the product carousel template for advertising one product at a time
 7. Product Grid Template: Another variation of the product carousel template that can be used to display a grid of products alongside your content
@@ -91,7 +91,7 @@ Information we learn from Amazon Associates Link Builder users helps us to evalu
 You can review the **About** section under the Associates Link Builder menu bar or [Link Builder User Guide](https://s3.amazonaws.com/aalb-public-resources/documents/AssociatesLinkBuilder-UserGuide.pdf) for more information on getting started and key features of the plugin. If you get stuck, or have any questions, you can ask for help in the [Amazon Associates Link Builder Plugin Forum](https://wordpress.org/support/plugin/amazon-associates-link-builder).
 
 = How can I add links to different Amazon sites in my blog? =
-You can search products using keywords in any supported country, but you have to join the Associates Program in those countries separately to be able to do this. For example - If you are a blogger in UK interested in linking to Amazon.com (US) site, then you will first need to join the Amazon Associates Program in US to be able to search for products on Amazon.com site.
+You can search products using keywords in any supported country, but you have to join the Associates Program in those countries separately to be able to do this. For example - If you are a blogger in UK interested in generating links to Amazon.com (US) site, then you will first need to join the Amazon Associates Program in the US to be able to search for products on Amazon.com site. Now, you can add links for products from both US and UK in a single shortcode that will render ad depending upon visitor's country under geo-targeted links feature.
 
 = How can I use this plugin to remove rel="noreferrer" from affiliate links in my site? =
 You can remove rel="noreferrer" from links to Amazon sites in all posts by selecting the appropriate checkbox in the settings page. This will not remove rel="noopener", if present. This feature only affects links to Amazon sites. This change is reversible and as soon as you deselect the checkbox on settings page, the pages will be restored to the original content.
@@ -99,7 +99,33 @@ You can remove rel="noreferrer" from links to Amazon sites in all posts by selec
 = Are Amazon Product Advertising API credentials required to use the feature to remove rel="noreferrer" for Amazon Affiliate Links from all posts? =
 Amazon Product Advertising API credentials are not required to use the feature to remove rel="noreferrer" for Amazon Affiliate Links from all posts.
 
+= What is geo-targeted links feature? =
+This feature enables Amazon Associates to create content customized for and better monetize their international traffic.
+
+= How will the geo-targeting feature benefit me? =
+The geo-targeting feature lets you monetize any traffic from other countries that was harder to monetize earlier. In accordance with our Operating Agreement, attribution to amazon links placed on your site does not hold if the end user has to switch to a different country specific website to complete his/her purchase. Similarly, if you send users to the correct country website, but with an incorrect country’s tracking id (not valid in that locale), then you will not get paid the affiliate fees for that sale. Many associates use complex home-grown systems, or unreliable 3rd party systems to overcome these limitations. These systems might have trust, reliability and pricing implications on your business. The geo-targeting feature in the WordPress plugin aims to reduce this complexity and give you more control on your monetization of global traffic.
+
+= How do I use the geo-targeting feature in the plugin? =
+As a part of the global settings in the plugin, you can configure which countries you want to work with, and the respective tracking id(s). You will also need to provide a set of PA-API credentials, which are connected to each of your respective country associate accounts. You will only need to do this once. As you create content, you will see a tabbed pane which lets you select product sets for each country that you have configured in the plugin. You should pick your default country as the first product set configured. The corresponding short code that is generated will have all the information required to render ads appropriately. When a user visits your site, we use the user’s location to determine which of the product sets to display to the user, and the corresponding ads are rendered. If the user is from a location that you haven’t configured, then your default product set is displayed to the user.
+
+= What will happen if the customer is coming from a country for which I have not configured the shortcode in geo-targeting feature? =
+The customer will be shown ads from the first country added in shortcode.
+
+= How can I see my reporting for geo-targeting feature? =
+You can see your earnings and other reports from the respective country Associates Portal under "Amazon Associates Link Builder" section.
+
 == Changelog ==
+
+= 1.5.2 - December 2, 2017 =
+* Fix: v1.5.1 not running for few associates.
+
+= 1.5.1 - December 1, 2017 =
+* Fix: v1.5.0 not running for few associates.
+* Minumum supported PHP version changed to 5.4.0 from 5.3.0.
+
+= 1.5.0 - November 29, 2017 =
+* Geo-targeted links that enables Amazon Associates to create content customized for and better monetize their international traffic. More details [here](https://amazon-affiliate.eu/en/about-the-programme/amazon-associates-link-builder/).
+* Fix: amazon_link shortcode will also work with ProductLink template if text attribute is added separately.
 
 = 1.4.13 - November 10, 2017 =
 * Fix: Tracking Ids section is not visible on settings page for few associates.
@@ -196,6 +222,15 @@ Amazon Product Advertising API credentials are not required to use the feature t
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.5.2 =
+Fixed issues in v1.5.1 that were not handled and returned PHP fatal error.
+
+= 1.5.1 =
+Fixed issues in v1.5.0 that was incompatible with few environments and changed minimum supported PHP version to 5.4.0.
+
+= 1.5.0 =
+Geo-targeted links that enables Amazon Associates to create content customized for and better monetize their international traffic & fix to allow using Product Links with amazon_link shortcode.
 
 = 1.4.13 =
 Fix for non working tracking-ids section and Save Changes button for few associates on settings page.
