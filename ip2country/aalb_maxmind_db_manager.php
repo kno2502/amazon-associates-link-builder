@@ -103,7 +103,7 @@ class Aalb_Maxmind_Db_Manager {
     }
 
     /*
-     * It downlaods the db file
+     * It downloads the db file
      *
      * @since 1.5.0
      *
@@ -111,15 +111,37 @@ class Aalb_Maxmind_Db_Manager {
      *
      */
     private function get_db() {
-        $response = null;
         try {
-            $response = $this->customized_download_url( AALB_GEOLITE_COUNTRY_DB_DOWNLOAD_URL );
-            if ( is_wp_error( $response ) ) {
-                error_log( "Maxmind_db_manager:get_db:::" . $response->get_error_message() );
-            }
-        }
-        catch ( Exception $e ) {
+            $response = $this->verify_response( $this->customized_download_url( AALB_GEOLITE_COUNTRY_DB_DOWNLOAD_URL ) );
+        } catch ( Exception $e ) {
+            $response = null;
             error_log( "Error in maxmind_db_manager:get_db:::" . $e->getMessage() );
+        }
+
+        return $response;
+    }
+
+    /*
+     * It verifies the HTTP response.
+     *
+     * @argument HTTP_RESPONSE $response
+     *
+     * @since 1.5.2
+     *
+     * @return HTTP_RESPONSE $response
+     */
+    private function verify_response( $response ) {
+        if ( is_wp_error( $response ) ) {
+            throw new Exception( "WP_ERROR: " . $response->get_error_message() );
+        } else if ( ! is_array( $response ) || ! array_key_exists( "response", $response ) || ! array_key_exists( "tmpfname", $response ) ) {
+            throw new Exception( "Either the output is not an array or the one of the keys, response or tmpfname doesn't exist" );
+        } else {
+            $http_response = $response['response'];
+            //Below sis reponse code returned by HTTP response
+            $code = $http_response['response']['code'];
+            if ( $code != HTTP_SUCCESS ) {
+                throw new Exception( $code );
+            }
         }
 
         return $response;
