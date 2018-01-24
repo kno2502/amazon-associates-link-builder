@@ -18,6 +18,9 @@ and limitations under the License.
  * @since      1.0.0
  * @package    AmazonAssociatesLinkBuilder
  * @subpackage AmazonAssociatesLinkBuilder/includes
+ *
+ * CAUTION: Any function present here should contain code that is compatible with at least PHP 5.3(even lower if possible) so
+ * that anyone not meeting compatibility requirements for min php versions gets deactivated successfully.
  */
 class Aalb_Deactivator {
 

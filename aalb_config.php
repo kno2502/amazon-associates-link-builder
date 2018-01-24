@@ -13,7 +13,7 @@ and limitations under the License.
 */
 
 //version
-define( 'AALB_PLUGIN_CURRENT_VERSION', '1.5.2' );
+define( 'AALB_PLUGIN_CURRENT_VERSION', '1.5.3' );
 
 //Version no. with multi locale settings page
 define( 'AALB_MULTI_LOCALE_SETTINGS_PLUGIN_VERSION', '1.4.12' );
@@ -40,7 +40,7 @@ define( 'AALB_PAAPI_HELPER_PHP', AALB_PLUGIN_DIR . 'lib/php/Paapi/aalb_paapi_hel
 define( 'AALB_VALIDATION_HELPER_PHP', AALB_PLUGIN_DIR . 'lib/php/aalb_validation_helper.php' );
 define( 'AALB_XML_HELPER_PHP', AALB_PLUGIN_DIR . 'lib/php/aalb_xml_helper.php' );
 define( 'AALB_TRACKING_API_HELPER_PHP', AALB_PLUGIN_DIR . 'lib/php/aalb_tracking_api_helper.php' );
-define( 'MAXMIND_DATA_FILENAME', 'GeoLite2-Country.mmdb' );
+define( 'AALB_MAXMIND_DATA_FILENAME', 'GeoLite2-Country.mmdb' );
 
 //Shortcodes supported
 define( 'AALB_SHORTCODE_AMAZON_LINK', 'amazon_link' );
@@ -63,6 +63,8 @@ define( 'AALB_SHORTCODE_DIR', AALB_PLUGIN_DIR . 'shortcode/' );
 define( 'AALB_LIBRARY_DIR', AALB_PLUGIN_DIR . 'lib/php/' );
 define( 'AALB_SIDEBAR_HELPER_DIR', AALB_PLUGIN_DIR . 'admin/sidebar/partials/helper/' );
 define( 'AALB_IP_2_COUNTRY_DIR', AALB_PLUGIN_DIR . 'ip2country/' );
+define( 'AALB_EXCEPTIONS_DIR', AALB_PLUGIN_DIR . 'exceptions/' );
+define( 'AALB_IO_DIR', AALB_PLUGIN_DIR . 'io/' );
 
 //Includes
 define( 'AALB_ACTIVATOR_PHP', AALB_PLUGIN_DIR . 'includes/aalb_activator.php' );
@@ -117,7 +119,6 @@ define( 'HANDLEBARS_JS', 'https://d8fd03967nrad.cloudfront.net/libs/handlebars.j
 define( 'CODEMIRROR_JS', 'https://d8fd03967nrad.cloudfront.net/libs/codemirror/5.13.2/codemirror.min.js' );
 define( 'CODEMIRROR_MODE_XML_JS', 'https://d8fd03967nrad.cloudfront.net/libs/codemirror/5.13.2/mode/xml/xml.min.js' );
 define( 'CODEMIRROR_MODE_CSS_JS', 'https://d8fd03967nrad.cloudfront.net/libs/codemirror/5.13.2/mode/css/css.min.js' );
-define( 'AALB_JQUERY_UI_JS', 'https://d8fd03967nrad.cloudfront.net/libs/jQueryUI/1.12.1/jquery-ui.js' );
 define( 'AALB_JQUERY_UI_CSS', 'https://d8fd03967nrad.cloudfront.net/libs/jQueryUI/1.12.1/themes/ui-lightness/jquery-ui.css' );
 
 //External Styles
@@ -161,11 +162,22 @@ define( 'AALB_CRED_CONFIG_GROUP', 'aalb_cred_config_group' );
 define( 'AALB_STORE_ID_NAMES', 'aalb_store_id_names' );
 define( 'AALB_STORE_IDS', 'aalb_store_ids' );
 define( 'AALB_CUSTOM_UPLOAD_PATH', 'aalb_custom_upload_path' );
+define( 'AALB_MAXMIND_DB_LAST_UPLOAD_PATH', 'aalb_maxmind_db_last_upload_path' );
 define( 'AALB_SHOW_HTTP_WARNING_ONCE', 'aalb_show_http_warning_once' );
 define( 'AALB_PLUGIN_VERSION', 'aalb_plugin_version' );
 define( 'AALB_NO_REFERRER_DISABLED', 'aalb_no_referrer_disabled' );
-define( 'AALB_GEOLITE_DB_EXPIRATION_TIME', 'aalb_geolite_db_expiration_time' );
-define( 'AALB_GEOLITE_DB_LAST_UPDATED_TIME', 'aalb_geolite_db_last_updated_time' );
+define( 'AALB_GEOLITE_DB_DOWNLOAD_NEXT_RETRY_TIME', 'aalb_geolite_db_download_next_retry_time' );
+define( 'AALB_GEOLITE_DB_DOWNLOAD_RETRY_ON_FAILURE_DURATION', 'aalb_geolite_db_download_retry_on_failure_duration' );
+define( 'AALB_GEOLITE_DB_DOWNLOAD_FAILED_ATTEMPTS', 'aalb_geolite_db_download_failed_attempts' );
+
+//Geolite DB Retry Durations
+define( 'AALB_GEOLITE_DB_DOWNLOAD_RETRY_DURATION_MIN', 30 * MINUTE_IN_SECONDS );
+define( 'AALB_GEOLITE_DB_DOWNLOAD_RETRY_DURATION_MAX', 2 * DAY_IN_SECONDS );
+define( 'AALB_GEOLITE_DB_DOWNLOAD_RETRY_DURATION_ON_SUCCESS', 3 * DAY_IN_SECONDS );
+define( 'AALB_GEOLITE_DB_MAX_ALLOWED_AGE', 60 * DAY_IN_SECONDS );
+
+define( 'AALB_SUCCESS', "SUCCESS" );
+define( 'AALB_FAIL', "FAIL" );
 
 //Masking constant
 define( 'AALB_AWS_SECRET_KEY_MASK', '••••••••••••••••••••••••••••••••••••••••' );
@@ -291,16 +303,17 @@ define( 'AALB_PAAPI_EFFICIENCY_GUIDELINES_URL', 'http://docs.aws.amazon.com/AWSE
 define( 'AALB_SETTINGS_PAGE_URL', admin_url( 'admin.php?page=associates-link-builder-settings' ) );
 
 //Maxmind GeoLite2Country DB Download URL
-define('AALB_GEOLITE_COUNTRY_DB_DOWNLOAD_URL', 'http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz');
-define('AALB_GEOLITE_COUNTRY_DB_DETAILS_URL','https://dev.maxmind.com/geoip/geoip2/geolite2/');
+define( 'AALB_GEOLITE_COUNTRY_DB_DOWNLOAD_URL', 'https://d8fd03967nrad.cloudfront.net/libs/geoip/database/GeoLite2-Country.mmdb.gz' );
+define( 'AALB_GEOLITE_DB_DOWNLOAD_URL_FROM_MAXMIND_SERVER', 'http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz' );
+define( 'AALB_GEOLITE_COUNTRY_DB_DETAILS_URL', 'https://dev.maxmind.com/geoip/geoip2/geolite2/' );
 define( 'AALB_NEW_PAGE_TARGET', "_blank" );
 
 define( 'AALB_NEWLINE_SEPARATOR', "\r\n" );
-define('GEO_TARGETED_LINKS_DELIMITER', "|");
+define( 'GEO_TARGETED_LINKS_DELIMITER', "|" );
 
 //Pugin Link Codes
-define('AALB_DEFAULT_LINK_CODE', "alb");
-define('AALB_GEO_TARGETED_LINKS_DEFAULT_COUNTRY_LINK_CODE', "al0");
-define('AALB_GEO_TARGETED_LINKS_REDIRECTED_COUNTRY_LINK_CODE', "al1");
+define( 'AALB_DEFAULT_LINK_CODE', "alb" );
+define( 'AALB_GEO_TARGETED_LINKS_DEFAULT_COUNTRY_LINK_CODE', "al0" );
+define( 'AALB_GEO_TARGETED_LINKS_REDIRECTED_COUNTRY_LINK_CODE', "al1" );
 
 ?>

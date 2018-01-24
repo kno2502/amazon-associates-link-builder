@@ -23,8 +23,6 @@ include AALB_ADMIN_ITEM_SEARCH_ITEMS_PATH;
 include 'aalb_meta_box_tab_content.php';
 include 'aalb_admin_pop_up_content_hbs.php';
 $aalb_admin = new Aalb_Admin();
-$aalb_admin->aalb_enqueue_styles();
-$aalb_admin->aalb_enqueue_scripts();
 
 /*
  * Below is an example of context to be passed to the below template

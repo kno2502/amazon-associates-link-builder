@@ -28,12 +28,10 @@ class Aalb_Admin {
     private $remote_loader;
     private $tracking_api_helper;
     private $helper;
-    private $compatibility_helper;
     private $aalb_migration_helper;
     private $config_loader;
 
     public function __construct() {
-        $this->compatibility_helper = new Aalb_Compatibility_Helper();
         $this->paapi_helper = new Aalb_Paapi_Helper();
         $this->remote_loader = new Aalb_Remote_Loader();
         $this->tracking_api_helper = new Aalb_Tracking_Api_Helper();
@@ -88,8 +86,8 @@ class Aalb_Admin {
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'handlebars_js', HANDLEBARS_JS );
         wp_enqueue_script( 'aalb_sha2_js', AALB_SHA2_JS, array(), AALB_PLUGIN_CURRENT_VERSION );
-        wp_enqueue_script( 'jquery_ui', AALB_JQUERY_UI_JS );
-        wp_enqueue_script( 'aalb_admin_js', AALB_ADMIN_JS, array( 'handlebars_js', 'jquery', 'jquery_ui', 'aalb_sha2_js' ), AALB_PLUGIN_CURRENT_VERSION );
+        wp_enqueue_script( 'jquery-ui-tabs' );
+        wp_enqueue_script( 'aalb_admin_js', AALB_ADMIN_JS, array( 'handlebars_js', 'jquery', 'jquery-ui-tabs', 'aalb_sha2_js' ), AALB_PLUGIN_CURRENT_VERSION );
         wp_localize_script( 'aalb_admin_js', 'api_pref', $this->get_paapi_pref() );
         wp_localize_script( 'aalb_admin_js', 'aalb_strings', $this->get_aalb_strings() );
     }
@@ -180,20 +178,16 @@ class Aalb_Admin {
      * @since 1.3
      */
     public function handle_plugin_update() {
-        if ( $this->compatibility_helper->is_plugin_compatible() ) {
-            //Clear all transients for price changes to reflect
-            $this->helper->clear_cache_for_substring( '' );
-            $this->helper->clear_expired_transients();
-            $this->helper->load_db_keys();
+        //Clear all transients for price changes to reflect
+        $this->helper->clear_cache_for_substring( '' );
+        $this->helper->clear_expired_transients();
+        $this->helper->initialize_db_keys();
 
-            global $wp_filesystem;
-            $this->helper->aalb_initialize_wp_filesystem_api();
-            $this->helper->refresh_template_list();
-            $this->aalb_migration_helper->run_migration_logic();
-            update_option( AALB_PLUGIN_VERSION, AALB_PLUGIN_CURRENT_VERSION );
-        } else {
-            $this->compatibility_helper->aalb_deactivate();
-        }
+        global $wp_filesystem;
+        $this->helper->aalb_initialize_wp_filesystem_api();
+        $this->helper->refresh_template_list();
+        $this->aalb_migration_helper->run_migration_logic();
+        update_option( AALB_PLUGIN_VERSION, AALB_PLUGIN_CURRENT_VERSION );
     }
 
     /**

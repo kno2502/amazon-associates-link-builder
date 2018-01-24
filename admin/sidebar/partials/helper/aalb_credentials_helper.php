@@ -115,15 +115,16 @@ class Aalb_Credentials_Helper {
      * @since 1.5.0
      */
     public function handle_error_notices() {
-        $maxmind_db_manager = new Aalb_Maxmind_Db_Manager();
-        if ( $this->is_more_than_one_marketplaces_configured() ) {
-            if ( ! is_readable( $maxmind_db_manager->db_file_path ) ) {
-                aalb_error_notice( sprintf( esc_html__( "The file used to fetch country details to enable geo-targetted links doesn't have read permissions. Please give recursive read/write permissons to:%s. In case you are still facing the issue, please change download folder in Site Wide Settings section on this page.", 'amazon-associates-link-builder' ), $maxmind_db_manager->db_file_path ) );
-            } else if ( ! is_writable( $maxmind_db_manager->db_file_path ) ) {
-                aalb_error_notice( sprintf( esc_html__( "The file used to fetch country details to enable geo-targetted links doesn't have write permissions. Please give recursive read/write permissons to:%s. In case you are still facing the issue, please change download folder in Site Wide Settings section on this page", 'amazon-associates-link-builder' ), $maxmind_db_manager->db_file_path ) );
-            } else if ( ! is_writable( $maxmind_db_manager->db_upload_dir ) ) {
-                aalb_error_notice( sprintf( esc_html__( "The directory where the file used to fetch country details to enable geo-targetted links doesn't have write permissions. Please give recursive read/write permissons to:%s. In case you are still facing the issue, please change download folder in Site Wide Settings section on this page", 'amazon-associates-link-builder' ), $maxmind_db_manager->db_upload_dir ) );
+        try {
+            if ( $this->is_more_than_one_marketplaces_configured() ) {
+                $maxmind_db_manager = new Aalb_Maxmind_Db_Manager( get_option( AALB_CUSTOM_UPLOAD_PATH ), new Aalb_Curl_Request(), new Aalb_File_System_Helper() );
+                $error_msg = $maxmind_db_manager->get_error_message();
+                if ( ! empty( $error_msg ) ) {
+                    aalb_error_notice( $error_msg );
+                }
             }
+        } catch ( Exception $e ) {
+            error_log( "Aalb_credentials_Helper::handle_error_notices:Unknown error:" . $e->getMessage() );
         }
     }
 
@@ -134,7 +135,7 @@ class Aalb_Credentials_Helper {
      *
      * @return bool True if more than one marketplaces configured in settings
      */
-    public function is_more_than_one_marketplaces_configured() {
+    private function is_more_than_one_marketplaces_configured() {
         return count( json_decode( get_option( AALB_STORE_IDS ), true ) ) > 1;
     }
 }

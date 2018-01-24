@@ -59,7 +59,7 @@ class Aalb_Manager {
         $this->hook_loader->add_action( 'admin_init', $aalb_sidebar, 'register_cred_config_group' );
         $this->hook_loader->add_action( 'admin_menu', $aalb_sidebar, 'register_sidebar_config_page' );
 
-        $maxmind_db_manager = new Aalb_Maxmind_Db_Manager();
+        $maxmind_db_manager = new Aalb_Maxmind_Db_Manager( get_option( AALB_CUSTOM_UPLOAD_PATH ), new Aalb_Curl_Request(), new Aalb_File_System_Helper() );
         $this->hook_loader->add_action( 'plugins_loaded', $maxmind_db_manager, 'update_db_if_required' );
     }
 

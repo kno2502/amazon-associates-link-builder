@@ -26,10 +26,10 @@ class Aalb_Helper {
      *
      * @since 1.0.0
      *
-     * @param string $asins List of hyphen separated asins.
+     * @param string $asins       List of hyphen separated asins.
      * @param string $marketplace Marketplace of the asin to look into.
-     * @param string $store The identifier of the store to be used for current adunit
-     * @param string $template Template to render the display unit.
+     * @param string $store       The identifier of the store to be used for current adunit
+     * @param string $template    Template to render the display unit.
      *
      * @return string Template cache key.
      */
@@ -42,9 +42,9 @@ class Aalb_Helper {
      *
      * @since 1.0.0
      *
-     * @param string $asins List of hyphen separated asins.
+     * @param string $asins       List of hyphen separated asins.
      * @param string $marketplace Marketplace of the asin to look into.
-     * @param string $store The identifier of the store to be used for current adunit
+     * @param string $store       The identifier of the store to be used for current adunit
      *
      * @return string Products information cache key.
      */
@@ -144,6 +144,7 @@ class Aalb_Helper {
      */
     function get_wordpress_version() {
         global $wp_version;
+
         return $wp_version;
     }
 
@@ -219,8 +220,9 @@ class Aalb_Helper {
         $this->aalb_initialize_wp_filesystem_api();
         $template_upload_path = $this->aalb_get_template_upload_path();
         if ( ! $wp_filesystem->is_dir( $template_upload_path ) && ! $this->aalb_create_dir( $template_upload_path ) ) {
-                return false;
+            return false;
         }
+
         return $template_upload_path;
     }
 
@@ -243,6 +245,7 @@ class Aalb_Helper {
     public function aalb_get_uploads_dir_path() {
         global $wp_filesystem;
         $upload_dir = wp_upload_dir();
+
         //TODO: Reason for not using directly use $upload_dir['basedir'] instead of calling find_folder
         return $wp_filesystem->find_folder( $upload_dir['basedir'] );
     }
@@ -258,8 +261,10 @@ class Aalb_Helper {
     public function aalb_create_dir( $dir_path ) {
         if ( ! wp_mkdir_p( $dir_path ) ) {
             error_log( "Error Creating Dir " . $dir_path . ". Please set the folder permissions correctly." );
+
             return false;
         }
+
         return true;
     }
 
@@ -290,20 +295,34 @@ class Aalb_Helper {
     }
 
     /**
-     * Add the aws key options into the database on activation.
-     * This solves the problem of encryption as wordpress called an update option before calling
-     * add option while sanitizing.
-     * https://codex.wordpress.org/Function_Reference/register_setting
+     * Intialize the db_keys on every update if they are not initialized
      *
      * @since 1.0.0
      */
-    public function load_db_keys() {
-        $this->init_option_if_empty( AALB_AWS_ACCESS_KEY, '' );
-        $this->init_option_if_empty( AALB_AWS_SECRET_KEY, '' );
-        $this->init_option_if_empty( AALB_STORE_IDS, '' );
-        $this->init_option_if_empty( AALB_CUSTOM_UPLOAD_PATH, '' );
-        $this->init_option_if_empty( AALB_GEOLITE_DB_EXPIRATION_TIME, 0 );
-        $this->init_option_if_empty( AALB_GEOLITE_DB_LAST_UPDATED_TIME, 0 );
+    public function initialize_db_keys() {
+        $initial_db_config = $this->get_initial_db_keys_config();
+        foreach ( $initial_db_config as $db_key => $initial_value ) {
+            $this->init_option_if_empty( $db_key, $initial_value );
+        }
+    }
+
+    /**
+     * Get db keys config as key-value pairs set initially
+     *
+     * @since 1.5.3
+     */
+    private function get_initial_db_keys_config() {
+        $upload_dir = wp_upload_dir();
+
+        return array(
+            AALB_CUSTOM_UPLOAD_PATH                            => $upload_dir['basedir'] . '/' . AALB_UPLOADS_FOLDER,
+            AALB_AWS_ACCESS_KEY                                => '',
+            AALB_AWS_SECRET_KEY                                => '',
+            AALB_STORE_IDS                                     => '',
+            AALB_MAXMIND_DB_LAST_UPLOAD_PATH                   => get_option( AALB_CUSTOM_UPLOAD_PATH ),
+            AALB_GEOLITE_DB_DOWNLOAD_RETRY_ON_FAILURE_DURATION => AALB_GEOLITE_DB_DOWNLOAD_RETRY_DURATION_MIN,
+            AALB_GEOLITE_DB_DOWNLOAD_FAILED_ATTEMPTS           => 0
+        );
     }
 
     /**
@@ -319,6 +338,7 @@ class Aalb_Helper {
             update_option( $dbkey, $dbvalue );
         }
     }
+
 }
 
 ?>

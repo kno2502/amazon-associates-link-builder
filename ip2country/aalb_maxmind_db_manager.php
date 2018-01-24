@@ -21,41 +21,60 @@ and limitations under the License.
  * @subpackage AmazonAssociatesLinkBuilder/ip2country
  */
 class Aalb_Maxmind_Db_Manager {
+    private $db_upload_dir;
+    private $db_file_path;
+    private $curl_request_obj;
+    private $file_system_helper;
 
-    public $db_upload_dir;
-    public $db_file_path;
-
-    public function __construct() {
-        $this->db_upload_dir = $this->get_db_file_dir();
-        $this->db_file_path = $this->db_upload_dir . MAXMIND_DATA_FILENAME;
+    public function __construct( $db_upload_dir, Aalb_Curl_Request $curl_request_obj, Aalb_File_System_Helper $file_system_helper ) {
+        $this->curl_request_obj = $curl_request_obj;
+        $this->file_system_helper = $file_system_helper;
+        $this->db_upload_dir = $db_upload_dir;
+        $this->db_file_path = $this->db_upload_dir . AALB_MAXMIND_DATA_FILENAME;
         clearstatcache( true, $this->db_file_path );
     }
 
-    /**
-     * Downloads & updates the maxmind db file(GeoLite2 Country)
+    /*
+     * Returns the error message if any in updating maxmind database. On success it returns an empty string
      *
-     * @argument HTTP Response $response
+     * @return String Error_message if any else empty string if no error
      *
-     * @since 1.5.0
-     *
+     * @since 1.5.3
      */
-    private function update_db( $response ) {
-        try {
-            $outFile = $this->db_file_path;
-            $tmp_file = $response["tmpfname"];
-            $current_file = fopen( $outFile, 'w' );
-            $donwloaded_file = gzopen( $tmp_file, 'r' );
-            while ( ( $string = gzread( $donwloaded_file, 4096 ) ) != false ) {
-                fwrite( $current_file, $string, strlen( $string ) );
+    public function get_error_message() {
+        $error_msg = "";
+        if ( ! file_exists( $this->db_file_path ) ) {
+            if ( ! is_writable( $this->db_upload_dir ) ) {
+                $error_msg = sprintf( esc_html__( "WordPress does not have permissions to write to the \"Downloads Folder\" (%s). Please grant permissions or pick a different folder from the Amazon Associates Link Builder plugin's settings page, otherwise your links to Amazon might not display correctly.", 'amazon-associates-link-builder' ), $this->db_upload_dir );
+            } else {
+                $error_msg = sprintf( __( "WordPress could not find file %1s at \"DownloadsFolder\"(%2s), so geo-targeted links will not work correctly. This file can be downloaded from <a href=%2s>here</a>", 'amazon-associates-link-builder' ), AALB_MAXMIND_DATA_FILENAME, $this->db_upload_dir, AALB_GEOLITE_DB_DOWNLOAD_URL_FROM_MAXMIND_SERVER );
             }
-            gzclose( $donwloaded_file );
-            fclose( $current_file );
-            unlink( $tmp_file );
-            update_option( AALB_GEOLITE_DB_LAST_UPDATED_TIME, strtotime( wp_remote_retrieve_header( $response["response"], 'Last-Modified' ) ) );
-        } catch ( Exception $e ) {
-            error_log( "Error in maxmind_db_manager:update_db:::" . $e->getMessage() );
-            throw $e;
+        } else {
+            if ( ! is_readable( $this->db_file_path ) ) {
+                $error_msg = sprintf( esc_html__( "WordPress could not read %s. Please grant read permissions, otherwise your links to Amazon might not display correctly.", 'amazon-associates-link-builder' ), $this->db_file_path );
+            } else if ( $this->get_file_age( $this->db_file_path ) > AALB_GEOLITE_DB_MAX_ALLOWED_AGE ) {
+                if ( ! is_writable( $this->db_file_path ) ) {
+                    $error_msg = sprintf( __( "WordPress does not have write permissions to update the file(%s). Please grant write permissions, otherwise geo-targeted links may not work correctly.", 'amazon-associates-link-builder' ), $this->db_file_path );
+                } else {
+                    $error_msg = sprintf( __( "WordPress could not update file(%1s) for geo-targeted links feature, so these links may not work correctly. This file can be downloaded from <a href=%2s>here</a>", 'amazon-associates-link-builder' ), $this->db_file_path, AALB_GEOLITE_DB_DOWNLOAD_URL_FROM_MAXMIND_SERVER );
+                }
+            }
         }
+
+        return $error_msg;
+    }
+
+    /*
+     * Finds the age of file
+     *
+     * @param String $file_path
+     *
+     * @return int Age of file in seconds
+     *
+     * @since 1.5.3
+     */
+    private function get_file_age( $file_path ) {
+        return time() - filemtime( $file_path );
     }
 
     /*
@@ -65,199 +84,186 @@ class Aalb_Maxmind_Db_Manager {
      *
      */
     public function update_db_if_required() {
-        $this->reset_db_keys_if_required();
-        if ( $this->is_db_expired() ) {
-            $this->check_and_update_db();
-        }
-    }
-
-    /*
-     * It checks if the GeoLite Db has expired
-     *
-     * @since 1.5.0
-     *
-     */
-    private function is_db_expired() {
-        return ( get_option( AALB_GEOLITE_DB_EXPIRATION_TIME ) == "" || get_option( AALB_GEOLITE_DB_EXPIRATION_TIME ) < time() );
-    }
-
-    /*
-     * It checks if the GeoLite Db update is required and calls for update
-     *
-     * @since 1.5.0
-     *
-     */
-    private function check_and_update_db() {
         try {
-            $response = $this->get_db();
-            if ( $response ) {
-                if ( $this->should_update_db( $response["response"] ) ) {
-                    $this->update_db( $response );
+            if ( $this->is_file_update_permissible() ) {
+                $this->reset_db_keys_if_required();
+                if ( time() >= get_option( AALB_GEOLITE_DB_DOWNLOAD_NEXT_RETRY_TIME ) ) {
+                    if ( $this->should_update_db() ) {
+                        $this->update_db();
+                    }
+                    $this->update_next_retry_time( AALB_SUCCESS );
+
                 }
-                update_option( AALB_GEOLITE_DB_EXPIRATION_TIME, strtotime( wp_remote_retrieve_header( $response["response"] , 'expires' ) ) );
             }
-        }
-        catch ( Exception $e ) {
-            error_log( "Error in maxmind_db_manager:should_update_db:::" . $e->getMessage() );
-        }
-    }
-
-    /*
-     * It downloads the db file
-     *
-     * @since 1.5.0
-     *
-     * @return geolite db on success else null
-     *
-     */
-    private function get_db() {
-        try {
-            $response = $this->verify_response( $this->customized_download_url( AALB_GEOLITE_COUNTRY_DB_DOWNLOAD_URL ) );
+        } catch ( Network_Call_Failure_Exception $e ) {
+            $this->action_on_update_db_failure( $e->getMessage() );
+        } catch ( Unexpected_Network_Response_Exception $e ) {
+            $this->action_on_update_db_failure( $e->getMessage() );
         } catch ( Exception $e ) {
-            $response = null;
-            error_log( "Error in maxmind_db_manager:get_db:::" . $e->getMessage() );
+            $this->action_on_update_db_failure( "Unexpected Exception Ocurred" . $e->getMessage() );
         }
-
-        return $response;
     }
 
-    /*
-     * It verifies the HTTP response.
+    /**
+     * Downloads & updates the maxmind db file(GeoLite2 Country)
      *
-     * @argument HTTP_RESPONSE $response
+     * @argument HTTP Response $response
      *
-     * @since 1.5.2
+     * @throws Network_Call_Failure_Exception
      *
-     * @return HTTP_RESPONSE $response
+     * @since    1.5.0
+     *
      */
-    private function verify_response( $response ) {
-        if ( is_wp_error( $response ) ) {
-            throw new Exception( "WP_ERROR: " . $response->get_error_message() );
-        } else if ( ! is_array( $response ) || ! array_key_exists( "response", $response ) || ! array_key_exists( "tmpfname", $response ) ) {
-            throw new Exception( "Either the output is not an array or the one of the keys, response or tmpfname doesn't exist" );
-        } else {
-            $http_response = $response['response'];
-            //Below sis reponse code returned by HTTP response
-            $code = $http_response['response']['code'];
-            if ( $code != HTTP_SUCCESS ) {
-                throw new Exception( $code );
-            }
-        }
+    private function update_db() {
+        $tmp_file = $this->curl_request_obj->download_file_to_temporary_file( AALB_GEOLITE_COUNTRY_DB_DOWNLOAD_URL );
+        $this->file_system_helper->write_a_gzipped_file_to_disk( $this->db_file_path, $tmp_file );
+    }
 
-        return $response;
+
+    /**
+     * It logs the error message and updates next retry time
+     *
+     * @param String Error message
+     *
+     *
+     * @since 1.5.3
+     *
+     **/
+    private function action_on_update_db_failure( $error_msg ) {
+        $this->log_error( $error_msg );
+        $this->update_next_retry_time( AALB_FAIL );
     }
 
     /*
-    * It reset the db keys if required
+    * It checks if upload path has changed and in case of change, set lat upload path as new path, next retry time to 0 & reset failure counters
     *
     * @since 1.5.0
     *
     */
     private function reset_db_keys_if_required() {
-        if ( $this->should_write_new_db_file() ) {
-            update_option( AALB_GEOLITE_DB_EXPIRATION_TIME, 0 );
-            update_option( AALB_GEOLITE_DB_LAST_UPDATED_TIME, 0 );
+        if ( $this->is_upload_path_changed() ) {
+            update_option( AALB_MAXMIND_DB_LAST_UPLOAD_PATH, $this->db_upload_dir );
+            update_option( AALB_GEOLITE_DB_DOWNLOAD_NEXT_RETRY_TIME, 0 );
+            $this->reset_failure_counters();
         }
     }
 
     /*
-    * It checks if writing a new db file operation should be done
+    * It checks if earlier upload permissions were not present but were given just before running this function
     *
-    * @since 1.5.0
+    * @return bool true if upload_permission_given_recently
+    *
+    * @since 1.5.3
     *
     */
-    private function should_write_new_db_file() {
-        return ( ! file_exists( $this->db_file_path ) && is_writable( $this->db_upload_dir ) );
+    private function is_file_update_permissible() {
+        if ( ! file_exists( $this->db_file_path ) ) {
+            return is_writable( $this->db_upload_dir );
+        } else {
+            return is_readable( $this->db_file_path ) && is_writable( $this->db_file_path );
+        }
     }
 
     /*
-     * It does basic checks regarding read/write persmissions and then check if update is required
-     *
-     * @param  HTTPResponse $response
+    * It checks if upload path for maxmind db has changed
+    *
+    * @since 1.5.3
+    *
+    */
+    private function is_upload_path_changed() {
+        return $this->db_upload_dir !== get_option( AALB_MAXMIND_DB_LAST_UPLOAD_PATH );
+    }
+
+    /*
+     * It checks if file is not present or if present, a newwer version is vavialble
      *
      * @since 1.5.0
      *
      * @bool True if geolite db should be updated
      */
-    private function should_update_db( $response ) {
-        return ( $this->should_write_new_db_file() || ( is_writable( $this->db_file_path ) && $this->is_version_updated( $response ) ) );
-    }
-
-    /**
-     * It sets the absolute path of the directory where db file is present
-     *
-     * @return string database directory absolute path
-     *
-     * @since 1.5.0
-     *
-     */
-    private function get_db_file_dir() {
-        $file_dir_path = get_option( AALB_CUSTOM_UPLOAD_PATH );
-        if ( $file_dir_path == "" ) {
-            $file_dir_path = wp_upload_dir()['basedir'] . '/' . AALB_UPLOADS_FOLDER;
-        }
-
-        return $file_dir_path;
+    private function should_update_db() {
+        return ! file_exists( $this->db_file_path ) || ( $this->is_updated_version_available() );
     }
 
     /*
-    * It checks if the newer version of GeoLite Db file is present
+    * It checks if the current version of GeoLite Db file's last modified date is greater than the time file was written in db
     *
     * @ since 1.5.0
     *
     * @return bool True if geolite db's newer version is available
     */
-    private function is_version_updated( $response ) {
-        return ( get_option( AALB_GEOLITE_DB_LAST_UPDATED_TIME ) == '' ) || ( strtotime( wp_remote_retrieve_header( $response, 'Last-Modified' ) ) > get_option( AALB_GEOLITE_DB_LAST_UPDATED_TIME ) );
+    private function is_updated_version_available() {
+        return strtotime( $this->curl_request_obj->get_last_modified_date_of_remote_file( AALB_GEOLITE_COUNTRY_DB_DOWNLOAD_URL ) ) > filemtime( $this->db_file_path );
     }
 
     /**
-     * Downloads a URL to a local temporary file using the WordPress HTTP Class.
-     * Please note, That the calling function must unlink() the file.
-     * Modified from download_url() that is located in wp-admin/includes/file.php. Just changed the response returned
+     * It updates the next retry time for downloading maxmind
      *
-     * @since 1.5.0
+     * @param String status SUCCESS or FAIL
      *
-     * @param string $url  the URL of the file to download
-     * @param int $timeout The timeout for the request to download the file default 300 seconds
+     * @since 1.5.3
      *
-     * @return mixed WP_Error on failure, Array of reponse & filename on success
      */
-    function customized_download_url( $url, $timeout = 300 ) {
-        //WARNING: The file is not automatically deleted, The script must unlink() the file.
-        if ( ! $url )
-            return new WP_Error( 'http_no_url', __( 'Invalid URL Provided.' ) );
-
-        $url_filename = basename( parse_url( $url, PHP_URL_PATH ) );
-
-        $tmpfname = wp_tempnam( $url_filename );
-        if ( ! $tmpfname )
-            return new WP_Error( 'http_no_file', __( 'Could not create Temporary file.' ) );
-
-        $response = wp_safe_remote_get( $url, array( 'timeout' => $timeout, 'stream' => true, 'filename' => $tmpfname ) );
-
-        if ( is_wp_error( $response ) ) {
-            unlink( $tmpfname );
-
-            return $response;
+    private function update_next_retry_time( $status ) {
+        if ( $status == AALB_SUCCESS ) {
+            update_option( AALB_GEOLITE_DB_DOWNLOAD_NEXT_RETRY_TIME, time() + AALB_GEOLITE_DB_DOWNLOAD_RETRY_DURATION_ON_SUCCESS );
+            $this->reset_failure_counters();
+        } else {
+            update_option( AALB_GEOLITE_DB_DOWNLOAD_NEXT_RETRY_TIME, time() + $this->get_next_retry_duration() );
         }
+    }
 
-        if ( 200 != wp_remote_retrieve_response_code( $response ) ) {
-            unlink( $tmpfname );
-
-            return new WP_Error( 'http_404', trim( wp_remote_retrieve_response_message( $response ) ) );
+    /**
+     * It returns the next-retry duration & also updates no. of failed attempts & failure_duration
+     *
+     * @since 1.5.3
+     *
+     */
+    private function get_next_retry_duration() {
+        $number_of_failed_attempts = get_option( AALB_GEOLITE_DB_DOWNLOAD_FAILED_ATTEMPTS );
+        $new_retry_duration = AALB_GEOLITE_DB_DOWNLOAD_RETRY_DURATION_MIN * pow( 2, $number_of_failed_attempts );
+        if ( $new_retry_duration > AALB_GEOLITE_DB_DOWNLOAD_RETRY_DURATION_MAX ) {
+            $new_retry_duration = AALB_GEOLITE_DB_DOWNLOAD_RETRY_DURATION_MAX;
         }
+        update_option( AALB_GEOLITE_DB_DOWNLOAD_FAILED_ATTEMPTS, $number_of_failed_attempts + 1 );
+        update_option( AALB_GEOLITE_DB_DOWNLOAD_RETRY_ON_FAILURE_DURATION, $new_retry_duration );
 
-        $content_md5 = wp_remote_retrieve_header( $response, 'content-md5' );
-        if ( $content_md5 ) {
-            $md5_check = verify_file_md5( $tmpfname, $content_md5 );
-            if ( is_wp_error( $md5_check ) ) {
-                unlink( $tmpfname );
+        return $new_retry_duration;
+    }
 
-                return $md5_check;
-            }
+    /**
+     * It resets the failure counters for next retry
+     *
+     * @since 1.5.3
+     *
+     */
+    private function reset_failure_counters() {
+        update_option( AALB_GEOLITE_DB_DOWNLOAD_RETRY_ON_FAILURE_DURATION, AALB_GEOLITE_DB_DOWNLOAD_RETRY_DURATION_MIN );
+        update_option( AALB_GEOLITE_DB_DOWNLOAD_FAILED_ATTEMPTS, 0 );
+    }
+
+    /*
+     * Log error if allowed
+     *
+     * @param String error_msg
+     *
+     * @since 1.5.3
+     */
+    private function log_error( $error_msg ) {
+        if ( $this->should_log_error() ) {
+            error_log( $error_msg );
         }
-        return array( "tmpfname" => $tmpfname, "response" => $response );
+    }
+
+    /*
+     * Checks if error should be logged or not
+     *
+     * @return bool true if should_log_error
+     *
+     * @since 1.5.3
+     */
+    private function should_log_error() {
+        return current_user_can( 'activate_plugins' ) && is_admin();
     }
 }
 

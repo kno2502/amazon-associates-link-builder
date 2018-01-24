@@ -13,7 +13,7 @@
 //ToDo: Create the JSON in contexts in PHP instead of creating here and pass directly to Handlebars
 //ToDO: Deep-dive to find out if event bubbling with single target is a better option and instead of having a common parent for event delgation with capturing
 
-(function( $ ) {
+var aalb_admin_object = (function( $ ) {
     var SELECT_DROPDOWN_VALUE = "no-selection";
     var SINGLE_ASIN_TEMPLATE = {
         PriceLink  : 'true',
@@ -159,11 +159,6 @@
             marketplace_pop_up_json[ pop_up_container.find( '.aalb-marketplace-names-list' ).val() ].store_id = $( this ).val();
         } );
 
-        //Binding click event with Search button in editor search box
-        $( '.aalb-admin-button-create-amazon-shortcode' ).on( 'click', function() {
-            admin_show_create_shortcode_popup( this );
-        } );
-
         //Binding click event with Search button in search pop-up
         $( '#aalb-admin-pop-up' ).on( 'click', '.aalb-admin-popup-search-button', function() {
             admin_popup_search_items( $( this ).closest( '.aalb-pop-up-container' ) );
@@ -191,14 +186,6 @@
             aalb_selected_box.append( create_selected_asin_html( data_asin, this ) );
         } );
 
-        //Binding enter event with Search button in search pop-up
-        $( '.aalb-admin-input-search' ).on( 'keypress', function( event ) {
-            if( event.keyCode === ENTER_KEY_CODE ) {
-                event.preventDefault();
-                admin_show_create_shortcode_popup( $( this ).siblings( '.aalb-admin-button-create-amazon-shortcode' ) );
-            }
-        } );
-
         //Binding Enter event with Search button in editor search box
         $( '#aalb-admin-pop-up' ).on( 'keypress', '.aalb-admin-popup-input-search', function( event ) {
             if( event.keyCode === ENTER_KEY_CODE ) {
@@ -213,6 +200,21 @@
             disable_editor_search( aalb_strings.store_id_credentials_not_set );
         }
     } );
+
+    /**
+     * onKeyPress event handler for editor seach box
+     *
+     * @param HTML_DOM_EVENT  event OnKeyPress event
+     * @param HTMLElement caller_element caller of this function
+     *
+     * @since 1.5.3
+     */
+    function editor_searchbox_keypress_event_handler( event, caller_element ) {
+        if( event.keyCode === ENTER_KEY_CODE ) {
+            event.preventDefault();
+            admin_show_create_shortcode_popup( $( caller_element ).siblings( '.aalb-admin-button-create-amazon-shortcode' ) );
+        }
+    }
 
     /**
      * Returns elements not present in second array but in first
@@ -261,8 +263,7 @@
      */
     function add_close_button( pop_up_container ) {
         var close_icon = "<span class='ui-icon ui-icon-close' role='presentation'></span>";
-        var url = '#' + pop_up_container.parent().closest( 'div' ).attr( "id" );
-        $( 'a[href=' + url + ']' ).after( close_icon );
+        $( '#aalb-tabs ul li' ).last().append( close_icon );
     }
 
     /**
@@ -276,7 +277,8 @@
      */
     function change_header_of_tab( pop_up_container, marketplace ) {
         var url = '#' + pop_up_container.parent().closest( 'div' ).attr( "id" );
-        $( 'a[href=' + url + ']' ).text( marketplace );
+        //Why double Quotes & single quote around url :https://stackoverflow.com/questions/31197452/syntax-error-unrecognized-expression-for-href/31197472
+        $( 'a[href="' + url + '"]' ).text( marketplace );
     }
 
     /**
@@ -845,4 +847,10 @@
         admin_searchbox_tooltip.addClass( 'aalb-admin-searchbox-tooltip-text' );
         admin_searchbox_tooltip.removeClass( 'aalb-admin-hide-display' );
     }
+
+    return {
+        admin_show_create_shortcode_popup      : admin_show_create_shortcode_popup,
+        editor_searchbox_keypress_event_handler: editor_searchbox_keypress_event_handler
+    };
+
 })( jQuery );

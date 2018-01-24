@@ -54,6 +54,8 @@ class Aalb_Autoloader {
         new self( AALB_LIBRARY_DIR );
         new self( AALB_SIDEBAR_HELPER_DIR );
         new self( AALB_IP_2_COUNTRY_DIR );
+        new self( AALB_EXCEPTIONS_DIR );
+        new self( AALB_IO_DIR );
     }
 
     /**
