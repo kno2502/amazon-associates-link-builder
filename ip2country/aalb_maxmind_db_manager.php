@@ -96,9 +96,9 @@ class Aalb_Maxmind_Db_Manager {
                 }
             }
         } catch ( Network_Call_Failure_Exception $e ) {
-            $this->action_on_update_db_failure( $e->getMessage() );
+            $this->action_on_update_db_failure( $e->errorMessage() );
         } catch ( Unexpected_Network_Response_Exception $e ) {
-            $this->action_on_update_db_failure( $e->getMessage() );
+            $this->action_on_update_db_failure( $e->errorMessage() );
         } catch ( Exception $e ) {
             $this->action_on_update_db_failure( "Unexpected Exception Ocurred" . $e->getMessage() );
         }

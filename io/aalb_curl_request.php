@@ -30,33 +30,16 @@ class Aalb_Curl_Request {
      *
      * @return string  last_modified_date on success else an Exception
      *
-     * @throws Network_Call_Failure_Exception if curl call failed
      * @throws Unexpected_Network_Response_Exception if response is not as expeced and contains undefined values
      *
      */
     public function get_last_modified_date_of_remote_file( $url ) {
-        $curl = curl_init( $url );
-
-        //don't fetch the actual page, you only want headers
-        curl_setopt( $curl, CURLOPT_NOBODY, true );
-
-        //stop it from outputting stuff to stdout
-        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-
-        // attempt to retrieve the modification date
-        curl_setopt( $curl, CURLOPT_FILETIME, true );
-
-        $result = curl_exec( $curl );
-
-        if ( $result === false ) {
-            throw new Network_Call_Failure_Exception( curl_error( $curl ) );
-        }
-
-        $timestamp = curl_getinfo( $curl, CURLINFO_FILETIME );
-        if ( $timestamp != - 1 ) { //otherwise unknown
-            return date( "Y-m-d H:i:s", $timestamp ); //etc
+        $response = wp_remote_head( $url );
+        $headers = wp_remote_retrieve_headers( $response );
+        if ( ! empty( $headers ) && isset( $headers['last-modified'] ) ) {
+            return $headers['last-modified'];
         } else {
-            throw new Unexpected_Network_Response_Exception( "Unknown timestamp for remote file called from url: " . $url );
+            throw new Unexpected_Network_Response_Exception();
         }
     }
 
