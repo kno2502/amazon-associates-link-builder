@@ -2,8 +2,8 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.9.1
-Stable tag: 1.5.2
+Tested up to: 4.9.2
+Stable tag: 1.5.3
 Requires PHP: 5.4.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -116,12 +116,19 @@ You can see your earnings and other reports from the respective country Associat
 
 == Changelog ==
 
+= 1.5.3 - January 24, 2018 =
+* Fix: Plugin failed with a FATAL error on activation/update for users on PHP version below 5.4.0, instead of the expected graceful de-activation.
+* Fix: Search button not working for few associates.
+* Fix: Loading CSS & JS of jquery-ui only on pages required by plugin.
+* Fix: Multi-tab not working for few associates.
+* Fix: `Error in maxmind_db_manager:get_db:::WP_ERROR: Forbidden` in logs that prevents IP2country database downloads.
+
 = 1.5.2 - December 2, 2017 =
 * Fix: v1.5.1 not running for few associates.
 
 = 1.5.1 - December 1, 2017 =
 * Fix: v1.5.0 not running for few associates.
-* Minumum supported PHP version changed to 5.4.0 from 5.3.0.
+* Minimum supported PHP version changed to 5.4.0 from 5.3.0.
 
 = 1.5.0 - November 29, 2017 =
 * Geo-targeted links that enables Amazon Associates to create content customized for and better monetize their international traffic. More details [here](https://amazon-affiliate.eu/en/about-the-programme/amazon-associates-link-builder/).
@@ -222,6 +229,9 @@ You can see your earnings and other reports from the respective country Associat
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.5.3 - January 23, 2018 =
+Fixed Fatal error for users on PHP version <5.4.0 along with search-button, multi-tab issues faced by few associates.
 
 = 1.5.2 =
 Fixed issues in v1.5.1 that were not handled and returned PHP fatal error.
