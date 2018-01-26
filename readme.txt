@@ -3,7 +3,7 @@ Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
 Tested up to: 4.9.2
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 Requires PHP: 5.4.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -115,6 +115,9 @@ The customer will be shown ads from the first country added in shortcode.
 You can see your earnings and other reports from the respective country Associates Portal under "Amazon Associates Link Builder" section.
 
 == Changelog ==
+
+= 1.5.4 - January 26, 2018 =
+* Fix: In case of failed call to Product-Advertising API, Fatal error thrown.
 
 = 1.5.3 - January 24, 2018 =
 * Fix: Plugin failed with a FATAL error on activation/update for users on PHP version below 5.4.0, instead of the expected graceful de-activation.
@@ -229,6 +232,9 @@ You can see your earnings and other reports from the respective country Associat
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.5.4 - January 26, 2018 =
+* Fix: In case of failed call to Product-Advertising API, Fatal error thrown.
 
 = 1.5.3 - January 23, 2018 =
 Fixed Fatal error for users on PHP version <5.4.0 along with search-button, multi-tab issues faced by few associates.
