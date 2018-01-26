@@ -67,7 +67,7 @@ class Aalb_Remote_Loader {
             if( strpos ( $error_message, CURL_ERROR_TIMEOUT_STRING ) !== false ) {
                 throw new Exception( HTTP_TIME_OUT );
             }
-            throw new Exception( 'HTTP Request failed! %s', 'amazon-associates-link-builder' );
+            throw new Exception( 'HTTP Request failed!' . $error_message );
         }
         $code = $response['response']['code'];
         if ( $code != HTTP_SUCCESS ) {
@@ -75,7 +75,7 @@ class Aalb_Remote_Loader {
         }
         $response_body = wp_remote_retrieve_body( $response );
         if ( ! isset( $response_body ) || trim( $response_body ) === '' ) {
-            throw new Exception( 'Response body is empty', 'amazon-associates-link-builder' );
+            throw new Exception( 'Response body is empty' );
         }
 
         return $response_body;
