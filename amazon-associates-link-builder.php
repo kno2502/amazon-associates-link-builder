@@ -7,7 +7,7 @@
 /*
 Plugin Name: Amazon Associates Link Builder
 Description: Amazon Associates Link Builder is the official free Amazon Associates Program plugin for WordPress. The plugin enables you to search for products in the Amazon catalog, access real-time price and availability information, and easily create links in your posts to products on Amazon.com. You will be able to generate text links, create custom ad units, or take advantage of out-of-the-box widgets that we’ve designed and included with the plugin.
-Version: 1.5.4
+Version: 1.6.0
 Author: Amazon Associates Program
 Author URI: https://affiliate-program.amazon.com/
 License: GPLv2
@@ -16,7 +16,7 @@ Domain Path: /languages/
 */
 
 /*
-Copyright 2016-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2016-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the GNU General Public License as published by the Free Software Foundation,
 Version 2.0 (the "License"). You may not use this file except in compliance with the License.

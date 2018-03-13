@@ -1,7 +1,7 @@
 <?php
 
 /*
-Copyright 2016-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2016-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the GNU General Public License as published by the Free Software Foundation,
 Version 2.0 (the "License"). You may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ class Aalb_Template_Engine {
     protected $mustache;
     protected $xml_helper;
     protected $helper;
+    protected $impression_generator;
 
     public function __construct() {
         $this->xml_loader = new Aalb_Cache_Loader( new Aalb_Remote_Loader() );
@@ -34,6 +35,8 @@ class Aalb_Template_Engine {
         $this->mustache = new Mustache_Engine( array( 'loader' => new Mustache_Loader_FilesystemLoader( AALB_TEMPLATE_DIR ) ) );
         $this->mustache_custom = new Mustache_Engine( array( 'loader' => new Mustache_Loader_FilesystemLoader( $this->helper->get_template_upload_directory() ) ) );
         $this->xml_helper = new Aalb_Xml_Helper();
+        $this->impression_generator = new Aalb_Impression_Generator();
+
     }
 
     /**
@@ -43,16 +46,18 @@ class Aalb_Template_Engine {
      *
      * @since 1.0.0
      *
-     * @param string $display_key Key of the display unit.
+     * @param string $display_key  Key of the display unit.
      * @param string $products_key Key of the combined products.
-     * @param string $template Template to render the display unit.
-     * @param string $url Url to get the product from if not present in cache.
-     * @param string $marketplace Marketplace to which the product belongs.
-     * @param string $link_code Link Code to be entered in URLS for attribution purposes.
+     * @param string $template     Template to render the display unit.
+     * @param string $url          Url to get the product from if not present in cache.
+     * @param string $marketplace  Marketplace to which the product belongs.
+     * @param string $link_code    Link Code to be entered in URLS for attribution purposes.
+     * @param string $store_id     Store id of associate
+     * @param string $asin_group   Group of different asins speated by ","
      *
      * @return string  HTML of the disply unit.
      */
-    public function render( $display_key, $products_key, $template, $url, $marketplace, $link_code ) {
+    public function render( $display_key, $products_key, $template, $url, $marketplace, $link_code, $store_id, $asin_group ) {
         if ( false === ( $display_unit = $this->cache_template_loader->get_display_unit( $display_key ) ) ) {
             $products = $this->get_products( $products_key, $url, $link_code );
             $xml = $this->parse( $products );
@@ -62,7 +67,36 @@ class Aalb_Template_Engine {
             $custom_items = $this->xml_helper->add_custom_nodes( $items, $marketplace );
 
             $display_unit = $this->render_xml( $custom_items, $template );
+            $display_unit = $this->add_html_for_impression_tracking( $display_unit, $marketplace, $link_code, $store_id, $asin_group );
+
             $this->cache_template_loader->save_display_unit( $display_key, $display_unit );
+        }
+
+        return $display_unit;
+    }
+
+
+    /**
+     * Adds pixel image HTML element to the display unit
+     *
+     * @since 1.6.0
+     *
+     * @param string $display_unit HTML of the display unit.
+     * @param String $marketplace  marketplace
+     * @param String $store_id     Store id of associate
+     * @param String $link_code    Link code used for tracking
+     * @param String $asin_group   Group of different asins speated by ","
+     *
+     * @return string $display_unit HTML of the display unit along with pixel image
+     */
+    private function add_html_for_impression_tracking( $display_unit, $marketplace, $link_code, $store_id, $asin_group ) {
+        try {
+            $impression = $this->impression_generator->get_impression( $marketplace, $link_code, $store_id, $asin_group );
+            $display_unit = $impression . $display_unit;
+        } catch ( InvalidArgumentException $e ) {
+            error_log( "Aalb_Template_Engine::add_html_for_impression_tracking " . $e->getMessage() );
+        } catch ( Exception $e ) {
+            error_log( "Aalb_Template_Engine::add_html_for_impression_tracking " . $e->getMessage() );
         }
 
         return $display_unit;
@@ -73,8 +107,8 @@ class Aalb_Template_Engine {
      *
      * @since 1.0.0
      *
-     * @param string $key Unique identification of the product.
-     * @param string $url Signed URL for the PAAPI request.
+     * @param string $key       Unique identification of the product.
+     * @param string $url       Signed URL for the PAAPI request.
      * @param string $link_code Link Code to be entered in URLS for attribution purposes.
      *
      * @return string Xml response from PAAPI.
@@ -118,7 +152,7 @@ class Aalb_Template_Engine {
      * @return boolean
      */
     private function should_not_render_xml( $xml ) {
-        return isset( $xml->Items->Request->Errors->Error )  && !( $xml->Items->Request->Errors->Error->Code == PAAPI_INVALID_PARAMETER_VALUE_ERROR && isset( $xml->Items->Item ) );
+        return isset( $xml->Items->Request->Errors->Error ) && ! ( $xml->Items->Request->Errors->Error->Code == PAAPI_INVALID_PARAMETER_VALUE_ERROR && isset( $xml->Items->Item ) );
     }
 
     /**
@@ -139,7 +173,7 @@ class Aalb_Template_Engine {
      *
      * @since 1.0.0
      *
-     * @param array $items Each key consists of an item information object.
+     * @param array $items     Each key consists of an item information object.
      * @param string $template Template in which the content has to be rendered.
      *
      * @return string HTML of the display unit.

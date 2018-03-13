@@ -1,7 +1,7 @@
 <?php
 
 /*
-Copyright 2016-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2016-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the GNU General Public License as published by the Free Software Foundation,
 Version 2.0 (the "License"). You may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@ and limitations under the License.
 */
 
 //version
-define( 'AALB_PLUGIN_CURRENT_VERSION', '1.5.4' );
+define( 'AALB_PLUGIN_CURRENT_VERSION', '1.6.0' );
 
 //Version no. with multi locale settings page
 define( 'AALB_MULTI_LOCALE_SETTINGS_PLUGIN_VERSION', '1.4.12' );

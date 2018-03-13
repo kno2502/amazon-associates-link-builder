@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2016-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Copyright 2016-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the GNU General Public License as published by the Free Software Foundation,
 Version 2.0 (the "License"). You may not use this file except in compliance with the License.
@@ -136,7 +136,7 @@ class Aalb_Shortcode_Manager {
         $products_key = $this->helper->build_products_cache_key( $formatted_asins, $validated_marketplace, $validated_store_id );
         $products_template_key = $this->helper->build_template_cache_key( $formatted_asins, $validated_marketplace, $validated_store_id, $validated_template );
         try {
-            return str_replace( array( '[[UNIQUE_ID]]', '[[Amazon_Link_Text]]' ), array( str_replace( '.', '-', $products_template_key ), $link_text ), $this->template_engine->render( $products_template_key, $products_key, $validated_template, $url, $validated_marketplace, $link_code ) );
+            return str_replace( array( '[[UNIQUE_ID]]', '[[Amazon_Link_Text]]' ), array( str_replace( '.', '-', $products_template_key ), $link_text ), $this->template_engine->render( $products_template_key, $products_key, $validated_template, $url, $validated_marketplace, $link_code, $validated_store_id, $validated_asins ) );
         } catch ( Exception $e ) {
             error_log( $this->paapi_helper->get_error_message( $e->getMessage() ) );
         }
