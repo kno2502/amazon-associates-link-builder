@@ -13,7 +13,7 @@ and limitations under the License.
 */
 
 //version
-define( 'AALB_PLUGIN_CURRENT_VERSION', '1.6.0' );
+define( 'AALB_PLUGIN_CURRENT_VERSION', '1.7.0' );
 
 //Version no. with multi locale settings page
 define( 'AALB_MULTI_LOCALE_SETTINGS_PLUGIN_VERSION', '1.4.12' );

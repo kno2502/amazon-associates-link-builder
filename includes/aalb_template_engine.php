@@ -60,6 +60,7 @@ class Aalb_Template_Engine {
     public function render( $display_key, $products_key, $template, $url, $marketplace, $link_code, $store_id, $asin_group ) {
         if ( false === ( $display_unit = $this->cache_template_loader->get_display_unit( $display_key ) ) ) {
             $products = $this->get_products( $products_key, $url, $link_code );
+            $products = $this->unescape_numeric_character_references( $products );
             $xml = $this->parse( $products );
             $items = $this->get_items( $xml );
 
@@ -73,6 +74,25 @@ class Aalb_Template_Engine {
         }
 
         return $display_unit;
+    }
+
+    /**
+     * Single Escape Numeric Character References(NCR) using regular expression replacement
+     *
+     * @since 1.7.0
+     *
+     * @param string $products Deserialized XML string with NCRs double escaped
+     *
+     * @return string Deserialized XML string with NCRS single escaped
+     */
+    private function unescape_numeric_character_references( $products ) {
+        //Single Escape NCR represented as hex number
+        $products = preg_replace( "/&amp;(#x[a-fA-F0-9]{4,6};)/", "&$1", $products );
+
+        //Single Escape other special characters escaped by Product Advertising API like Σ(&#931;),Θ(&#920;)
+        $products = preg_replace( "/&amp;(#[0-9]{1,7};)/", "&$1", $products );
+
+        return $products;
     }
 
 
