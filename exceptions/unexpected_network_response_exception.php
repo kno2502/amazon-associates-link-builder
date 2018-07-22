@@ -12,6 +12,7 @@ either express or implied. See the License for the specific language governing p
 and limitations under the License.
 */
 
+namespace AmazonAssociatesLinkBuilder\exceptions;
 /**
  *
  * Custom Exception for Unexpected Network Response
@@ -20,8 +21,8 @@ and limitations under the License.
  * @package    AmazonAssociatesLinkBuilder
  * @subpackage AmazonAssociatesLinkBuilder/exceptions
  */
-class Unexpected_Network_Response_Exception extends Exception {
+class Unexpected_Network_Response_Exception extends \Exception {
     public function errorMessage() {
-        return 'Unxpected Response Error on line '.$this->getLine().' in '.$this->getFile() .':' . $this->getMessage();
+        return 'Unxpected Response Error on line ' . $this->getLine() . ' in ' . $this->getFile() . ':' . $this->getMessage();
     }
 }

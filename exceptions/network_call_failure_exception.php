@@ -12,6 +12,7 @@ either express or implied. See the License for the specific language governing p
 and limitations under the License.
 */
 
+namespace AmazonAssociatesLinkBuilder\exceptions;
 /**
  *
  * Custom Exception for Network Call failures
@@ -20,8 +21,8 @@ and limitations under the License.
  * @package    AmazonAssociatesLinkBuilder
  * @subpackage AmazonAssociatesLinkBuilder/exceptions
  */
-class Network_Call_Failure_Exception extends Exception {
+class Network_Call_Failure_Exception extends \Exception {
     public function errorMessage() {
-        return 'Network call Error on line '.$this->getLine().' in '.$this->getFile() .':' . $this->getMessage();
+        return 'Network call Error on line ' . $this->getLine() . ' in ' . $this->getFile() . ':' . $this->getMessage();
     }
 }

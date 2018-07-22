@@ -1,202 +1,18 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-12-04 20:38+0000\n"
+"PO-Revision-Date: 2018-02-27 07:06+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1\n"
-"X-Generator: Loco - https://localise.biz/\n"
-"Language: fr-FR\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Loco https://localise.biz/\n"
+"Language: fr_FR\n"
 "Project-Id-Version: Plugins - Amazon Associates Link Builder - Development "
 "(trunk)\n"
-"POT-Creation-Date: 2017-12-04 20:38+0000\n"
-"Last-Translator: nishgarg <nishgarg@amazon.com>\n"
+"POT-Creation-Date: 2018-02-27 07:04+0000\n"
+"Last-Translator: root <nishgarg@amazon.com>\n"
 "Language-Team: French (France)\n"
 "Report-Msgid-Bugs-To: "
-
-#: admin/aalb_admin.php:132
-msgid "Please select at least one product for these marketplaces:"
-msgstr ""
-
-#. %s: URL of settings page
-#: admin/aalb_admin.php:141
-#, php-format
-msgid ""
-"Please configure your Store-Id credentials in the  <a href=%s>Settings "
-"Page</a> to use the Link Builder features."
-msgstr ""
-
-#: admin/aalb_admin.php:145
-msgid "Tracking IDs"
-msgstr ""
-
-#: admin/aalb_admin.php:146
-msgid "Search Phrase"
-msgstr ""
-
-#: admin/aalb_admin.php:147
-msgid "Select Tracking Id"
-msgstr ""
-
-#: admin/aalb_admin.php:149
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:56
-msgid "Select Marketplace"
-msgstr ""
-
-#: admin/aalb_admin.php:153
-msgid "List of Selected Products(Maximum: 10)"
-msgstr ""
-
-#: admin/aalb_admin.php:156
-msgid ""
-"To configure templates, go to Associates Link Builder plugin's Templates page"
-msgstr ""
-
-#: admin/aalb_admin.php:157
-msgid ""
-"To configure marketplaces, go to Associates Link Builder plugin's Settings "
-"page"
-msgstr ""
-
-#: admin/aalb_admin.php:158
-msgid ""
-"To configure tracking ids, go to Associates Link Builder plugin's Settings "
-"page"
-msgstr ""
-
-#: admin/aalb_admin.php:159
-msgid "Please select marketplace from above to show products."
-msgstr ""
-
-#: admin/aalb_admin.php:160
-msgid "Please select some products from above."
-msgstr ""
-
-#: admin/aalb_admin.php:161
-msgid "Add ProductSet for Country"
-msgstr ""
-
-#: ip2country/aalb_customer_country.php:98
-#, php-format
-msgid ""
-"Maxmind DB file doesn't exist or is not readable. Please check & give "
-"appropriate read & write permissions to:%s. Go to plugin's Settings page for "
-"more details."
-msgstr ""
-
-#: shortcode/aalb_shortcode_manager.php:83
-msgid ""
-"There is an error in the count of configured marketplaces, asins and stores "
-"in this shortcode. Please fix the parameters for marketplace, asin and store-"
-"id."
-msgstr ""
-
-#: admin/sidebar/partials/aalb_credentials.php:26
-msgid "Are you sure you want to remove this marketplace?"
-msgstr ""
-
-#: admin/sidebar/partials/aalb_credentials.php:29
-msgid "YES"
-msgstr ""
-
-#: admin/sidebar/partials/aalb_credentials.php:30
-msgid "NO"
-msgstr ""
-
-#: admin/sidebar/partials/aalb_credentials.php:91
-msgid "Downloads Folder"
-msgstr ""
-
-#: admin/sidebar/partials/aalb_credentials.php:97
-#, php-format
-msgid ""
-"This folder will be used to save files downloaded by the plugin (e.g. <a "
-"href=%1s target=%2s>The MaxMind IP2Country Database</a>) for local use. "
-"Absolute path required. <br><span class=\"aalb-bold\"> Default value:</span> "
-"*blank*, defaults to <code>wp_upload_dir()['basedir'] + '%3s'</code>"
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:54
-msgid "Enter Tracking Id(s)"
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:55
-msgid "Remove Marketplace"
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:58
-msgid "Set As Default Marketplace"
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:60
-msgid "Add a Marketplace"
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:61
-msgid "Remove Marketplace Confirmation"
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:62
-msgid "ERROR: No store id has been entered for one or more marketplaces."
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:63
-msgid ""
-"ERROR: A marketplace already exists with this value. Please set a new "
-"marketplace."
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:64
-msgid ""
-"ERROR: A marketplace is present that has not been set. Please set that first."
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:65
-msgid ""
-"ERROR: You need to maintain at least one marketplace entry for tracking ids "
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:66
-msgid "ERROR: You need to add at least one marketplace entry for tracking ids "
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:67
-msgid "Add a Marketplace that you want to create Amazon links to."
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:68
-msgid ""
-"For each marketplace you can add multiple tracking ids, separated by commas. "
-"The first tracking id will be considered as default tracking id for that "
-"marketplace."
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:121
-#, php-format
-msgid ""
-"The file used to fetch country details to enable geo-targetted links doesn't "
-"have read permissions. Please give recursive read/write permissons to:%s. In "
-"case you are still facing the issue, please change download folder in Site "
-"Wide Settings section on this page."
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:123
-#, php-format
-msgid ""
-"The file used to fetch country details to enable geo-targetted links doesn't "
-"have write permissions. Please give recursive read/write permissons to:%s. "
-"In case you are still facing the issue, please change download folder in "
-"Site Wide Settings section on this page"
-msgstr ""
-
-#: admin/sidebar/partials/helper/aalb_credentials_helper.php:125
-#, php-format
-msgid ""
-"The directory where the file used to fetch country details to enable geo-"
-"targetted links doesn't have write permissions. Please give recursive "
-"read/write permissons to:%s. In case you are still facing the issue, please "
-"change download folder in Site Wide Settings section on this page"
-msgstr ""
 
 #: amazon-associates-link-builder.php:39 admin/sidebar/aalb_sidebar.php:35
 msgid "About"
@@ -210,15 +26,19 @@ msgstr "Paramètres"
 msgid "Templates"
 msgstr "Modèles"
 
-#: admin/aalb_admin.php:131
+#: admin/aalb_admin.php:129
 msgid "Only one product can be selected for this template"
 msgstr "Un produit seulement peut être sélectionné pour ce modèle"
 
-#: admin/aalb_admin.php:133
+#: admin/aalb_admin.php:130
+msgid "Please select at least one product for these marketplaces:"
+msgstr ""
+
+#: admin/aalb_admin.php:131
 msgid "Please Enter a Product Name "
 msgstr "Veuillez entrer un nom de produit "
 
-#: admin/aalb_admin.php:134
+#: admin/aalb_admin.php:132
 msgid ""
 "Failed to create Text Link shortcode. Editor has some text selected. Only "
 "one item can be selected while adding text links"
@@ -228,7 +48,7 @@ msgstr ""
 "liens texte"
 
 #. translators: %s: Email-id of the support
-#: admin/aalb_admin.php:136
+#: admin/aalb_admin.php:134
 #, php-format
 msgid ""
 "Request timed out. Try again after some time. Please check your network and "
@@ -238,12 +58,12 @@ msgstr ""
 "Prière de vérifier les paramètres de votre réseau et de votre pare-feu. Si "
 "l’erreur persiste, écrivez-nous à %s."
 
-#: admin/aalb_admin.php:137 admin/partials/aalb_editor_search_box.php:31
+#: admin/aalb_admin.php:135 admin/partials/aalb_editor_search_box.php:32
 msgid "Add Amazon Associates Link Builder Shortcode"
 msgstr "Ajouter le code court du plugin Amazon Associates Link Builder"
 
 #. translators: %s: URL of settings page
-#: admin/aalb_admin.php:139
+#: admin/aalb_admin.php:137
 #, php-format
 msgid ""
 "Please configure your PA-API credentials in the  <a href=%s>Settings Page</a>"
@@ -252,43 +72,101 @@ msgstr ""
 "Veuillez configurer vos identifiants PA-API sur la <a href=%s>page "
 "Paramètres</a> pour utiliser le créateur de lien."
 
-#: admin/aalb_admin.php:142
+#. %s: URL of settings page
+#: admin/aalb_admin.php:139
+#, php-format
+msgid ""
+"Please configure your Store-Id credentials in the  <a href=%s>Settings "
+"Page</a> to use the Link Builder features."
+msgstr ""
+
+#: admin/aalb_admin.php:140
 msgid "Ad Template"
 msgstr "Modèle d’annonce"
 
-#: admin/aalb_admin.php:143 admin/partials/aalb_editor_search_box.php:30
+#: admin/aalb_admin.php:141 admin/partials/aalb_editor_search_box.php:30
 msgid "Enter keyword(s)"
 msgstr "Entrer mot(s) clé(s)"
 
-#: admin/aalb_admin.php:144 admin/partials/aalb_editor_search_box.php:32
+#: admin/aalb_admin.php:142 admin/partials/aalb_editor_search_box.php:33
 msgid "Search"
 msgstr "Recherche"
 
-#: admin/aalb_admin.php:148
+#: admin/aalb_admin.php:143
+msgid "Tracking IDs"
+msgstr ""
+
+#: admin/aalb_admin.php:144
+msgid "Search Phrase"
+msgstr ""
+
+#: admin/aalb_admin.php:145
+msgid "Select Tracking Id"
+msgstr ""
+
+#: admin/aalb_admin.php:146
 msgid "Marketplace"
 msgstr "Marché"
 
-#: admin/aalb_admin.php:150
+#: admin/aalb_admin.php:147
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:56
+msgid "Select Marketplace"
+msgstr ""
+
+#: admin/aalb_admin.php:148
 msgid "Searching relevant products from Amazon"
 msgstr "Recherche de produits pertinents sur Amazon"
 
-#: admin/aalb_admin.php:151
+#: admin/aalb_admin.php:149
 msgid "Click to select product(s) to advertise"
 msgstr "Cliquez pour sélectionner un ou plusieurs produit(s) à mettre en avant"
 
-#: admin/aalb_admin.php:152
+#: admin/aalb_admin.php:150
 msgid "Check more search results on Amazon"
 msgstr "Autres résultats de recherche sur Amazon"
 
-#: admin/aalb_admin.php:154
+#: admin/aalb_admin.php:151
+msgid "List of Selected Products(Maximum: 10)"
+msgstr ""
+
+#: admin/aalb_admin.php:152
 msgid "Creating shortcode. Please wait...."
 msgstr "Code court en cours de création. Veuillez patienter..."
 
-#: admin/aalb_admin.php:155
+#: admin/aalb_admin.php:153
 msgid "Add Shortcode"
 msgstr "Ajouter code court"
 
-#: admin/aalb_admin.php:292
+#: admin/aalb_admin.php:154
+msgid ""
+"To configure templates, go to Associates Link Builder plugin's Templates page"
+msgstr ""
+
+#: admin/aalb_admin.php:155
+msgid ""
+"To configure marketplaces, go to Associates Link Builder plugin's Settings "
+"page"
+msgstr ""
+
+#: admin/aalb_admin.php:156
+msgid ""
+"To configure tracking ids, go to Associates Link Builder plugin's Settings "
+"page"
+msgstr ""
+
+#: admin/aalb_admin.php:157
+msgid "Please select marketplace from above to show products."
+msgstr ""
+
+#: admin/aalb_admin.php:158
+msgid "Please select some products from above."
+msgstr ""
+
+#: admin/aalb_admin.php:159
+msgid "Add ProductSet for Country"
+msgstr ""
+
+#: admin/aalb_admin.php:286
 msgid ""
 "Not authorised to make request template content or Directory Traversal "
 "Attempted."
@@ -296,19 +174,48 @@ msgstr ""
 "Vous n’avez pas l’autorisation de faire une requête de contenu de modèle ou "
 "Tentative de traversée de répertoires."
 
-#: admin/aalb_admin.php:302
+#: admin/aalb_admin.php:296
 msgid "Not authorised to make request"
 msgstr "Vous n’avez pas l’autorisation de faire cette requête"
 
-#. translators: %s: Error message
-#: includes/aalb_remote_loader.php:71
+#: ip2country/aalb_maxmind_db_manager.php:48
 #, php-format
-msgid "HTTP Request failed! %s"
-msgstr "La requête HTTP a échoué ! %s"
+msgid ""
+"WordPress does not have permissions to write to the \"Downloads Folder\" (%s)"
+". Please grant permissions or pick a different folder from the Amazon "
+"Associates Link Builder plugin's settings page, otherwise your links to "
+"Amazon might not display correctly."
+msgstr ""
 
-#: includes/aalb_remote_loader.php:79
-msgid "Response body is empty"
-msgstr "Le champ de réponse est vide"
+#: ip2country/aalb_maxmind_db_manager.php:50
+#, php-format
+msgid ""
+"WordPress could not find file %1s at \"DownloadsFolder\"(%2s), so geo-"
+"targeted links will not work correctly. This file can be downloaded from <a "
+"href=%2s>here</a>"
+msgstr ""
+
+#: ip2country/aalb_maxmind_db_manager.php:54
+#, php-format
+msgid ""
+"WordPress could not read %s. Please grant read permissions, otherwise your "
+"links to Amazon might not display correctly."
+msgstr ""
+
+#: ip2country/aalb_maxmind_db_manager.php:57
+#, php-format
+msgid ""
+"WordPress does not have write permissions to update the file(%s). Please "
+"grant write permissions, otherwise geo-targeted links may not work correctly."
+msgstr ""
+
+#: ip2country/aalb_maxmind_db_manager.php:59
+#, php-format
+msgid ""
+"WordPress could not update file(%1s) for geo-targeted links feature, so "
+"these links may not work correctly. This file can be downloaded from <a "
+"href=%2s>here</a>"
+msgstr ""
 
 #. translators: %s: Invalid ASIN name
 #: shortcode/aalb_shortcode_helper.php:144
@@ -333,6 +240,13 @@ msgstr ""
 "La balise Partenaire %1s ne figure pas dans la liste des balises valides. La "
 "balise Partenaire est à présent %2s. Veuillez vérifier votre choix de balise "
 "Partenaire ou contactez l’administrateur pour ajouter une nouvelle balise."
+
+#: shortcode/aalb_shortcode_manager.php:85
+msgid ""
+"There is an error in the count of configured marketplaces, asins and stores "
+"in this shortcode. Please fix the parameters for marketplace, asin and store-"
+"id."
+msgstr ""
 
 #: admin/sidebar/aalb_sidebar.php:31 admin/sidebar/partials/aalb_about.php:17
 msgid "Associates Link Builder"
@@ -629,6 +543,18 @@ msgstr ""
 "Nous <b>recommandons</b> d’utiliser la connexion HTTPs pour améliorer la "
 "sécurité."
 
+#: admin/sidebar/partials/aalb_credentials.php:26
+msgid "Are you sure you want to remove this marketplace?"
+msgstr ""
+
+#: admin/sidebar/partials/aalb_credentials.php:29
+msgid "YES"
+msgstr ""
+
+#: admin/sidebar/partials/aalb_credentials.php:30
+msgid "NO"
+msgstr ""
+
 #: admin/sidebar/partials/aalb_credentials.php:36
 msgid "Settings for Associates Link Builder"
 msgstr "Paramètres pour le créateur de lien Partenaire"
@@ -648,6 +574,19 @@ msgid ""
 msgstr ""
 "Le modèle d’annonce qui sera utilisé pour afficher l’annonce si aucun modèle "
 "n’est spécifié dans le code court."
+
+#: admin/sidebar/partials/aalb_credentials.php:91
+msgid "Downloads Folder"
+msgstr ""
+
+#: admin/sidebar/partials/aalb_credentials.php:97
+#, php-format
+msgid ""
+"This folder will be used to save files downloaded by the plugin (e.g. <a "
+"href=%1s target=%2s>The MaxMind IP2Country Database</a>) for local use. "
+"Absolute path required. <br><span class=\"aalb-bold\"> Default value:</span> "
+"<code>wp_upload_dir()['basedir'] + '%3s'</code>"
+msgstr ""
 
 #. translators: %s: rel="noreferrer" attribute
 #: admin/sidebar/partials/aalb_credentials.php:106
@@ -941,13 +880,68 @@ msgstr ""
 "Prière de vérifier les paramètres de votre réseau et de votre pare-feu. Si "
 "l’erreur persiste, écrivez-nous à %s."
 
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:54
+msgid "Enter Tracking Id(s)"
+msgstr ""
+
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:55
+msgid "Remove Marketplace"
+msgstr ""
+
 #: admin/sidebar/partials/helper/aalb_credentials_helper.php:57
 msgid "Default Marketplace"
 msgstr "Marché par défaut"
 
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:58
+msgid "Set As Default Marketplace"
+msgstr ""
+
 #: admin/sidebar/partials/helper/aalb_credentials_helper.php:59
 msgid "Tracking Id(s)"
 msgstr "ID de suivi"
+
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:60
+msgid "Add a Marketplace"
+msgstr ""
+
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:61
+msgid "Remove Marketplace Confirmation"
+msgstr ""
+
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:62
+msgid "ERROR: No store id has been entered for one or more marketplaces."
+msgstr ""
+
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:63
+msgid ""
+"ERROR: A marketplace already exists with this value. Please set a new "
+"marketplace."
+msgstr ""
+
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:64
+msgid ""
+"ERROR: A marketplace is present that has not been set. Please set that first."
+msgstr ""
+
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:65
+msgid ""
+"ERROR: You need to maintain at least one marketplace entry for tracking ids "
+msgstr ""
+
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:66
+msgid "ERROR: You need to add at least one marketplace entry for tracking ids "
+msgstr ""
+
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:67
+msgid "Add a Marketplace that you want to create Amazon links to."
+msgstr ""
+
+#: admin/sidebar/partials/helper/aalb_credentials_helper.php:68
+msgid ""
+"For each marketplace you can add multiple tracking ids, separated by commas. "
+"The first tracking id will be considered as default tracking id for that "
+"marketplace."
+msgstr ""
 
 #. Plugin Name of the plugin/theme
 msgid "Amazon Associates Link Builder"
