@@ -38,7 +38,6 @@ class Aalb_Initializer {
         add_filter( 'plugin_action_links_' . $plugin_base_name, array( $this, 'add_action_links' ) );
         register_activation_hook( $plugin_file_name, array( new Activator(), 'activate' ) );
         register_deactivation_hook( $plugin_file_name, array( new Deactivator(), 'deactivate' ) );
-        register_uninstall_hook( $plugin_file_name, 'uninstall' );
         $this->execute();
     }
 
@@ -53,18 +52,6 @@ class Aalb_Initializer {
         //Load the autoloader for plugin files.
         require_once( AALB_AUTOLOADER );
         Autoloader::register();
-    }
-
-
-    /**
-     * The code to run on uninstallation
-     *
-     * @since 1.8.0
-     */
-    function uninstall() {
-        $aalb_deactivator = new Deactivator();
-        $aalb_deactivator->remove_settings();
-        $aalb_deactivator->remove_uploads_dir();
     }
 
     /**

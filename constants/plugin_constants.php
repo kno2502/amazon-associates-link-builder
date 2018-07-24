@@ -65,7 +65,6 @@ class Plugin_Constants {
 
     //List of Default Amazon Template names
     const AMAZON_TEMPLATE_NAMES = 'ProductCarousel,ProductGrid,ProductAd,PriceLink,ProductLink';
-    const TEMPLATE_UPLOADS_FOLDER = 'amazon-associates-link-builder/template/';
 
     //Impression Recording Keys
     const IMPRESSION_RECORDER_SERVICE_KEY = 'impression_recorder_service';

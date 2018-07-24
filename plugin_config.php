@@ -41,6 +41,7 @@ define( 'AALB_VIEW_SIDEBAR_PARTIALS_DIR', AALB_PLUGIN_DIR . 'view/sidebar_partia
 define( 'AALB_JS_DIR', AALB_PLUGIN_DIR . 'js/' );
 define( 'AALB_CSS_DIR', AALB_PLUGIN_DIR . 'css/' );
 define( 'AALB_CONSTANTS_DIR', AALB_PLUGIN_DIR . 'constants/' );
+define( 'AALB_TEMPLATE_UPLOADS_FOLDER', 'amazon-associates-link-builder/template/' );
 
 //Classes
 define( 'AALB_ABOUT_PHP', AALB_VIEW_SIDEBAR_PARTIALS_DIR . 'about.php' );

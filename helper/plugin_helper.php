@@ -161,7 +161,7 @@ class Plugin_Helper {
     public function get_template_upload_directory_url() {
         $upload_dir = wp_upload_dir();
 
-        return $upload_dir['baseurl'] . '/' . Plugin_Constants::TEMPLATE_UPLOADS_FOLDER;
+        return $upload_dir['baseurl'] . '/' . AALB_TEMPLATE_UPLOADS_FOLDER;
     }
 
     /**
@@ -237,7 +237,7 @@ class Plugin_Helper {
      * @return \String path of the template uploads directory
      */
     private function aalb_get_template_upload_path() {
-        return $this->aalb_get_uploads_dir_path() . Plugin_Constants::TEMPLATE_UPLOADS_FOLDER;
+        return $this->aalb_get_uploads_dir_path() . AALB_TEMPLATE_UPLOADS_FOLDER;
     }
 
     /**
