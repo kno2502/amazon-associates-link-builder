@@ -2,8 +2,8 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.9.4
-Stable tag: 1.7.0
+Tested up to: 4.9.7
+Stable tag: 1.8.0
 Requires PHP: 5.4.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -115,6 +115,12 @@ The customer will be shown ads from the first country added in shortcode.
 You can see your earnings and other reports from the respective country Associates Portal under "Amazon Associates Link Builder" section.
 
 == Changelog ==
+
+= 1.8.0 - July 25, 2018 =
+* Added support for Australia (AU) marketplace.
+* Fix: SearchBox not disabled in case no tracking-ids have been entered.
+* Fix: Plugin is not deactivated gracefully for PHP 5.2.
+* Fix: Wrong error message shown when marketplaces lists is not returned by PA-API.
 
 = 1.7.0 - April 2, 2018 =
 * Added support for wider character set sent by Product Advertising API(PA-API). More details about change on PA-API can be found [here](https://forums.aws.amazon.com/ann.jspa?annID=5543).
@@ -239,16 +245,19 @@ You can see your earnings and other reports from the respective country Associat
 
 == Upgrade Notice ==
 
-= 1.7.0 - April 2, 2018 =
+= 1.8.0 =
+* Added Support for Australia (AU) marketplace and minor bug-fixes.
+
+= 1.7.0 =
 * Added support for wider character set sent by Product Advertising API(PA-API). More details about change on PA-API can be found [here](https://forums.aws.amazon.com/ann.jspa?annID=5543).
 
-= 1.6.0 - March 14, 2018 =
+= 1.6.0 =
 * Added Impressions data in reports shown on respective associates website for ads rendered after upgrade to this release.
 
-= 1.5.4 - January 26, 2018 =
+= 1.5.4 =
 * Fix: In case of failed call to Product-Advertising API, Fatal error thrown.
 
-= 1.5.3 - January 23, 2018 =
+= 1.5.3 =
 Fixed Fatal error for users on PHP version <5.4.0 along with search-button, multi-tab issues faced by few associates.
 
 = 1.5.2 =

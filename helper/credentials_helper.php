@@ -74,7 +74,7 @@ class Credentials_Helper {
             "marketplace_not_set_error"         => esc_html__( "ERROR: A marketplace is present that has not been set. Please set that first.", 'amazon-associates-link-builder' ),
             "remove_last_marketplace_error"     => esc_html__( "ERROR: You need to maintain at least one marketplace entry for tracking ids ", 'amazon-associates-link-builder' ),
             "no_marketplace_row_error"          => esc_html__( "ERROR: You need to add at least one marketplace entry for tracking ids ", 'amazon-associates-link-builder' ),
-            "marketplace_list_empty_error"      => esc_html__( "ERROR: No marketplace is available for selection. This is due to blocked call by your hosting provider or firewall settings to fetch marketplace details from webservices.amazon.com", 'amazon-associates-link-builder' ),
+            "marketplace_list_empty_error"      => esc_html__( "ERROR: No marketplace is available for selection. This may be due to blocked call by your hosting provider or firewall settings to fetch marketplace details from webservices.amazon.com", 'amazon-associates-link-builder' ),
             "marketplace_settings_info_message" => esc_html__( "Add a Marketplace that you want to create Amazon links to.", 'amazon-associates-link-builder' ),
             "tracking_id_settings_info_message" => esc_html__( "For each marketplace you can add multiple tracking ids, separated by commas. The first tracking id will be considered as default tracking id for that marketplace.", 'amazon-associates-link-builder' )
         );
