@@ -41,6 +41,8 @@ class Db_Constants {
     const GEOLITE_DB_DOWNLOAD_NEXT_RETRY_TIME = 'aalb_geolite_db_download_next_retry_time';
     const GEOLITE_DB_DOWNLOAD_RETRY_ON_FAILURE_DURATION = 'aalb_geolite_db_download_retry_on_failure_duration';
     const GEOLITE_DB_DOWNLOAD_FAILED_ATTEMPTS = 'aalb_geolite_db_download_failed_attempts';
+    const ITEM_LOOKUP_RESPONSE_TABLE_NAME = 'Aalb_Asin_Response';
+    const CRON_UPDATE_INTERVAL = 'aalb_update_table_cron_interval';
 
     //Defaults in case DB doesn't contain them.
     const DEFAULT_TEMPLATE_NAME = 'ProductCarousel';

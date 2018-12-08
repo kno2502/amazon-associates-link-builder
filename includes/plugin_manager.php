@@ -13,6 +13,9 @@ and limitations under the License.
 */
 namespace AmazonAssociatesLinkBuilder\includes;
 
+use AmazonAssociatesLinkBuilder\constants\Cron_Constants;
+use AmazonAssociatesLinkBuilder\cron\Cron_Manager;
+use AmazonAssociatesLinkBuilder\cron\Cron_Schedule_Manager;
 use AmazonAssociatesLinkBuilder\shortcode\Shortcode_Manager;
 use AmazonAssociatesLinkBuilder\shortcode\Shortcode_Loader;
 use AmazonAssociatesLinkBuilder\includes\Hook_Loader;
@@ -24,6 +27,7 @@ use AmazonAssociatesLinkBuilder\admin\Plugin_Admin;
 use AmazonAssociatesLinkBuilder\admin\sidebar\Sidebar;
 use AmazonAssociatesLinkBuilder\rendering\Content_Filter;
 use AmazonAssociatesLinkBuilder\constants\Db_Constants;
+use AmazonAssociatesLinkBuilder\sql\Sql_Helper;
 
 /**
  * The class that manages all the events of the wordpress.
@@ -37,11 +41,15 @@ class Plugin_Manager {
     protected $hook_loader;
     protected $shortcode_loader;
     protected $shortcode_manager;
+    private $cron_manager;
+    private $cron_schedule_manager;
 
     public function __construct() {
         $this->hook_loader = new Hook_Loader();
         $this->shortcode_loader = new Shortcode_Loader();
         $this->shortcode_manager = new Shortcode_Manager();
+        $this->cron_manager = new Cron_Manager( new Sql_Helper( DB_NAME, Db_Constants::ITEM_LOOKUP_RESPONSE_TABLE_NAME ) );
+        $this->cron_schedule_manager = new Cron_Schedule_Manager();
 
         //add the hooks specific to admin.
         $this->add_admin_hooks();
@@ -51,6 +59,9 @@ class Plugin_Manager {
 
         //Add the hooks for the rendering Settings page of plugin
         $this->add_credentials_hooks();
+
+        //Add the hooks for auto updating the cache
+        $this->add_item_lookup_cache_auto_update_hooks();
     }
 
     /**
@@ -94,6 +105,18 @@ class Plugin_Manager {
         $credentials_helper = new Credentials_Helper();
         $this->hook_loader->add_action( 'admin_enqueue_scripts', $credentials_helper, 'aalb_credentials_enqueue_style' );
         $this->hook_loader->add_action( 'admin_enqueue_scripts', $credentials_helper, 'aalb_credentials_enqueue_script' );
+    }
+
+    /**
+     * Add actions to item lookup cache auto update hooks
+     *
+     * @since 1.8.0
+     */
+    private function add_item_lookup_cache_auto_update_hooks(){
+        $this->hook_loader->add_action( Cron_Constants::UPDATE_TABLE_HOOK, $this->cron_manager, 'update_table' );
+        $this->hook_loader->add_action( Cron_Constants::DELETE_FROM_TABLE_HOOK, $this->cron_manager, 'delete_from_table' );
+        add_filter( 'cron_schedules', array($this->cron_manager, 'add_cron_intervals') );
+        $this->cron_schedule_manager->schedule_cron_tasks();
     }
 
     /**

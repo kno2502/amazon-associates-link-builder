@@ -61,16 +61,15 @@ class Impression_Generator {
      * @param String $store_id
      * @param String $link_code
      * @param Integer $org_unit_id
-     * @param String $asin_group Group of different asins speated by ","
+     * @param Array $asins_array Array of asins
      *
      * @return String HTML for the pixel image of all asins in $asin_group
      *
      * @throws \InvalidArgumentException
      *
      */
-    private function get_html_for_pixel_image_of_all_asins( $impression_recorder_service_endpoint, $store_id, $link_code, $org_unit_id, $asin_group ) {
+    private function get_html_for_pixel_image_of_all_asins( $impression_recorder_service_endpoint, $store_id, $link_code, $org_unit_id, $asins_array ) {
         $pixel_image_for_all_asins = "";
-        $asins_array = explode( ',', $asin_group );
         foreach ( $asins_array as $asin ) {
             $pixel_image_url = $this->get_url_with_query_params( $impression_recorder_service_endpoint, $store_id, $link_code, $org_unit_id, $asin );
             $pixel_image_for_all_asins .= $this->get_html_element_for_pixel_image( $pixel_image_url );

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit40d46390c117e8cbe149ad058dd0a1b2
+class ComposerStaticInit0fe9b4bdee4074152349366d38f6a02a
 {
     public static $prefixLengthsPsr4 = array (
         'M' => 
@@ -56,12 +56,18 @@ class ComposerStaticInit40d46390c117e8cbe149ad058dd0a1b2
         ),
     );
 
+    public static $classMap = array (
+        'WP_Async_Request' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-async-request.php',
+        'WP_Background_Process' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-background-process.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit40d46390c117e8cbe149ad058dd0a1b2::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit40d46390c117e8cbe149ad058dd0a1b2::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit40d46390c117e8cbe149ad058dd0a1b2::$prefixesPsr0;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit0fe9b4bdee4074152349366d38f6a02a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit0fe9b4bdee4074152349366d38f6a02a::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit0fe9b4bdee4074152349366d38f6a02a::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit0fe9b4bdee4074152349366d38f6a02a::$classMap;
 
         }, null, ClassLoader::class);
     }

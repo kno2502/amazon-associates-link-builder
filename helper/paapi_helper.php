@@ -18,6 +18,7 @@ use AmazonAssociatesLinkBuilder\constants\Db_Constants;
 use AmazonAssociatesLinkBuilder\constants\Paapi_Constants;
 use AmazonAssociatesLinkBuilder\constants\HTTP_Constants;
 use AmazonAssociatesLinkBuilder\constants\Plugin_Urls;
+use AmazonAssociatesLinkBuilder\configuration\Config_Loader;
 
 /**
  * Helper class for Paapi
@@ -28,6 +29,12 @@ use AmazonAssociatesLinkBuilder\constants\Plugin_Urls;
  */
 class Paapi_Helper {
 
+    private $config_loader;
+
+    public function __construct() {
+        $this->config_loader = new Config_Loader();
+    }
+
     /**
      * Returns the item lookup URL for asins
      *
@@ -37,11 +44,13 @@ class Paapi_Helper {
      *
      * @return string Signed URL for item lookup.
      */
-    function get_item_lookup_url( $asin, $marketplace, $tracking_id ) {
+    function get_item_lookup_url( $asin_array, $marketplace, $tracking_id ) {
+        $marketplace_endpoint = $this->get_marketplace_endpoint( $marketplace );
+        $asin = implode( ",", $asin_array );
         $params = array(
             "Operation" => "ItemLookup", "ItemId" => "$asin", "IdType" => "ASIN", "ResponseGroup" => "Images,ItemAttributes,OfferFull", "AssociateTag" => "$tracking_id",
         );
-        $url = $this->aws_signed_url( $params, $marketplace );
+        $url = $this->aws_signed_url( $params, $marketplace_endpoint );
 
         return $url;
     }
@@ -99,10 +108,11 @@ class Paapi_Helper {
      * @return string Signed URL for item search.
      */
     function get_item_search_url( $search_keywords, $marketplace, $tracking_id ) {
+        $marketplace_endpoint = $this->get_marketplace_endpoint( $marketplace );
         $params = array(
             "Operation" => "ItemSearch", "SearchIndex" => "All", "Keywords" => "$search_keywords", "ResponseGroup" => "Images,ItemAttributes,Offers", "AssociateTag" => "$tracking_id",
         );
-        $url = $this->aws_signed_url( $params, $marketplace );
+        $url = $this->aws_signed_url( $params, $marketplace_endpoint );
 
         return $url;
     }
@@ -140,6 +150,41 @@ class Paapi_Helper {
                  */
                 return '<h4>' . $error . '</h4>';
         }
+    }
+
+    /**
+     * Get marketplace endpoint for marketplace abbreviation
+     *
+     * @since 1.8.0
+     *
+     * @param string $marketplace_abbr Marketplace Abbreviation from shortcode
+     *
+     * @return string $marketplace_endpoint Marketplace endpoint
+     */
+    private function get_marketplace_endpoint( $marketplace_abbr ) {
+        $aalb_marketplace_names = $this->config_loader->fetch_marketplaces();
+        $marketplace_endpoint = array_search( $marketplace_abbr, $aalb_marketplace_names );
+
+        return $marketplace_endpoint;
+    }
+
+    /**
+     * Returns default store_id for given marketplace.
+     *
+     * @param $marketplace
+     *
+     * @return string store_id for given marketplace
+     */
+    public function get_store_id_for_marketplace( $marketplace ){
+        try{
+            $store_ids_list = json_decode( get_option( Db_Constants::STORE_IDS ));
+            $store_ids = $store_ids_list->{$marketplace};
+            $store_id = $store_ids[0];
+        } catch( \Exception $e ){
+            error_log("No store_id found for marketplace {$marketplace}");
+            $store_id = get_option( Db_Constants::DEFAULT_STORE_ID );
+        }
+        return $store_id;
     }
 
 }

@@ -60,7 +60,9 @@ class Autoloader {
         new self( AALB_CONFIGURATION_DIR );
         new self( AALB_RENDERING_DIR );
         new self( AALB_CACHE_DIR );
+        new self( AALB_SQL_DIR );
         new self( AALB_CONSTANTS_DIR );
+        new self( AALB_CRON_DIR );
     }
 
     /**

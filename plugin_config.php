@@ -20,6 +20,9 @@ define( 'AALB_PLUGIN_MINIMUM_SUPPORTED_PHP_VERSION', '5.4.0' );
 define( 'AALB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AALB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
+//Library
+define( 'AALB_MUSTACHE_AUTOLOADER_PHP', AALB_PLUGIN_DIR . 'lib/php/Mustache/Autoloader.php' );
+
 //Directories
 define( 'AALB_TEMPLATE_DIR', AALB_PLUGIN_DIR . 'template/' );
 define( 'AALB_ADMIN_DIR', AALB_PLUGIN_DIR . 'admin/' );
@@ -35,12 +38,14 @@ define( 'AALB_IO_DIR', AALB_PLUGIN_DIR . 'io/' );
 define( 'AALB_HELPER_DIR', AALB_PLUGIN_DIR . 'helper/' );
 define( 'AALB_CONFIGURATION_DIR', AALB_PLUGIN_DIR . 'configuration/' );
 define( 'AALB_RENDERING_DIR', AALB_PLUGIN_DIR . 'rendering/' );
+define( 'AALB_SQL_DIR', AALB_PLUGIN_DIR . 'sql/' );
 define( 'AALB_CACHE_DIR', AALB_PLUGIN_DIR . 'cache/' );
 define( 'AALB_VIEW_PARTIALS_DIR', AALB_PLUGIN_DIR . 'view/partials/' );
 define( 'AALB_VIEW_SIDEBAR_PARTIALS_DIR', AALB_PLUGIN_DIR . 'view/sidebar_partials/' );
 define( 'AALB_JS_DIR', AALB_PLUGIN_DIR . 'js/' );
 define( 'AALB_CSS_DIR', AALB_PLUGIN_DIR . 'css/' );
 define( 'AALB_CONSTANTS_DIR', AALB_PLUGIN_DIR . 'constants/' );
+define( 'AALB_CRON_DIR', AALB_PLUGIN_DIR . 'cron/' );
 define( 'AALB_TEMPLATE_UPLOADS_FOLDER', 'amazon-associates-link-builder/template/' );
 
 //Classes
@@ -100,8 +105,8 @@ define( 'AALB_GEOLITE_DB_MAX_ALLOWED_AGE', 60 * DAY_IN_SECONDS );
 //Note that the plugin uses a two tier cache. It caches the ASINs as well as the rendered templates.
 //At any given time the sum of ASIN cache TTL and Rendered AdUnit cache TTL should be less than or equal to one hour.
 //The below configuration is compliant with the License Agreement. Any modification may result in the violation of the license agreement.
-define( 'AALB_CACHE_FOR_ASIN_RAWINFO_TTL', 30 * MINUTE_IN_SECONDS );
 define( 'AALB_CACHE_FOR_ASIN_ADUNIT_TTL', 30 * MINUTE_IN_SECONDS );
+define( 'AALB_CACHE_FOR_MARKETPLACE_CONFIG_TTL', 3 * DAY_IN_SECONDS );
 
 define( 'AALB_SETTINGS_PAGE_URL', admin_url( 'admin.php?page=associates-link-builder-settings' ) );
 define( 'TRUE', 'true' );

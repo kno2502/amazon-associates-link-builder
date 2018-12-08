@@ -45,82 +45,67 @@ class Xml_Manipulator {
      */
     public function get_customized_items_object( $products_xml, $marketplace ) {
         $simple_xml_object = $this->parse( $products_xml );
-        $this->validate( $simple_xml_object );
         $custom_items = $this->add_custom_nodes( $simple_xml_object->Items, $marketplace );
 
         return $custom_items;
     }
 
     /**
-     * Convert the well-formed xml string into a\SimpleXMLElement object.
+     * Convert the well-formed xml string into a SimpleXMLElement object and check if the object is formed successfully.
      *
      * @since 1.0.0
      *
      * @param string $xml_string Well-formed XML string
      *
+     * @throws \Exception if xml element object was nt formed successfully
+     *
      * @return \SimpleXMLElement Php xml object.
      */
-    private function parse( $xml_string ) {
+    public function parse( $xml_string ) {
         libxml_use_internal_errors( true );
-
-        return simplexml_load_string( $xml_string );
-    }
-
-    /**
-     * Checks if SIMPLE XML element object is generated successfully and has no error code from PA-API
-     *
-     * @since 1.8.0
-     *
-     * @param \SimpleXMLElement $xml Well-formed XML string
-     *
-     * @throws \Exception if object is not generated successfully or has an error code from PA-API
-     */
-    private function validate( $xml ) {
+        $xml = simplexml_load_string( $xml_string );
         if ( $xml === false ) {
             //Don't translate as this is also dumped in error logs and will facilitate AALB team to debug
             throw new \Exception( 'Xml_Manipulator::validate::Failed Loading XML' );
-        } else if ( ! $this->should_render_xml( $xml ) ) {
-            throw new \Exception( 'Xml_Manipulator::validate::' . $xml->Items->Request->Errors->Error->Code );
         }
-    }
 
-    /**
-     * Whether to allow xml to be rendered
-     *
-     * @since 1.4.7
-     *
-     * @param \SimpleXMLElement $xml Well-formed XML string
-     *
-     * @return boolean should_render_xml
-     */
-    private function should_render_xml( $xml ) {
-        return ! isset( $xml->Items->Request->Errors->Error ) || $this->is_error_acceptable( $xml );
-    }
-
-    /**
-     * Whether the error is acceptable. For now, It is acceptable for Invalid Parameter value with at least one item set.
-     * This handles the case when an expired ASIN is present in a list of products and thus unblocks the ad rendering.
-     *
-     * @since 1.8.0
-     *
-     * @param \SimpleXMLElement $xml Well-formed XML string
-     *
-     * @return boolean is_error_acceptable
-     */
-    private function is_error_acceptable( $xml ) {
-        return $xml->Items->Request->Errors->Error->Code == Paapi_Constants::INVALID_PARAMETER_VALUE_ERROR && isset( $xml->Items->Item );
+        return $xml;
     }
 
     /**
      * Add custom nodes to xml response
      *
-     * @since 1.0.0
+     * @since 1.8.0
      *
-     * @param \SimpleXMLElement $items Well-formed XML string
+     * @param \SimpleXMLElement $xml Well-formed XML string
+     * @param string $marketplace     Marketplace
      *
      * @return \SimpleXMLElement $items XML String with custom nodes added
      */
     private function add_custom_nodes( $items, $marketplace ) {
+        $common_marketplace_node_name = 'Marketplace' . $marketplace;
+
+        foreach ( $items->Item as $item ) {
+            $this->decorate_item( $item, $marketplace, $common_marketplace_node_name );
+        }
+
+        return $items;
+    }
+
+    /**
+     * Add common nodes to xml response
+     *
+     * @since 1.8.0
+     *
+     * @param \SimpleXMLElement $items Well-formed XML string
+     * @param string $marketplace Marketplace
+     *
+     * @return \SimpleXMLElement $items XML String with custom nodes added
+     */
+    private function add_common_nodes( $products_xml, $marketplace ) {
+        $xml_response = $this->parse( $products_xml );
+        $items = $xml_response->Items;
+
         $common_marketplace_node_name = 'Marketplace' . $marketplace;
         $items->ID = "[[UNIQUE_ID]]";
         $basic_labels = $this->xml_helper->get_basic_labels( $marketplace );
@@ -130,11 +115,23 @@ class Xml_Manipulator {
         $aalb_header_node = $items->addChild( 'AalbHeader' );
         $aalb_header_node->$common_marketplace_node_name = 'true';
 
-        foreach ( $items->Item as $item ) {
-            $this->decorate_item( $item, $marketplace, $common_marketplace_node_name );
-        }
-
         return $items;
+    }
+
+    /**
+     * Get customized response which contains attributes common to all items
+     *
+     * @since 1.8.0
+     *
+     * @param string $items_xml String of final response
+     * @param string $store_id Store_id
+     * @param string $link_code Link code
+     * @param string $marketplace Marketplace
+     *
+     * @return \SimpleXMLElement
+     */
+    public function get_customized_response( $items_xml, $store_id, $link_code, $marketplace ){
+        return $this->add_common_nodes( $this->modify_xml( $items_xml, $store_id, $link_code ), $marketplace );
     }
 
     /**
@@ -186,4 +183,42 @@ class Xml_Manipulator {
         //Below is done as earlier we were maintaining current price value node even if value is null
         $aalb_node->CurrentPriceValue = $price_related_info[XML_Constants::CURRENT_PRICE_VALUE];
     }
+
+    /**
+     * Change the store_id before rendering the response.
+     *
+     * @since 1.8.0
+     *
+     * @param string $response Item lookup response stored in table which may have a different store_id.
+     * @param string $store_id The replacement for store_id in response.
+     *
+     * @return string           Modified response.
+     */
+    public function modify_xml( $response, $store_id, $link_code ) {
+        //use wordpress linkcode
+        $response = preg_replace( "/linkCode(%3D|=)\w{1,3}/", "linkCode$1" . $link_code, $response );
+
+        //replace store id
+        return preg_replace( "((tag=)[^&]+(&))", "$1" . $store_id . "$3", $response );
+    }
+
+    /**
+     * Single Escape Numeric Character References(NCR) using regular expression replacement
+     *
+     * @since 1.8.0
+     *
+     * @param string $products Deserialized XML string with NCRs double escaped
+     *
+     * @return string Deserialized XML string with NCRS single escaped
+     */
+    public function unescape_numeric_character_references( $products ) {
+        //Single Escape NCR represented as hex number
+        $products = preg_replace( "/&amp;(#x[a-fA-F0-9]{4,6};)/", "&$1", $products );
+
+        //Single Escape other special characters escaped by Product Advertising API like Σ(&#931;),Θ(&#920;)
+        $products = preg_replace( "/&amp;(#[0-9]{1,7};)/", "&$1", $products );
+
+        return $products;
+    }
+
 }

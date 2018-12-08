@@ -14,7 +14,10 @@ and limitations under the License.
 
 namespace AmazonAssociatesLinkBuilder\includes;
 
+use AmazonAssociatesLinkBuilder\cache\Item_Lookup_Response_Cache;
+use AmazonAssociatesLinkBuilder\constants\Db_Constants;
 use AmazonAssociatesLinkBuilder\helper\Plugin_Helper;
+use AmazonAssociatesLinkBuilder\sql\Sql_Helper;
 
 /**
  * Fired during the plugin activation
@@ -26,6 +29,11 @@ use AmazonAssociatesLinkBuilder\helper\Plugin_Helper;
  * @subpackage AmazonAssociatesLinkBuilder/includes
  */
 class Activator {
+    private $item_lookup_response_cache;
+
+    public function __construct() {
+        $this->item_lookup_response_cache = new Item_Lookup_Response_Cache( new Sql_Helper( DB_NAME, Db_Constants::ITEM_LOOKUP_RESPONSE_TABLE_NAME  ) );
+    }
     /**
      * Add the template names to the database from the filesystem.
      *
@@ -43,6 +51,7 @@ class Activator {
      */
     function activate() {
         $this->load_templates();
+        $this->item_lookup_response_cache->init();
     }
 }
 

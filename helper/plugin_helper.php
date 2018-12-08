@@ -15,6 +15,7 @@ namespace AmazonAssociatesLinkBuilder\helper;
 
 use AmazonAssociatesLinkBuilder\constants\Db_Constants;
 use AmazonAssociatesLinkBuilder\constants\Plugin_Constants;
+use AmazonAssociatesLinkBuilder\constants\Cron_Constants;
 
 /**
  * Helper class for commonly used functions in the plugin.
@@ -37,7 +38,7 @@ class Plugin_Helper {
      *
      * @return string Template cache key.
      */
-    public function build_template_cache_key( $asins, $marketplace, $store, $template ) {
+    public function build_display_unit_cache_key( $asins, $marketplace, $store, $template ) {
         return 'aalb' . '-' . $asins . '-' . $marketplace . '-' . $store . '-' . $template;
     }
 
@@ -326,7 +327,8 @@ class Plugin_Helper {
             Db_Constants::MAXMIND_DB_LAST_UPLOAD_PATH                   => get_option( Db_Constants::CUSTOM_UPLOAD_PATH ),
             Db_Constants::GEOLITE_DB_DOWNLOAD_RETRY_ON_FAILURE_DURATION => AALB_GEOLITE_DB_DOWNLOAD_RETRY_DURATION_MIN,
             Db_Constants::GEOLITE_DB_DOWNLOAD_FAILED_ATTEMPTS           => 0,
-            Db_Constants::MARKETPLACE_NAMES                             => array()
+            Db_Constants::MARKETPLACE_NAMES                             => array(),
+            Db_Constants::CRON_UPDATE_INTERVAL                          => Cron_Constants::UPDATE_TABLE_CRON_SCHEDULE_DEFAULT_VALUE
         );
     }
 

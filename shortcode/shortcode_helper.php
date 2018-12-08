@@ -70,23 +70,6 @@ class Shortcode_Helper {
     }
 
     /**
-     * Get marketplace endpoint for marketplace abbreviation
-     *
-     * @since 1.0.0
-     *
-     * @param string $marketplace_abbr Marketplace Abbreviation from shortcode
-     *
-     * @return string $marketplace_endpoint Marketplace endpoint
-     */
-    public function get_marketplace_endpoint( $marketplace_abbr ) {
-        $marketplace_endpoint = "";
-        $aalb_marketplace_names = $this->config_loader->fetch_marketplaces();
-        $marketplace_endpoint = array_search( $marketplace_abbr, $aalb_marketplace_names );
-
-        return $marketplace_endpoint;
-    }
-
-    /**
      * Get validated link-id
      * Checks if the link id we got from the api is valid or not and returns
      * validated link-id. In case of invalid marketplace, it returns empty string.

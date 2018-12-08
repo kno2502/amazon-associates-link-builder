@@ -14,16 +14,24 @@ and limitations under the License.
 
 namespace AmazonAssociatesLinkBuilder\shortcode;
 
+use AmazonAssociatesLinkBuilder\cache\Item_Lookup_Response_Cache;
+use AmazonAssociatesLinkBuilder\cache\Item_Lookup_Response_Cache_Loader;
+use AmazonAssociatesLinkBuilder\configuration\Config_Helper;
 use AmazonAssociatesLinkBuilder\constants\Db_Constants;
+use AmazonAssociatesLinkBuilder\helper\Xml_Helper;
+use AmazonAssociatesLinkBuilder\includes\Item_Lookup_Response_Manager;
+use AmazonAssociatesLinkBuilder\rendering\Impression_Generator;
 use AmazonAssociatesLinkBuilder\rendering\Template_Engine;
 use AmazonAssociatesLinkBuilder\ip2Country\Customer_Country;
-use AmazonAssociatesLinkBuilder\shortcode\Shortcode_Helper;
 use AmazonAssociatesLinkBuilder\helper\Paapi_Helper;
 use AmazonAssociatesLinkBuilder\ip2Country\Maxmind_Db_Manager;
 use AmazonAssociatesLinkBuilder\constants\Plugin_Constants;
 use AmazonAssociatesLinkBuilder\io\Curl_Request;
 use AmazonAssociatesLinkBuilder\io\File_System_Helper;
 use AmazonAssociatesLinkBuilder\helper\Plugin_Helper;
+use AmazonAssociatesLinkBuilder\cache\Display_Unit_Cache_Loader;
+use AmazonAssociatesLinkBuilder\rendering\Xml_Manipulator;
+use AmazonAssociatesLinkBuilder\sql\Sql_Helper;
 
 /**
  *
@@ -34,11 +42,12 @@ use AmazonAssociatesLinkBuilder\helper\Plugin_Helper;
  * @subpackage AmazonAssociatesLinkBuilder/shortcode
  */
 class Shortcode_Manager {
-    protected $paapi_helper;
     protected $template_engine;
+    protected $paapi_helper;
     protected $helper;
     protected $shortcode_helper;
     protected $customer_country;
+    private $display_unit_cache_loader;
 
     public function __construct() {
         $this->template_engine = new Template_Engine();
@@ -46,6 +55,9 @@ class Shortcode_Manager {
         $this->helper = new Plugin_Helper();
         $this->shortcode_helper = new Shortcode_Helper();
         $this->customer_country = new Customer_Country();
+        $this->xml_manipulator = new Xml_Manipulator( new Xml_Helper( new Config_Helper() ) );
+        $this->sql_helper = new Sql_Helper( DB_NAME, Db_Constants::ITEM_LOOKUP_RESPONSE_TABLE_NAME );
+        $this->display_unit_cache_loader = new Display_Unit_Cache_Loader( $this->template_engine, new Item_Lookup_Response_Cache_Loader( $this->xml_manipulator, $this->paapi_helper, new Item_Lookup_Response_Manager( $this->xml_manipulator ), $this->sql_helper, new Item_Lookup_Response_Cache( $this->sql_helper ) ), new Impression_Generator( new Config_Helper() ) );
     }
 
     /**
@@ -139,15 +151,12 @@ class Shortcode_Manager {
         $validated_store_id = $this->shortcode_helper->get_validated_store_id( $store_id );
         $link_text = $shortcode_attributes['text'];
 
-        $marketplace_endpoint = $this->shortcode_helper->get_marketplace_endpoint( $validated_marketplace );
-        $url = $this->paapi_helper->get_item_lookup_url( $validated_asins, $marketplace_endpoint, $validated_store_id );
         $formatted_asins = $this->shortcode_helper->format_asins( $validated_asins );
         $this->shortcode_helper->enqueue_template_styles( $validated_template );
 
-        $products_key = $this->helper->build_products_cache_key( $formatted_asins, $validated_marketplace, $validated_store_id );
-        $products_template_key = $this->helper->build_template_cache_key( $formatted_asins, $validated_marketplace, $validated_store_id, $validated_template );
+        $display_unit_cache_key = $this->helper->build_display_unit_cache_key( $formatted_asins, $validated_marketplace, $validated_store_id, $validated_template );
         try {
-            return str_replace( array( '[[UNIQUE_ID]]', '[[Amazon_Link_Text]]' ), array( str_replace( '.', '-', $products_template_key ), $link_text ), $this->template_engine->render( $products_template_key, $products_key, $validated_template, $url, $validated_marketplace, $link_code, $validated_store_id, $validated_asins ) );
+            return str_replace( array( '[[UNIQUE_ID]]', '[[Amazon_Link_Text]]' ), array( str_replace( '.', '-', $display_unit_cache_key ), $link_text ), $this->display_unit_cache_loader->get( $display_unit_cache_key, $validated_template, $validated_marketplace, $link_code, $validated_store_id, $validated_asins ) );
         } catch ( \Exception $e ) {
             error_log( $this->paapi_helper->get_error_message( $e->getMessage() ) );
         }
@@ -182,7 +191,7 @@ class Shortcode_Manager {
      *
      * @since 1.5.0
      *
-     * @param \Array $marketplace_list Array of marketplaces present in shortcode
+     * @param array $marketplace_list Array of marketplaces present in shortcode
      *
      * @return String  Marketplace from which customer is coming. Empty in case marketplace not added by user or no e-commerce presence
      */

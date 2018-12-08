@@ -11,9 +11,10 @@ This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS O
 either express or implied. See the License for the specific language governing permissions
 and limitations under the License.
 */
+
 namespace AmazonAssociatesLinkBuilder\cache;
 
-use AmazonAssociatesLinkBuilder\constants\Plugin_Constants;
+use AmazonAssociatesLinkBuilder\includes\Remote_Loader;
 use AmazonAssociatesLinkBuilder\helper\Plugin_Helper;
 
 /**
@@ -22,23 +23,25 @@ use AmazonAssociatesLinkBuilder\helper\Plugin_Helper;
  * Generic class that can be used by any class to get the data from the cache.
  * If the data is not available in the cache, a remote GET request is made.
  *
- * @since      1.0.0
+ * @since      1.8.0
  * @package    AmazonAssociatesLinkBuilder
- * @subpackage AmazonAssociatesLinkBuilder/includes
+ * @subpackage AmazonAssociatesLinkBuilder/cache
  */
-class Cache_Loader {
+class Marketplace_Config_Cache_Loader {
 
-    public $loader;
-    protected $helper;
+    private $loader;
+    private $helper;
 
-    public function __construct( $loader ) {
+    public function __construct( Remote_Loader $loader, Plugin_Helper $plugin_helper ) {
         $this->loader = $loader;
-        $this->helper = new Plugin_Helper();
+        $this->helper = $plugin_helper;
     }
 
     /**
      * If the information is in the cache, then retrieve the information from the cache.
      * Else get the information by making a GET request.
+     *
+     * @since 1.8.0
      *
      * @param string $key       Unique identification of the information.
      * @param string $url       URL for making a request.
@@ -46,13 +49,10 @@ class Cache_Loader {
      *
      * @return string GET Response.
      */
-    public function load( $key, $url, $link_code = Plugin_Constants::DEFAULT_LINK_CODE ) {
+    public function get( $key, $url ) {
         $info = $this->lookup( $key );
-        if ( $info !== false ) {
-            return $info;
-        } else {
-            return $this->load_and_save( $key, $url, $link_code );
-        }
+
+        return $info !== false ? $info : $this->create_cache_entry( $key, $url );
     }
 
     /**
@@ -60,16 +60,20 @@ class Cache_Loader {
      * If the key exists in the cache, the data is return.
      * Else false is returned.
      *
+     * @since 1.8.0
+     *
      * @param string $key Unique identification of the information.
      *
      * @return string  Data in the cache.
      */
-    private function lookup( $key ) {
+    protected function lookup( $key ) {
         return get_transient( $key );
     }
 
     /**
      * Load the information with a GET request and save it in the cache. Return the loaded information.
+     *
+     * @since 1.8.0
      *
      * @param string $key       Unique identification of the information.
      * @param string $url       URL for making a request.
@@ -77,14 +81,9 @@ class Cache_Loader {
      *
      * @return string  GET Response.
      */
-    private function load_and_save( $key, $url, $link_code ) {
+    protected function create_cache_entry( $key, $url ) {
         $info = $this->loader->load( $url );
-
-        //use wordpress linkcode
-        $info = preg_replace( "/linkCode(%3D|=)\w{1,3}/", "linkCode$1" . $link_code, $info );
-
-        $this->helper->clear_expired_transients_at_intervals();
-        set_transient( $key, $info, AALB_CACHE_FOR_ASIN_RAWINFO_TTL );
+        set_transient( $key, $info, AALB_CACHE_FOR_MARKETPLACE_CONFIG_TTL );
 
         return $info;
     }

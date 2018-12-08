@@ -13,11 +13,11 @@ and limitations under the License.
 */
 namespace AmazonAssociatesLinkBuilder\configuration;
 
-use AmazonAssociatesLinkBuilder\cache\Cache_Loader;
+use AmazonAssociatesLinkBuilder\cache\Marketplace_Config_Cache_Loader;
 use AmazonAssociatesLinkBuilder\constants\Db_Constants;
 use AmazonAssociatesLinkBuilder\constants\Paapi_Constants;
+use AmazonAssociatesLinkBuilder\helper\Plugin_Helper;
 use AmazonAssociatesLinkBuilder\includes\Remote_Loader;
-use AmazonAssociatesLinkBuilder\constants\Plugin_Constants;
 
 /**
  * The class responsible for getting all the configuration
@@ -30,10 +30,9 @@ use AmazonAssociatesLinkBuilder\constants\Plugin_Constants;
  */
 class Config_Loader {
 
-    private $cache_loader;
-
+    private $marketplace_config_cache_loader;
     public function __construct() {
-        $this->cache_loader = new Cache_Loader( new Remote_Loader() );
+        $this->marketplace_config_cache_loader = new Marketplace_Config_Cache_Loader( new Remote_Loader(), new Plugin_Helper() );
     }
 
     /**
@@ -46,7 +45,7 @@ class Config_Loader {
      */
     public function fetch_marketplaces() {
         try {
-            $body = $this->cache_loader->load( Db_Constants::MARKETPLACE_NAMES, Paapi_Constants::MARKETPLACES_URL );
+            $body = $this->marketplace_config_cache_loader->get( Db_Constants::MARKETPLACE_NAMES, Paapi_Constants::MARKETPLACES_URL );
 
             return $this->parse_json( $body );
         } catch ( \Exception $e ) {

@@ -16,6 +16,9 @@ use AmazonAssociatesLinkBuilder\includes\Plugin_Manager;
 use AmazonAssociatesLinkBuilder\includes\Deactivator;
 use AmazonAssociatesLinkBuilder\includes\Activator;
 use AmazonAssociatesLinkBuilder\includes\Autoloader;
+use AmazonAssociatesLinkBuilder\sql\Sql_Helper;
+use AmazonAssociatesLinkBuilder\constants\Db_Constants;
+use AmazonAssociatesLinkBuilder\cache\Item_Lookup_Response_Cache;
 
 /**
  * The class does all the initialisation of the plugin
