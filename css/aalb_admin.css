@@ -19,9 +19,13 @@ input.aalb-admin-input-search {
     margin-left: 3px;
     margin-right: 3px;
     height: 28px;
-    border: 1px solid #F0C14B;
+    border: 1px solid #F0C14B !important;
     /* Below width is hardcoded so that placeholder string fits input box for different languages. */
     width: 190px;
+}
+.aalb-admin-input-search:focus {
+    border-color: #5b9dd9 !important;
+    box-shadow: 0 0 2px rgba(30, 140, 190, .8) !important;
 }
 
 .aalb-admin-searchbox a.aalb-admin-button-create-amazon-shortcode {

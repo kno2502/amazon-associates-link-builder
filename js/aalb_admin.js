@@ -38,6 +38,7 @@ var aalb_admin_object = (function( $ ) {
     var tab_counter = 2;
     var marketplace_pop_up_json = [];
     var keyword_for_search = "";
+    var gb_props;
 
     var meta_box_tab_context = {
         "searchbox_placeholder"               : aalb_strings.searchbox_placeholder,
@@ -213,6 +214,21 @@ var aalb_admin_object = (function( $ ) {
         if( event.keyCode === ENTER_KEY_CODE ) {
             event.preventDefault();
             admin_show_create_shortcode_popup( $( caller_element ).siblings( '.aalb-admin-button-create-amazon-shortcode' ) );
+        }
+    }
+
+    /**
+     * onKeyPress event handler for editor search box for gutenberg editor.
+     *
+     * @param HTML_DOM_EVENT  event OnKeyPress event
+     * @param HTMLElement caller_element caller of this function
+     *
+     * @since 1.9.0
+     */
+    function gutenberg_editor_onkeypress(event, props) {
+        if (event.keyCode === ENTER_KEY_CODE) {
+            event.preventDefault();
+            admin_show_create_shortcode_popup_gutenberg(props);
         }
     }
 
@@ -527,6 +543,34 @@ var aalb_admin_object = (function( $ ) {
     }
 
     /**
+     * Display pop up thickbox in gutenberg editor.
+     * @param props - Gutenberg props.
+     */
+    function admin_show_create_shortcode_popup_gutenberg(props) {
+        if (props && props.attributes.searchKeyword) {
+            gb_props = props;
+            keyword_for_search = props.attributes.searchKeyword;
+            $('#aalb-search-pop-up').remove();
+            tab_counter = 2;
+            load_search_pop_up();
+
+            var pop_up_container = $('#aalb-tabs').find('.aalb-pop-up-container');
+            add_tab();
+            insert_search_loading_box(pop_up_container);
+            add_entry_in_marketplace_json(default_marketplace, default_store_id);
+            tb_show(aalb_strings.add_aalb_shortcode, '#TB_inline?inlineId=aalb-admin-popup-container', false);
+            resize_thickbox();
+            // Getting the Itemsearch results
+            admin_get_item_search_items(keyword_for_search, pop_up_container, props);
+            //Setting search input of shortcode popup with search keyword.
+            $(".aalb-admin-popup-input-search").attr('value', keyword_for_search);
+
+        } else {
+            alert(aalb_strings.empty_product_search_bar);
+        }
+    }
+
+    /**
      * Search items from within the thickbox
      *
      * @param jQueryObject pop_up_container The pop up container in which all content in a tab resides
@@ -677,7 +721,7 @@ var aalb_admin_object = (function( $ ) {
      * @param Object shortcodeJson  Object describing the shortcode
      */
     function add_shortcode_click_handler( shortcodeJson ) {
-        create_shortcode( shortcodeJson );
+        is_editor_gutenberg() ? create_shortcode_in_gb(shortcodeJson) : create_shortcode(shortcodeJson);
         tb_remove();
     }
 
@@ -727,6 +771,15 @@ var aalb_admin_object = (function( $ ) {
      */
     function create_shortcode( shortcodeJson ) {
         send_to_editor( buildShortcode( shortcodeJson ) );
+    }
+
+    /**
+     * Add shortcode attribute in gutenberg block attribute.
+     * @param shortcodeJson
+     */
+    function create_shortcode_in_gb(shortcodeJson) {
+        shortCoeValue = buildShortcode(shortcodeJson);
+        gb_props.setAttributes({shortCodeContent: shortCoeValue});
     }
 
     /**
@@ -848,9 +901,23 @@ var aalb_admin_object = (function( $ ) {
         admin_searchbox_tooltip.removeClass( 'aalb-admin-hide-display' );
     }
 
+    /**
+     * Function to check whether Gutenberg is activated and the current editor is set to load Gutenberg.
+     * gb_props will not be set if editor is not gutenberg.
+     */
+    function is_editor_gutenberg() {
+        return (gb_props != null);
+    }
+
     return {
-        admin_show_create_shortcode_popup      : admin_show_create_shortcode_popup,
-        editor_searchbox_keypress_event_handler: editor_searchbox_keypress_event_handler
+        admin_show_create_shortcode_popup                   : admin_show_create_shortcode_popup,
+        editor_searchbox_keypress_event_handler             : editor_searchbox_keypress_event_handler,
+
+        // Callbacks for gutenberg editor.
+        admin_show_create_shortcode_popup_gutenberg         : admin_show_create_shortcode_popup_gutenberg,
+        gutenberg_editor_onkeypress                         : gutenberg_editor_onkeypress
+
+
     };
 
 })( jQuery );

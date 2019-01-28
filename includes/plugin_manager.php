@@ -76,6 +76,7 @@ class Plugin_Manager {
         $this->hook_loader->add_action( 'wp_ajax_get_link_code', $plugin_admin, 'get_link_code' );
         $this->hook_loader->add_action( 'wp_ajax_get_custom_template_content', $plugin_admin, 'get_custom_template_content' );
         $this->hook_loader->add_action( 'media_buttons', $plugin_admin, 'admin_display_callback' );
+        $this->hook_loader->add_action( 'init', $plugin_admin, 'register_gb_block_if_supported');
         $this->hook_loader->add_action( 'admin_footer', $plugin_admin, 'admin_footer_callback' );
         $this->hook_loader->add_action( 'plugins_loaded', $plugin_admin, 'check_update' );
 

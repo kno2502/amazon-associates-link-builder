@@ -23,6 +23,9 @@ use AmazonAssociatesLinkBuilder\configuration\Config_Loader;
 use AmazonAssociatesLinkBuilder\constants\Plugin_Constants;
 use AmazonAssociatesLinkBuilder\constants\Library_Endpoints;
 use AmazonAssociatesLinkBuilder\helper\Plugin_Helper;
+use AmazonAssociatesLinkBuilder\includes\GB_Block_Manager;
+use AmazonAssociatesLinkBuilder\cache\Item_Lookup_Response_Cache;
+use AmazonAssociatesLinkBuilder\sql\Sql_Helper;
 
 /**
  * The class responsible for handling all the functionalities in the admin area.
@@ -42,6 +45,8 @@ class Plugin_Admin {
     private $helper;
     private $migration_helper;
     private $config_loader;
+    private $gb_block_manager;
+    private $item_lookup_response_cache;
 
     public function __construct() {
         $this->paapi_helper = new Paapi_Helper();
@@ -50,6 +55,8 @@ class Plugin_Admin {
         $this->helper = new Plugin_Helper();
         $this->migration_helper = new Settings_Page_Migration_Helper();
         $this->config_loader = new Config_Loader();
+        $this->gb_block_manager = new GB_Block_Manager();
+        $this->item_lookup_response_cache = new Item_Lookup_Response_Cache( new Sql_Helper( DB_NAME, Db_Constants::ITEM_LOOKUP_RESPONSE_TABLE_NAME  ) );
     }
 
     /**
@@ -199,6 +206,10 @@ class Plugin_Admin {
         $this->helper->aalb_initialize_wp_filesystem_api();
         $this->helper->refresh_template_list();
         $this->migration_helper->run_migration_logic();
+
+        // To init item lookup response cache in update.
+        $this->item_lookup_response_cache->init();
+
         update_option( Db_Constants::PLUGIN_VERSION, Plugin_Constants::PLUGIN_CURRENT_VERSION );
     }
 
@@ -309,6 +320,20 @@ class Plugin_Admin {
         }
         wp_die();
     }
+
+    /**
+     * Registers GutenBerg editor block of Amazon Associates Link Builder if supported.
+     */
+    public function register_gb_block_if_supported()
+    {
+        if ($this->gb_block_manager->is_gb_block_supported()) {
+            $this->aalb_enqueue_styles();
+            $this->aalb_enqueue_scripts();
+            $this->gb_block_manager->register_gb_block();
+        }
+    }
+
+
 }
 
 ?>

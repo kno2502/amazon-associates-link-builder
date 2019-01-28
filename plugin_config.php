@@ -75,6 +75,8 @@ define( 'AALB_SHA2_JS', AALB_PLUGIN_URL . 'lib/js/jssha2/sha2.js' );
 define( 'AALB_ADMIN_JS', AALB_PLUGIN_URL . 'js/aalb_admin.js' );
 define( 'AALB_TEMPLATE_JS', AALB_PLUGIN_URL . 'js/aalb_template.js' );
 define( 'AALB_CREDENTIALS_JS', AALB_PLUGIN_URL . 'js/aalb_credentials.js' );
+define( 'AALB_GB_BLOCK_JS_URL', AALB_PLUGIN_URL . 'js/aalb_gb_block.js');
+define( 'AALB_GB_BLOCK_JS_FILE', AALB_PLUGIN_DIR . 'js/aalb_gb_block.js');
 
 /**
  * Icons
