@@ -110,7 +110,7 @@ class GB_Block_Manager
      */
     private function get_shortcode_value_from_attributes($attributes)
     {
-        return shortcode_parse_atts(trim(trim($attributes[GB_Block_Constants::SHORTCODE_ATTR], $this::OPENING_SQUARE_BRACKET), $this::CLOSING_SQUARE_BRACKET));
+        return isset($attributes[GB_Block_Constants::SHORTCODE_ATTR]) ? shortcode_parse_atts(trim(trim($attributes[GB_Block_Constants::SHORTCODE_ATTR], $this::OPENING_SQUARE_BRACKET), $this::CLOSING_SQUARE_BRACKET)) : $attributes;
     }
 }
 
