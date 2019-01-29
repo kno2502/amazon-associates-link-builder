@@ -2,8 +2,8 @@
 Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
-Tested up to: 4.9.7
-Stable tag: 1.8.0
+Tested up to: 5.0.3
+Stable tag: 1.9.0
 Requires PHP: 5.4.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -72,6 +72,11 @@ If you get stuck, or have any questions, you can ask for help in the [Amazon Ass
 7. Product Grid Template: Another variation of the product carousel template that can be used to display a grid of products alongside your content
 8. Price Link Template: Dynamic hyperlink containing the current price offered for buying the item on Amazon
 9. Create custom ad templates native to your site' styling
+10. Gutenberg editor interface
+11. Amazon Associates Link Builder block under Widgets category
+12. Amazon Associates Link Builder search block
+13. Search for products in Amazon catalog from the Gutenberg block while creating a new post or a page
+14. Select the products you would like to advertise
 
 == Frequently Asked Questions ==
 
@@ -115,6 +120,10 @@ The customer will be shown ads from the first country added in shortcode.
 You can see your earnings and other reports from the respective country Associates Portal under "Amazon Associates Link Builder" section.
 
 == Changelog ==
+
+= 1.9.0 - January 29, 2019 =
+* Added Product Advertising API (PA-API) response caching feature. This feature will prevent PA-API throttle by caching PA-API response and updating the cache asynchronously.
+* Added support for Gutenberg editor.
 
 = 1.8.0 - July 25, 2018 =
 * Added support for Australia (AU) marketplace.
@@ -244,6 +253,9 @@ You can see your earnings and other reports from the respective country Associat
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.9.0 =
+* Added Product Advertising API (PA-API) response caching feature. This feature will prevent PA-API throttle by caching PA-API response and updating the cache asynchronously. Added support for Gutenberg editor.
 
 = 1.8.0 =
 * Added Support for Australia (AU) marketplace and minor bug-fixes.

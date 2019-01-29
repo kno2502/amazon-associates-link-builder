@@ -110,9 +110,10 @@
                     el('a',
                         {
                             className: getSearchButtonClassName(),
+                            title: aalb_strings.add_aalb_shortcode,
                             onClick: onSearchClick
                         },
-                        'Search'
+                        aalb_strings.search_button_label
                     ),
 
                     /**
