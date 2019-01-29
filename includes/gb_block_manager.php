@@ -96,7 +96,7 @@ class GB_Block_Manager
      */
     private function is_valid_shortcode($shortcode)
     {
-        return (gettype($shortcode) == $this::TYPE_ARRAY) && ($shortcode[$this::ASIN] != null || $shortcode[$this::ASINS] != null);
+        return (gettype($shortcode) == $this::TYPE_ARRAY) && (isset($shortcode[$this::ASIN]) || isset($shortcode[$this::ASINS]));
     }
 
     private function get_render_output($shortcode_val)

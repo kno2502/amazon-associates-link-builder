@@ -46,9 +46,7 @@
             };
 
             function getSearchButtonClassName() {
-                return isSearchDisabled ?
-                    'button aalb-admin-button-create-amazon-shortcode aalb-admin-button-create-amazon-shortcode-disabled'
-                    : 'button aalb-admin-button-create-amazon-shortcode' ;
+                return 'button aalb-admin-button-create-amazon-shortcode' + (isSearchDisabled ? ' aalb-admin-button-create-amazon-shortcode-disabled':'');
             }
 
             function getSpanClassName() {
