@@ -30,9 +30,15 @@ class Cron_Constants {
     const DELETE_FROM_TABLE_HOOK = 'aalb_delete_from_table_hook';
     const UPDATE_TABLE_CRON = 'aalb_update_table_cron';
     const UPDATE_TABLE_CRON_SCHEDULE_NAME = 'fifteen_minutes';
-    const UPDATE_TABLE_CRON_SCHEDULE_DEFAULT_VALUE = 15 * MINUTE_IN_SECONDS;
+    /**
+     * 15 minutes in seconds = 900.
+     */
+    const UPDATE_TABLE_CRON_SCHEDULE_DEFAULT_VALUE = 900;
     const DELETE_FROM_TABLE_CRON_SCHEDULE_NAME = 'six_hours';
-    const DELETE_FROM_TABLE_CRON_SCHEDULE_VALUE = 6 * HOUR_IN_SECONDS;
+    /**
+     * 6 hours in seconds = 21600.
+     */
+    const DELETE_FROM_TABLE_CRON_SCHEDULE_VALUE = 21600;
     const CACHE_REFRESH_AGE = '25 MINUTE';
     const CACHE_EVICT_AGE = '24 HOUR';
     const DELAY_EXPONENT_ON_PAAPI_THROTTLE = 'aalb_delay_exponent_on_paapi_throttle';
