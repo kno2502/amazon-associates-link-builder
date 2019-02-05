@@ -342,6 +342,13 @@ class Plugin_Admin {
         }
     }
 
+    /**
+     * Enqueues block assets.
+     */
+    public function enqueue_block_assets()
+    {
+        wp_enqueue_script( 'jquery' );
+    }
 
 }
 
