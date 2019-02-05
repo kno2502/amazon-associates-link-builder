@@ -78,7 +78,7 @@ class Plugin_Manager {
         $this->hook_loader->add_action( 'media_buttons', $plugin_admin, 'admin_display_callback' );
         $this->hook_loader->add_action( 'init', $plugin_admin, 'register_gb_block_if_supported');
         $this->hook_loader->add_action( 'enqueue_block_editor_assets', $plugin_admin, 'enqueue_block_editor_assets_if_supported');
-        $this->hook_loader->add_action( 'enqueue_block_assets', $plugin_admin, 'enqueue_block_asset');
+        $this->hook_loader->add_action( 'enqueue_block_assets', $plugin_admin, 'enqueue_block_assets');
         $this->hook_loader->add_action( 'admin_footer', $plugin_admin, 'admin_footer_callback' );
         $this->hook_loader->add_action( 'plugins_loaded', $plugin_admin, 'check_update' );
 
