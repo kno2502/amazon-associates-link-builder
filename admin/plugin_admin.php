@@ -327,14 +327,18 @@ class Plugin_Admin {
     public function register_gb_block_if_supported()
     {
         if ($this->gb_block_manager->is_gb_block_supported()) {
-
-            if (current_user_can('edit_posts')) {
-                $this->aalb_enqueue_styles();
-                $this->aalb_enqueue_scripts();
-            }
-            // required for Carousel template.
-            wp_enqueue_script('jquery');
             $this->gb_block_manager->register_gb_block();
+        }
+    }
+
+    /**
+     * Enqueues block editor assets in Gutenberg editor if supported.
+     */
+    public function enqueue_block_editor_assets_if_supported()
+    {
+        if ($this->gb_block_manager->is_gb_block_supported()) {
+            $this->aalb_enqueue_styles();
+            $this->aalb_enqueue_scripts();
         }
     }
 
