@@ -3,7 +3,7 @@ Contributors: amazonlinkbuilder
 Tags: Amazon, Affiliate, Associates, Amazon Associates, Amazon Associate, Product Advertising API, Amazon API, Amazon Link, Amazon Ad, Amazon Affiliate, eCommerce
 Requires at least: 3.0.1
 Tested up to: 5.0.3
-Stable tag: 1.8.0
+Stable tag: 1.9.1
 Requires PHP: 5.4.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -77,6 +77,9 @@ If you get stuck, or have any questions, you can ask for help in the [Amazon Ass
 12. Amazon Associates Link Builder search block
 13. Search for products in Amazon catalog from the Gutenberg block while creating a new post or a page
 14. Select the products you would like to advertise
+15. (Optional) Mouse over on change block type
+16. (Optional) Transform to Shortcode
+17. (Optional) Transformed to Shortcode
 
 == Frequently Asked Questions ==
 
@@ -120,6 +123,9 @@ The customer will be shown ads from the first country added in shortcode.
 You can see your earnings and other reports from the respective country Associates Portal under "Amazon Associates Link Builder" section.
 
 == Changelog ==
+
+= 1.9.1 - February 06, 2019 =
+* Fix : v1.9.0 not running for few associates.
 
 = 1.9.0 - January 29, 2019 =
 * Added Product Advertising API (PA-API) response caching feature. This feature will prevent PA-API throttle by caching PA-API response and updating the cache asynchronously.
@@ -253,6 +259,9 @@ You can see your earnings and other reports from the respective country Associat
 * Plugin released for beta testing
 
 == Upgrade Notice ==
+
+= 1.9.1 =
+* Fixed issues in v1.9.0 that was not compatible with PHP version 5.5
 
 = 1.9.0 =
 * Added Product Advertising API (PA-API) response caching feature. This feature will prevent PA-API throttle by caching PA-API response and updating the cache asynchronously. Added support for Gutenberg editor.
