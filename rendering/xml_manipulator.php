@@ -199,7 +199,7 @@ class Xml_Manipulator {
         $response = preg_replace( "/linkCode(%3D|=)\w{1,3}/", "linkCode$1" . $link_code, $response );
 
         //replace store id
-        return preg_replace( "((tag=)[^&]+(&))", "$1" . $store_id . "$3", $response );
+        return preg_replace( "((tag=)[^&]+(&))", "$1" . $store_id . "$2", $response );
     }
 
     /**
