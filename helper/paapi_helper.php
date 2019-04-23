@@ -66,6 +66,8 @@ class Paapi_Helper {
      * @return string Signed URL.
      */
     function aws_signed_url( $params, $marketplace ) {
+        error_log(sprintf('aws_signed_url: params => %s', print_r($params, true)));
+
         $access_key_id = openssl_decrypt( base64_decode( get_option( Db_Constants::AWS_ACCESS_KEY ) ), Plugin_Constants::ENCRYPTION_ALGORITHM, Plugin_Constants::ENCRYPTION_KEY, 0, Plugin_Constants::ENCRYPTION_IV );
         $secret_key = openssl_decrypt( base64_decode( get_option( Db_Constants::AWS_SECRET_KEY ) ), Plugin_Constants::ENCRYPTION_ALGORITHM, Plugin_Constants::ENCRYPTION_KEY, 0, Plugin_Constants::ENCRYPTION_IV );
         $host = $marketplace;

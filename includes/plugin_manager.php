@@ -48,8 +48,8 @@ class Plugin_Manager {
         $this->hook_loader = new Hook_Loader();
         $this->shortcode_loader = new Shortcode_Loader();
         $this->shortcode_manager = new Shortcode_Manager();
-        $this->cron_manager = new Cron_Manager( new Sql_Helper( DB_NAME, Db_Constants::ITEM_LOOKUP_RESPONSE_TABLE_NAME ) );
-        $this->cron_schedule_manager = new Cron_Schedule_Manager();
+        // $this->cron_manager = new Cron_Manager( new Sql_Helper( DB_NAME, Db_Constants::ITEM_LOOKUP_RESPONSE_TABLE_NAME ) );
+        // $this->cron_schedule_manager = new Cron_Schedule_Manager();
 
         //add the hooks specific to admin.
         $this->add_admin_hooks();
@@ -61,7 +61,7 @@ class Plugin_Manager {
         $this->add_credentials_hooks();
 
         //Add the hooks for auto updating the cache
-        $this->add_item_lookup_cache_auto_update_hooks();
+        // $this->add_item_lookup_cache_auto_update_hooks();
     }
 
     /**

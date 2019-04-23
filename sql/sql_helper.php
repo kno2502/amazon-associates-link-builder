@@ -52,7 +52,7 @@ class Sql_Helper {
             $primary_key_param = ! empty( $primary_key ) ? ", PRIMARY KEY  $primary_key" : "";
 
             $parameters = $columns_param . $index_param . $primary_key_param;
-            $create_table_query = "CREATE TABLE {$this->table_name} ( $parameters )";
+            $create_table_query = "CREATE TABLE {$this->table_name} ( $parameters ) CHARACTER SET = utf8mb4";
 
             //To use dbDelta function
             require_once( ABSPATH . "/wp-admin/includes/upgrade.php" );
