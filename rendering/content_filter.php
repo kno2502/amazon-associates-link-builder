@@ -80,7 +80,7 @@ class Content_Filter {
         //Disable warnings generated while parsing
         $libxml_previous_state = libxml_use_internal_errors( true );
         //Parse the Html Document
-        $document->loadHTML( $content );
+        $document->loadHTML('<?xml encoding="UTF-8">' . $content );
         //Clear all errors the were generated while parsing
         libxml_clear_errors();
         // Restore previous error queue before HTML parse
